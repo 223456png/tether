@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tether"
+version = "0.1.0"
+description = "Tether: a runtime for long-running coding agents (Phase 1: state machine + checkpoint + tool timeout)"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Tether Team" }]
+dependencies = [
+    "pydantic>=2.0.0",
+    "loguru>=0.7.0",
+    "rouge-score>=0.1.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
