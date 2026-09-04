@@ -88,17 +88,27 @@ class BudgetAllocator:
         return "\n".join(lines) if lines else "(no file context)"
 
     @staticmethod
-    def _render_episodic(
+    def _select_episodic(
         notes: List[EpisodicNotes],
         level: CompressionLevel,
-    ) -> str:
-        """Render episodic notes, filtered by confidence/count per level."""
+    ) -> List[EpisodicNotes]:
+        """Pick the notes that survive at ``level`` (confidence + usage rank)."""
         min_conf = _EPISODIC_MIN_CONFIDENCE[level]
         max_notes = _EPISODIC_MAX_NOTES[level]
         selected = [n for n in notes if n.confidence >= min_conf]
         selected.sort(key=lambda n: n.usage_count, reverse=True)
         if max_notes is not None:
             selected = selected[:max_notes]
+        return selected
+
+    @classmethod
+    def _render_episodic(
+        cls,
+        notes: List[EpisodicNotes],
+        level: CompressionLevel,
+    ) -> str:
+        """Render episodic notes, filtered by confidence/count per level."""
+        selected = cls._select_episodic(notes, level)
         lines = [
             f"- [{n.type}] {n.content} (confidence={n.confidence}, used={n.usage_count})"
             for n in selected
@@ -226,10 +236,16 @@ class BudgetAllocator:
         reduction = (
             (original_tokens - total_tokens) / original_tokens if original_tokens else 0.0
         )
+        selected_note_ids = [
+            n.entry_id for n in self._select_episodic(episodic_notes, chosen_level)
+        ]
         stats = {
             "original_tokens": original_tokens,
             "compressed_tokens": total_tokens,
             "reduction_ratio": round(reduction, 4),
+            # Lets the caller mark the notes that actually entered the
+            # context (usage_count / last_used bookkeeping).
+            "selected_episodic_ids": selected_note_ids,
         }
         self._current_level = chosen_level
         self._last_compression_stats = stats

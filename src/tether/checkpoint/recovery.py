@@ -12,6 +12,7 @@ from loguru import logger
 
 from tether.checkpoint.manager import CheckpointManager, CheckpointSnapshot
 from tether.filesystem.drift import DriftDetector, DriftLevel
+from tether.memory.episodic import EpisodicNotes
 from tether.memory.file_snapshot import compute_md5
 from tether.memory.store import MemoryStore
 from tether.runtime.state import TaskState
@@ -292,6 +293,8 @@ class RecoveryManager:
                 task_id, result.backoff_seconds,
             )
 
+        self._record_lesson_note(task_id, result)
+
         # The runtime transitions to RECOVERING -> RUNNING on resume.
         state.error_message = None
         state.touch()
@@ -300,3 +303,24 @@ class RecoveryManager:
             task_id, result.steps_to_replay, result.steps_to_skip,
         )
         return result
+
+    def _record_lesson_note(self, task_id: str, result: RecoveryResult) -> None:
+        """Persist a 'lesson' episodic note about this recovery (deduped)."""
+        if result.scenario is None:
+            return
+        content = (
+            f"Recovered from {result.scenario.name}: replay={result.steps_to_replay}, "
+            f"skip={result.steps_to_skip}"
+        )
+        for note in self.memory_store.load_episodic_notes(task_id):
+            if note.content == content:
+                return  # same lesson already recorded
+        self.memory_store.save_episodic_note(
+            EpisodicNotes(
+                task_id=task_id,
+                type="lesson",
+                content=content,
+                confidence=0.9,
+                source_task=task_id,
+            )
+        )

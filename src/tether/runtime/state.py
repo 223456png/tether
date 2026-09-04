@@ -14,6 +14,7 @@ class TaskStatus(str, Enum):
     RUNNING = "running"
     WAITING_TOOL = "waiting_tool"
     RECOVERING = "recovering"
+    STOPPED = "stopped"
     COMPLETED = "completed"
     FAILED = "failed"
 
@@ -32,9 +33,17 @@ class TaskState(BaseModel):
     step_index: int = 0
     context_budget: int = 16000
     error_message: str | None = None
+    final_answer: str | None = None
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
     created_at: datetime = Field(default_factory=_utc_now)
     updated_at: datetime = Field(default_factory=_utc_now)
 
     def touch(self) -> None:
         """Refresh ``updated_at`` to the current UTC time."""
         self.updated_at = _utc_now()
+
+    @property
+    def total_tokens(self) -> int:
+        """Cumulative prompt + completion tokens across all LLM turns."""
+        return self.prompt_tokens + self.completion_tokens

@@ -12,7 +12,9 @@ from tether.tools import (
     Tool,
     ToolRegistry,
     ToolResult,
+    get_default_registry,
     register_tool,
+    reset_default_registry,
 )
 from tether.tools.builtin import ReadFileTool
 
@@ -23,7 +25,6 @@ from tether.tools.builtin import ReadFileTool
 
 def test_tool_registration(tmp_path: Path) -> None:
     """Register a tool class -> appears in list_tools / get."""
-    ToolRegistry.reset()
     registry = ToolRegistry()
     registry.register(ReadFileTool(tmp_path))
 
@@ -36,9 +37,15 @@ def test_tool_registration(tmp_path: Path) -> None:
     assert "read_file" in registry.get_tools_prompt()
 
 
-def test_tool_registry_singleton() -> None:
-    """Two lookups return the same singleton instance."""
-    assert ToolRegistry() is ToolRegistry()
+def test_registries_are_isolated(tmp_path: Path) -> None:
+    """Per-runtime registries: registrations never leak across instances."""
+    a = ToolRegistry()
+    b = ToolRegistry()
+    a.register(ReadFileTool(tmp_path))
+
+    assert a.get("read_file") is not None
+    assert b.get("read_file") is None
+    assert a is not b
 
 
 # ---------------------------------------------------------------------
@@ -152,8 +159,9 @@ def test_runtime_integration(tmp_path: Path) -> None:
 # Decorator (class + function modes)
 # ---------------------------------------------------------------------
 
-def test_register_tool_decorator() -> None:
+def test_register_tool_decorator(tmp_path: Path) -> None:
     """@register_tool supports both Tool classes and async functions."""
+    reset_default_registry()
 
     @register_tool(name="dummy_class_tool", description="A dummy class tool")
     class DummyTool(Tool):
@@ -170,7 +178,7 @@ def test_register_tool_decorator() -> None:
     async def dummy_func(x: str) -> ToolResult:
         return ToolResult(success=True, output=f"func ok: {x}")
 
-    registry = ToolRegistry()
+    registry = get_default_registry()
     assert registry.get("dummy_class_tool") is not None
     assert registry.get("dummy_func_tool") is not None
 
@@ -179,3 +187,129 @@ def test_register_tool_decorator() -> None:
 
     func_out = asyncio.run(registry.get("dummy_func_tool").execute(x="1"))
     assert func_out.output == "func ok: 1"
+
+    # Runtimes merge decorator tools into their own registry.
+    runtime = TetherRuntime("Merge check", tmp_path)
+    assert runtime.tool_registry.get("dummy_func_tool") is not None
+    # Builtins keep priority over same-name decorator registrations.
+    assert runtime.tool_registry.get("read_file") is not runtime.tool_registry.get(
+        "dummy_class_tool"
+    )
+
+    reset_default_registry()
+
+
+# ---------------------------------------------------------------------
+# Workspace boundary (path traversal) + atomic writes
+# ---------------------------------------------------------------------
+
+def test_read_file_rejects_traversal(tmp_path: Path) -> None:
+    """read_file refuses paths resolving outside the workspace."""
+    outside = tmp_path.parent / "tether_outside_secret.txt"
+    outside.write_text("secret", encoding="utf-8")
+    try:
+        tool = ReadFileTool(tmp_path)
+        result = asyncio.run(tool.execute(path="../tether_outside_secret.txt"))
+        assert result.success is False
+        assert "escapes workspace" in result.error
+    finally:
+        outside.unlink(missing_ok=True)
+
+
+def test_read_file_rejects_absolute_path(tmp_path: Path) -> None:
+    """Absolute paths pointing outside the workspace are refused."""
+    import sys
+
+    tool = ReadFileTool(tmp_path)
+    alien = Path(sys.executable)  # definitely not in the workspace
+    result = asyncio.run(tool.execute(path=str(alien)))
+    assert result.success is False
+    assert "escapes workspace" in result.error
+
+
+def test_write_file_rejects_traversal(tmp_path: Path) -> None:
+    """write_file refuses to create files outside the workspace."""
+    from tether.tools.builtin import WriteFileTool
+
+    tool = WriteFileTool(tmp_path)
+    result = asyncio.run(
+        tool.execute(path="../tether_escaped.txt", content="nope")
+    )
+    assert result.success is False
+    assert "escapes workspace" in result.error
+    assert not (tmp_path.parent / "tether_escaped.txt").exists()
+
+
+def test_write_file_is_atomic_no_tmp_leftover(tmp_path: Path) -> None:
+    """A successful write leaves no .tmp file next to the target."""
+    from tether.tools.builtin import WriteFileTool
+
+    tool = WriteFileTool(tmp_path)
+    result = asyncio.run(
+        tool.execute(path="src/app.py", content="x = 1\n")
+    )
+    assert result.success is True
+    assert (tmp_path / "src" / "app.py").read_text(encoding="utf-8") == "x = 1\n"
+    assert list((tmp_path / "src").glob("*.tmp")) == []
+
+
+# ---------------------------------------------------------------------
+# Interceptor safety semantics (side effects, failures, invalidation)
+# ---------------------------------------------------------------------
+
+def test_interceptor_never_caches_failed_results() -> None:
+    """A failed call is not recorded, so the retry really executes."""
+    interceptor = CallInterceptor(window_seconds=5)
+    failed = ToolResult(success=False, error="boom")
+    interceptor.record("read_file", {"path": "a.py"}, failed)
+
+    assert interceptor.check("read_file", {"path": "a.py"}) is None
+
+
+def test_interceptor_skips_non_cacheable_tools() -> None:
+    """cacheable=False disables both check() and record()."""
+    interceptor = CallInterceptor(window_seconds=5)
+    ok = ToolResult(success=True, output="wrote")
+    interceptor.record("write_file", {"path": "a.py"}, ok, cacheable=False)
+
+    assert interceptor.check("write_file", {"path": "a.py"}, cacheable=False) is None
+    # Even if something slipped in, a non-cacheable check must not hit it.
+    assert interceptor.check("write_file", {"path": "a.py"}) is None
+
+
+def test_interceptor_invalidate_all() -> None:
+    """invalidate_all() drops cached reads (post-mutation safety)."""
+    interceptor = CallInterceptor(window_seconds=5)
+    interceptor.record("read_file", {"path": "a.py"}, _make_result("old"))
+    interceptor.invalidate_all()
+
+    assert interceptor.check("read_file", {"path": "a.py"}) is None
+
+
+async def test_read_after_write_is_fresh(tmp_path: Path) -> None:
+    """read -> write(same file) -> read returns new content, not [CACHED]."""
+    from tether.llm.base import LLMResponse, ToolCall
+
+    from tests.test_agent_loop import ScriptedProvider, _final_response
+
+    def _call(name: str, arguments: dict) -> LLMResponse:
+        return LLMResponse(
+            content="",
+            tool_calls=[ToolCall(name=name, arguments=arguments, id="c1")],
+        )
+
+    provider = ScriptedProvider([
+        _call("read_file", {"path": "note.txt"}),       # old content
+        _call("write_file", {"path": "note.txt", "content": "NEW"}),
+        _call("read_file", {"path": "note.txt"}),       # must see NEW
+        _final_response("done"),
+    ])
+    (tmp_path / "note.txt").write_text("OLD", encoding="utf-8")
+    runtime = TetherRuntime(
+        "Rewrite note", tmp_path, llm_provider=provider, max_steps=10
+    )
+    await runtime.run()
+
+    outputs = [out for _, _, out in runtime._tool_history]
+    assert outputs[0] == "OLD"
+    assert "NEW" in outputs[2] and not outputs[2].startswith("[CACHED]")
