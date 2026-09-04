@@ -1,4 +1,10 @@
-"""ToolRegistry: thread-safe singleton registry of Tool instances."""
+"""ToolRegistry: per-runtime tool registry (no process-global state).
+
+Each ``TetherRuntime`` owns its own registry so runtimes bound to
+different workspaces never clobber each other's tools. A module-level
+*default* registry backs the ``@register_tool`` decorator; runtimes
+merge its entries (without overwriting builtins) at construction.
+"""
 
 import inspect
 import threading
@@ -8,28 +14,26 @@ from tether.tools.base import Tool
 
 
 class ToolRegistry:
-    """Global singleton registry shared by all runtimes in the process."""
+    """Registry of Tool instances scoped to one owner (usually a runtime)."""
 
-    _instance: Optional["ToolRegistry"] = None
-    _lock = threading.Lock()
+    def __init__(self) -> None:
+        """Create an empty registry with its own registration history."""
+        self._tools: Dict[str, Tool] = {}
+        self._history: List[str] = []
 
-    def __new__(cls) -> "ToolRegistry":
-        """Create the singleton instance on first access (double-checked)."""
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    instance = super().__new__(cls)
-                    instance._tools: Dict[str, Tool] = {}
-                    instance._history: List[str] = []
-                    cls._instance = instance
-        return cls._instance
+    def register(self, tool: Union[Type[Tool], Tool], overwrite: bool = True) -> None:
+        """Register a Tool subclass (instantiated here) or a ready instance.
 
-    def register(self, tool: Union[Type[Tool], Tool]) -> None:
-        """Register a Tool subclass (instantiated here) or a ready instance."""
+        ``overwrite=False`` keeps the existing entry on name collisions —
+        used when merging decorator-registered tools into a runtime that
+        already bound its own builtin with the same name.
+        """
         if inspect.isclass(tool):
             tool = tool()
         if not tool.name:
             raise ValueError("Tool must define a non-empty 'name'")
+        if not overwrite and tool.name in self._tools:
+            return
         self._tools[tool.name] = tool
         self._history.append(tool.name)
         self._history = self._history[-100:]
@@ -53,6 +57,20 @@ class ToolRegistry:
             for tool in self._tools.values()
         ]
 
+    def get_openai_tools_schema(self) -> List[dict]:
+        """Return tools in OpenAI function-calling payload format."""
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": tool.name,
+                    "description": tool.description,
+                    "parameters": tool.get_parameters_schema(),
+                },
+            }
+            for tool in self._tools.values()
+        ]
+
     def get_tools_prompt(self) -> str:
         """Return a plain-text tool listing for non-function-calling models."""
         lines = ["Available tools:"]
@@ -60,8 +78,32 @@ class ToolRegistry:
             lines.append(f"  - {tool.name}: {tool.description}")
         return "\n".join(lines)
 
-    @classmethod
-    def reset(cls) -> None:
-        """Drop the singleton (used by tests for isolation)."""
-        with cls._lock:
-            cls._instance = None
+    def merge(self, other: "ToolRegistry", overwrite: bool = False) -> List[str]:
+        """Copy ``other``'s tools into this registry; returns merged names."""
+        for name, tool in other._tools.items():
+            self.register(tool, overwrite=overwrite)
+        return list(self._tools.keys())
+
+
+# ---------------------------------------------------------------------
+# Module-level default registry (backing the @register_tool decorator)
+# ---------------------------------------------------------------------
+_default_registry: Optional[ToolRegistry] = None
+_default_lock = threading.Lock()
+
+
+def get_default_registry() -> ToolRegistry:
+    """Return the process-wide default registry (created on first use)."""
+    global _default_registry
+    if _default_registry is None:
+        with _default_lock:
+            if _default_registry is None:
+                _default_registry = ToolRegistry()
+    return _default_registry
+
+
+def reset_default_registry() -> None:
+    """Drop the default registry (used by tests for isolation)."""
+    global _default_registry
+    with _default_lock:
+        _default_registry = None

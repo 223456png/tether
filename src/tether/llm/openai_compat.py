@@ -10,11 +10,11 @@ import json
 import time
 import urllib.error
 import urllib.request
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from loguru import logger
 
-from tether.llm.base import LLMProvider, LLMResponse
+from tether.llm.base import LLMProvider, LLMResponse, ToolCall
 
 _RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 
@@ -46,25 +46,30 @@ class OpenAICompatProvider:
         messages: List[dict],
         temperature: float = 0.2,
         max_tokens: int = 1024,
+        tools: Optional[List[dict]] = None,
     ) -> LLMResponse:
         """Call the chat completions endpoint with retry + backoff.
 
         Reasoning models can exhaust ``max_tokens`` on chain-of-thought
         before emitting any content (``finish_reason == "length"`` with
         empty ``content``). When that happens the budget is doubled and
-        the call retried, up to ``_MAX_TOKEN_CEILING``.
+        the call retried, up to ``_MAX_TOKEN_CEILING``. Responses that
+        request tool calls are returned as-is (empty content is normal
+        there and must not trigger the truncation retry).
         """
         start = time.perf_counter()
         last_error: Optional[Exception] = None
         budget = max_tokens
 
         while True:
-            payload = {
+            payload: Dict[str, Any] = {
                 "model": self.model,
                 "messages": messages,
                 "temperature": temperature,
                 "max_tokens": budget,
             }
+            if tools:
+                payload["tools"] = tools
             response: Optional[LLMResponse] = None
             for attempt in range(1, self.max_retries + 1):
                 try:
@@ -92,6 +97,8 @@ class OpenAICompatProvider:
                     f"attempts: {last_error}"
                 )
 
+            if response.has_tool_calls:
+                return response
             truncated = (
                 not response.content.strip()
                 or response.extra.get("finish_reason") == "length"
@@ -122,7 +129,7 @@ class OpenAICompatProvider:
             return json.loads(resp.read().decode("utf-8"))
 
     def _parse_response(self, body: dict, start: float) -> LLMResponse:
-        """Extract content + usage from an OpenAI-style response body."""
+        """Extract content + tool calls + usage from an OpenAI-style body."""
         latency_ms = (time.perf_counter() - start) * 1000
         choices = body.get("choices") or [{}]
         message = choices[0].get("message") or {}
@@ -134,8 +141,41 @@ class OpenAICompatProvider:
             latency_ms=latency_ms,
             model=body.get("model", self.model),
             provider=self.name,
+            tool_calls=self._parse_tool_calls(message.get("tool_calls")),
             extra={"finish_reason": choices[0].get("finish_reason", "")},
         )
+
+    @staticmethod
+    def _parse_tool_calls(raw_calls: Any) -> List[ToolCall]:
+        """Normalize the ``message.tool_calls`` payload into ToolCalls.
+
+        ``arguments`` arrives as a JSON *string* on the wire; malformed
+        JSON degrades to empty arguments rather than failing the whole
+        completion (the runtime surfaces a tool-level error instead).
+        """
+        calls: List[ToolCall] = []
+        for raw in raw_calls or []:
+            if not isinstance(raw, dict):
+                continue
+            function = raw.get("function") or {}
+            name = function.get("name", "")
+            if not name:
+                continue
+            try:
+                arguments = json.loads(function.get("arguments") or "{}")
+                if not isinstance(arguments, dict):
+                    arguments = {"__raw__": arguments}
+            except json.JSONDecodeError:
+                logger.warning("Malformed tool-call arguments for {}", name)
+                arguments = {}
+            calls.append(
+                ToolCall(
+                    name=name,
+                    arguments=arguments,
+                    id=str(raw.get("id", "")),
+                )
+            )
+        return calls
 
 
 # Convenience alias: DeepSeek is just a preset endpoint.

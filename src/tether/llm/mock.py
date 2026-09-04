@@ -7,7 +7,7 @@ so every code path stays runnable offline (CI included).
 
 import hashlib
 import time
-from typing import List
+from typing import List, Optional
 
 from tether.llm.base import LLMProvider, LLMResponse
 
@@ -29,8 +29,13 @@ class MockProvider:
         messages: List[dict],
         temperature: float = 0.2,
         max_tokens: int = 1024,
+        tools: Optional[List[dict]] = None,
     ) -> LLMResponse:
-        """Return a deterministic completion with estimated token usage."""
+        """Return a deterministic completion with estimated token usage.
+
+        ``tools`` is accepted for protocol conformance but ignored — the
+        mock never requests tool calls.
+        """
         start = time.perf_counter()
         self.call_count += 1
         prompt_text = "".join(

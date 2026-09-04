@@ -1,10 +1,15 @@
-"""@register_tool decorator: register Tool classes or plain async functions."""
+"""@register_tool decorator: register Tool classes or plain async functions.
+
+Registrations go into the module-level default registry (process-wide,
+decorator-friendly); each TetherRuntime merges those entries into its
+own per-runtime registry at construction time.
+"""
 
 import inspect
 from typing import Any, Callable, Optional
 
 from tether.tools.base import Tool, ToolResult
-from tether.tools.registry import ToolRegistry
+from tether.tools.registry import ToolRegistry, get_default_registry
 
 
 class FunctionTool(Tool):
@@ -68,14 +73,14 @@ def register_tool(
             tool.name = tool_name
             if description:
                 tool.description = description
-            ToolRegistry().register(tool)
+            get_default_registry().register(tool)
             return cls_or_func
 
         # Async function: wrap in a FunctionTool and register it.
         if inspect.iscoroutinefunction(cls_or_func):
             tool_name = name or cls_or_func.__name__
             tool_desc = description or (inspect.getdoc(cls_or_func) or "")
-            ToolRegistry().register(
+            get_default_registry().register(
                 FunctionTool(cls_or_func, tool_name, tool_desc)
             )
             return cls_or_func

@@ -1,18 +1,34 @@
-"""TetherRuntime: the main async loop (think -> tool -> checkpoint)."""
+"""TetherRuntime: the main agent loop (think -> tool -> checkpoint).
+
+Two "brain" modes share the same loop:
+
+- ``llm_provider=None`` (default): the legacy deterministic mock thinks in
+  random action strings — used by offline tests and demos.
+- With an ``LLMProvider``: each turn assembles the context from the
+  three-layer memory via ``ContextAssembler``, asks the model for an
+  OpenAI-style tool call, executes it, and finishes when the model stops
+  calling tools (or when ``max_steps`` is reached).
+"""
 
 import asyncio
 import random
 import re
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 from loguru import logger
 
 from tether.checkpoint.manager import CheckpointManager
 from tether.checkpoint.recovery import RecoveryManager
+from tether.context import BudgetAllocator, BudgetConfig, ContextAssembler
 from tether.filesystem.drift import DriftDetector, DriftLevel
+from tether.llm.base import LLMProvider
+from tether.memory.episodic import EpisodicNotes
 from tether.memory.file_snapshot import FileSnapshot
 from tether.memory.store import MemoryStore
+from tether.memory.task_summary import TaskSummary
 from tether.runtime.state import TaskState, TaskStatus
 from tether.tools.base import Tool
 from tether.tools.intercept import CallInterceptor
@@ -27,9 +43,48 @@ _ACTION_RE = re.compile(r"^(\w+)\((.*)\)$", re.DOTALL)
 # Key used for positional arguments before schema mapping.
 _POSITIONAL_KEY = "__positional__"
 
+# How many recent tool results feed back into the assembled context.
+_TOOL_HISTORY_WINDOW = 20
+
+# How many recently touched files are marked "current" for the allocator.
+_CURRENT_FILES_WINDOW = 8
+
+# How many completed actions the TaskSummary keeps (older ones drop off).
+_SUMMARY_HISTORY_CAP = 20
+
+_SYSTEM_PROMPT_TEMPLATE = """You are Tether, a careful coding agent working inside a workspace directory.
+
+Your goal: {goal}
+
+Working rules:
+- Call exactly one tool per turn to inspect or modify the workspace.
+- The context above may contain compressed memory; re-read files when they may have changed.
+- When the goal is fully achieved, stop calling tools and reply with a concise final summary of what you did."""
+
+_STEP_PROMPT_TEMPLATE = (
+    "Step {step}: continue working toward the goal. Call exactly one tool, "
+    "or reply with the final summary if the goal is achieved."
+)
+
+
+@dataclass
+class AgentDecision:
+    """One agent turn: either a tool call or task completion.
+
+    The LLM path produces structured decisions straight from the
+    function-calling payload; the mock path parses legacy action strings
+    into the same shape.
+    """
+
+    tool_name: str = ""
+    params: Dict[str, object] = field(default_factory=dict)
+    finished: bool = False
+    final_answer: str = ""
+    raw_action: str = ""  # display string for logs / tool history
+
 
 class TetherRuntime:
-    """Phase-1 runtime: async state machine + JSONL checkpoints + tool timeout breaker.
+    """Async state machine + JSONL checkpoints + tool timeout breaker.
 
     Phase 5: files are read through ``_read_file_with_drift_check`` so the
     agent never reasons from stale file state.
@@ -37,12 +92,29 @@ class TetherRuntime:
     recovers smartly via RecoveryManager (drift-aware replay planning).
     Phase 7: actions run through the ToolRegistry with duplicate-call
     interception (5s window).
+    Phase 10: the loop can be driven by a real ``LLMProvider`` with
+    structured tool calls instead of the mock thinker.
     """
 
-    def __init__(self, goal: str, workspace_dir: Path, tool_timeout: int = 5) -> None:
-        """Initialize runtime state, checkpoint manager and config."""
+    def __init__(
+        self,
+        goal: str,
+        workspace_dir: Path,
+        tool_timeout: int = 5,
+        llm_provider: Optional[LLMProvider] = None,
+        max_steps: int = 5,
+    ) -> None:
+        """Initialize runtime state, checkpoint manager and config.
+
+        ``llm_provider`` switches the loop from the offline mock thinker
+        to real LLM-driven tool calling. ``max_steps`` is the hard cap on
+        executed tool steps (the LLM path usually finishes earlier by
+        replying without a tool call).
+        """
         self.workspace_dir = Path(workspace_dir)
         self.tool_timeout = tool_timeout
+        self.llm_provider = llm_provider
+        self.max_steps = max_steps
         self.state = TaskState(goal=goal)
         self.checkpoint_manager = CheckpointManager(self.workspace_dir)
         self.memory_store = MemoryStore(self.workspace_dir)
@@ -56,27 +128,48 @@ class TetherRuntime:
         self._stop_requested = False
         self._step_log: Dict[int, List[str]] = {}
         self._tool_history: List[Tuple[int, str, str]] = []
+        self._touched_files: List[str] = []
         self._steps_to_replay: List[int] = []
         self._steps_skipped: List[int] = []
+        self._rebuild_context_pipeline()
+
+    def _rebuild_context_pipeline(self) -> None:
+        """(Re)build the allocator/assembler from ``state.context_budget``.
+
+        Rebuilt on recovery too, so a context-overflow recovery that
+        lowers the budget actually tightens compression on the next turn.
+        """
+        self.allocator = BudgetAllocator(
+            BudgetConfig(total_budget=self.state.context_budget)
+        )
+        self.assembler = ContextAssembler(allocator=self.allocator)
 
     def _register_builtin_tools(self) -> None:
-        """Register the builtin tools bound to this workspace."""
+        """Register builtin tools (bound to this workspace) + decorator tools."""
         from tether.tools.builtin import (
             ReadFileTool,
             RunTestTool,
             SearchTool,
             WriteFileTool,
         )
+        from tether.tools.registry import get_default_registry
 
         for tool_cls in (ReadFileTool, WriteFileTool, SearchTool, RunTestTool):
             self.tool_registry.register(tool_cls(self.workspace_dir))
+        # Decorator-registered tools join the runtime's registry without
+        # overwriting the workspace-bound builtins.
+        self.tool_registry.merge(get_default_registry(), overwrite=False)
 
-    @staticmethod
-    def _extract_files(action: str) -> List[str]:
-        """Extract file-like arguments from an action string."""
-        return _FILE_ARG_RE.findall(action)
+    # ------------------------------------------------------------------
+    # Thinking (mock or LLM)
+    # ------------------------------------------------------------------
+    async def _think(self) -> AgentDecision:
+        """One agent turn: pick the next tool call, or finish the task."""
+        if self.llm_provider is None:
+            return await self._mock_think()
+        return await self._llm_think()
 
-    async def _think(self) -> str:
+    async def _mock_think(self) -> AgentDecision:
         """Mock agent thinking: random delay, then a random action string."""
         await asyncio.sleep(random.uniform(0.1, 0.5))
         actions = [
@@ -87,7 +180,108 @@ class TetherRuntime:
         ]
         action = random.choice(actions)
         logger.info("Think | step={} action={}", self.state.step_index, action)
-        return action
+        return self._decision_from_action(action)
+
+    async def _llm_think(self) -> AgentDecision:
+        """Assemble context from memory, then ask the LLM for the next move.
+
+        A response with tool calls executes its first call; a response
+        without any ends the task (content becomes the final answer).
+        """
+        assert self.llm_provider is not None
+        context = self.assembler.assemble(
+            system_prompt=self._system_prompt(),
+            task_state=self.state,
+            memory_store=self.memory_store,
+            tool_results=[
+                (display, output)
+                for _, display, output in self._tool_history[-_TOOL_HISTORY_WINDOW:]
+            ],
+            current_files=list(self._touched_files[-_CURRENT_FILES_WINDOW:]),
+        )
+        # Mark the notes that entered the context (retrieval feedback).
+        selected_ids = self.allocator.last_compression_stats.get(
+            "selected_episodic_ids"
+        ) or []
+        self._touch_episodic_notes(list(selected_ids))
+        messages = [
+            {"role": "system", "content": context},
+            {
+                "role": "user",
+                "content": _STEP_PROMPT_TEMPLATE.format(
+                    step=self.state.step_index
+                ),
+            },
+        ]
+        logger.info(
+            "LLM think | step={} provider={} model={} compression_level={}",
+            self.state.step_index, self.llm_provider.name,
+            self.llm_provider.model, self.allocator.current_level.name,
+        )
+        response = await self.llm_provider.complete(
+            messages,
+            tools=self.tool_registry.get_openai_tools_schema(),
+        )
+        self.state.prompt_tokens += response.prompt_tokens
+        self.state.completion_tokens += response.completion_tokens
+        self.state.touch()
+
+        if response.has_tool_calls:
+            call = response.tool_calls[0]
+            logger.info(
+                "LLM tool call | step={} tool={} params={}",
+                self.state.step_index, call.name,
+                self._format_call(call.name, call.arguments),
+            )
+            return AgentDecision(
+                tool_name=call.name,
+                params=dict(call.arguments),
+                raw_action=self._format_call(call.name, call.arguments),
+            )
+        logger.info(
+            "LLM finished | step={} answer={}",
+            self.state.step_index, response.content[:200],
+        )
+        return AgentDecision(finished=True, final_answer=response.content.strip())
+
+    def _system_prompt(self) -> str:
+        """Render the system prompt (goal + working rules)."""
+        return _SYSTEM_PROMPT_TEMPLATE.format(goal=self.state.goal)
+
+    @staticmethod
+    def _format_call(name: str, params: Dict[str, object]) -> str:
+        """Compact display string for a tool call (long values elided)."""
+        inner = ", ".join(
+            f"{key}={value!r}" if len(str(value)) <= 40 else f"{key}=<...>"
+            for key, value in params.items()
+        )
+        return f"{name}({inner})"
+
+    def _decision_from_action(self, action: str) -> AgentDecision:
+        """Parse a legacy action string into a structured decision."""
+        tool_name, params = self._parse_action(action)
+        return AgentDecision(
+            tool_name=tool_name, params=params, raw_action=action
+        )
+
+    # ------------------------------------------------------------------
+    # Action parsing (legacy string path)
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _extract_files(action: str) -> List[str]:
+        """Extract file-like arguments from an action string."""
+        return _FILE_ARG_RE.findall(action)
+
+    @staticmethod
+    def _files_from_params(params: Dict[str, object]) -> List[str]:
+        """Extract file paths from structured params by parameter name."""
+        return [
+            Path(str(value)).as_posix()
+            for key, value in params.items()
+            if isinstance(value, str)
+            and ("path" in key.lower() or "file" in key.lower())
+            and value.strip()
+        ]
 
     def _parse_action(self, action: str) -> Tuple[str, dict]:
         """Parse an action string into (tool_name, params).
@@ -95,6 +289,8 @@ class TetherRuntime:
         Supports both ``tool(key='value')`` and positional
         ``tool('value')`` forms; positional values are stored under
         ``__positional__`` and mapped onto the tool's schema afterwards.
+        Only used for legacy/mock action strings — the LLM path delivers
+        structured arguments directly.
         """
         match = _ACTION_RE.match(action.strip())
         if not match:
@@ -130,33 +326,133 @@ class TetherRuntime:
         params[required[0]] = positional
         return params
 
-    async def _execute_tool(self, action: str) -> str:
-        """Execute a real registered tool with duplicate-call interception.
+    # ------------------------------------------------------------------
+    # Tool execution
+    # ------------------------------------------------------------------
+    async def _execute_tool(self, candidate: Union[str, AgentDecision]) -> str:
+        """Execute one tool call and return the text result.
 
-        Timeout is enforced by the caller via ``asyncio.wait_for``.
+        Accepts a legacy action string (parsed here) or a structured
+        ``AgentDecision`` (used verbatim — no string parsing on the LLM
+        path). Timeout is enforced by the caller via ``asyncio.wait_for``.
         """
-        tool_name, params = self._parse_action(action)
+        if isinstance(candidate, AgentDecision):
+            tool_name, params = candidate.tool_name, dict(candidate.params)
+        else:
+            tool_name, params = self._parse_action(candidate)
+        return await self._execute_call(tool_name, params)
 
+    async def _execute_call(self, tool_name: str, params: Dict[str, object]) -> str:
+        """Run a (tool, params) pair through registry + interceptor."""
         tool = self.tool_registry.get(tool_name)
         if tool is None:
             raise ValueError(f"Unknown tool: {tool_name}")
 
         params = self._resolve_params(tool, params)
+        self._note_touched_files(params)
+        cacheable = getattr(tool, "side_effect_free", True)
 
-        # Duplicate call within the window -> cached result.
-        cached = self.tool_interceptor.check(tool_name, params)
+        # Duplicate read-only call within the window -> cached result.
+        cached = self.tool_interceptor.check(tool_name, params, cacheable=cacheable)
         if cached is not None:
             return f"[CACHED] {cached.output}"
 
         result = await tool.execute(**params)
-        self.tool_interceptor.record(tool_name, params, result)
+        self.tool_interceptor.record(tool_name, params, result, cacheable=cacheable)
+        if not cacheable:
+            # The workspace may have changed: no cached read can be trusted.
+            self.tool_interceptor.invalidate_all()
         logger.info(
-            "Tool | action={} success={}", action, result.success,
+            "Tool | tool={} params={} success={}",
+            tool_name, self._format_call(tool_name, params), result.success,
         )
+        display = self._format_call(tool_name, params)
         if result.success:
+            self._update_task_summary(display, success=True)
             return result.output
-        return f"ERROR: {result.error}"
+        error = result.error or "unknown error"
+        self._update_task_summary(display, success=False, error=error)
+        self._record_mistake_note(display, error)
+        return f"ERROR: {error}"
 
+    def _note_touched_files(self, params: Dict[str, object]) -> None:
+        """Track files touched by executed tools for context assembly."""
+        for key, value in params.items():
+            if (
+                isinstance(value, str)
+                and ("path" in key.lower() or "file" in key.lower())
+                and value.strip()
+            ):
+                rel = Path(value).as_posix()
+                if rel not in self._touched_files:
+                    self._touched_files.append(rel)
+
+    # ------------------------------------------------------------------
+    # Memory writing (three layers are kept alive by the loop itself)
+    # ------------------------------------------------------------------
+    def _update_task_summary(
+        self, action_display: str, success: bool, error: Optional[str] = None
+    ) -> None:
+        """Refresh the TaskSummary layer after one executed step."""
+        summary = self.memory_store.load_task_summary(self.state.task_id)
+        if summary is None:
+            summary = TaskSummary(task_id=self.state.task_id, goal=self.state.goal)
+        if success:
+            summary.completed.append(
+                f"step {self.state.step_index}: {action_display}"
+            )
+            summary.completed = summary.completed[-_SUMMARY_HISTORY_CAP:]
+            summary.next_action = f"continue after step {self.state.step_index}"
+        else:
+            summary.next_action = (
+                f"step {self.state.step_index} failed ({action_display}): "
+                "retry or work around"
+            )
+        self.memory_store.save_task_summary(summary)
+
+    def _mark_task_finished(self, final_answer: str) -> None:
+        """Close out the TaskSummary when the agent finishes the goal."""
+        summary = self.memory_store.load_task_summary(self.state.task_id)
+        if summary is None:
+            summary = TaskSummary(task_id=self.state.task_id, goal=self.state.goal)
+        summary.next_action = "task completed"
+        if final_answer:
+            summary.constraints = list(
+                dict.fromkeys(summary.constraints + [f"final: {final_answer[:200]}"])
+            )[-5:]
+        self.memory_store.save_task_summary(summary)
+
+    def _record_mistake_note(self, action_display: str, error: str) -> None:
+        """Persist a 'mistake' episodic note for a failed tool call (deduped)."""
+        content = f"{action_display} failed: {error}"
+        for note in self.memory_store.load_episodic_notes(self.state.task_id):
+            if note.content == content:
+                return  # already learned this lesson this task
+        self.memory_store.save_episodic_note(
+            EpisodicNotes(
+                task_id=self.state.task_id,
+                type="mistake",
+                content=content,
+                confidence=0.8,
+                source_task=self.state.task_id,
+            )
+        )
+        logger.info("Episodic mistake note recorded | {}", content[:120])
+
+    def _touch_episodic_notes(self, entry_ids: List[str]) -> None:
+        """Increment usage stats for notes selected into the last context."""
+        if not entry_ids:
+            return
+        selected = set(entry_ids)
+        for note in self.memory_store.load_episodic_notes(self.state.task_id):
+            if note.entry_id in selected:
+                note.usage_count += 1
+                note.last_used = datetime.now(timezone.utc)
+                self.memory_store.save_episodic_note(note)
+
+    # ------------------------------------------------------------------
+    # Checkpointing / drift
+    # ------------------------------------------------------------------
     async def _save_checkpoint(self) -> None:
         """Persist a full checkpoint (state + workspace fingerprint + step log)."""
         self.checkpoint_manager.save_full(
@@ -205,32 +501,89 @@ class TetherRuntime:
         self.state.touch()
         logger.info("State | {} -> {}", old.value, new_status.value)
 
-    async def run(self) -> None:
-        """Main loop: think -> wait_tool -> execute (with timeout) until done."""
-        await self._transition_to(TaskStatus.RUNNING)
-        logger.info("Task started | task_id={} goal={}", self.state.task_id, self.state.goal)
+    # ------------------------------------------------------------------
+    # Main loop
+    # ------------------------------------------------------------------
+    def request_stop(self) -> None:
+        """Ask the loop to stop at the next safe point (checked per step).
 
-        while self.state.status not in (TaskStatus.COMPLETED, TaskStatus.FAILED):
+        The task transitions to ``STOPPED`` and a checkpoint is saved, so
+        ``resume()`` can continue it later.
+        """
+        self._stop_requested = True
+        logger.info("Stop requested | task_id={}", self.state.task_id)
+
+    async def run(self) -> None:
+        """Main loop: think -> (tool | finish) -> checkpoint until done."""
+        await self._transition_to(TaskStatus.RUNNING)
+        logger.info(
+            "Task started | task_id={} goal={} brain={}",
+            self.state.task_id, self.state.goal,
+            "llm" if self.llm_provider is not None else "mock",
+        )
+
+        while self.state.status not in (
+            TaskStatus.COMPLETED, TaskStatus.FAILED, TaskStatus.STOPPED,
+        ):
+            if self._stop_requested:
+                await self._transition_to(TaskStatus.STOPPED)
+                logger.info("Task stopped by request | step={}", self.state.step_index)
+                break
+
             self.state.step_index += 1
             self.state.touch()
 
-            action = await self._think()
-            self._step_log[self.state.step_index] = self._extract_files(action)
+            try:
+                decision = await self._think()
+            except Exception as exc:
+                self.state.error_message = (
+                    f"{type(exc).__name__}: {exc} (while thinking at step "
+                    f"{self.state.step_index})"
+                )
+                await self._transition_to(TaskStatus.FAILED)
+                logger.error("Think failed | {}", self.state.error_message)
+                await self._save_checkpoint()
+                break
+
+            # Legacy monkeypatched _think implementations return strings.
+            if isinstance(decision, str):
+                decision = self._decision_from_action(decision)
+
+            self._step_log[self.state.step_index] = (
+                self._files_from_params(decision.params)
+                or self._extract_files(decision.raw_action)
+            )
+
+            if decision.finished:
+                self.state.final_answer = decision.final_answer or None
+                self._mark_task_finished(decision.final_answer)
+                await self._transition_to(TaskStatus.COMPLETED)
+                logger.info(
+                    "Task finished by agent | step={} answer={}",
+                    self.state.step_index,
+                    (decision.final_answer or "")[:200],
+                )
+                break
+
             await self._transition_to(TaskStatus.WAITING_TOOL)
             await self._save_checkpoint()
 
             try:
-                logger.info("Tool | step={} action={} timeout={}s executing",
-                            self.state.step_index, action, self.tool_timeout)
-                result = await asyncio.wait_for(
-                    self._execute_tool(action), timeout=self.tool_timeout
+                logger.info(
+                    "Tool | step={} action={} timeout={}s executing",
+                    self.state.step_index, decision.raw_action, self.tool_timeout,
                 )
-                self._tool_history.append((self.state.step_index, action, result))
+                result = await asyncio.wait_for(
+                    self._execute_tool(decision), timeout=self.tool_timeout
+                )
+                self._tool_history.append(
+                    (self.state.step_index, decision.raw_action, result)
+                )
                 await self._transition_to(TaskStatus.RUNNING)
                 logger.info("Step {} succeeded", self.state.step_index)
             except asyncio.TimeoutError:
                 self.state.error_message = (
-                    f"Tool timeout: '{action}' did not finish within "
+                    f"Tool timeout: '{decision.raw_action}' did not finish within "
                     f"{self.tool_timeout}s at step {self.state.step_index}"
                 )
                 await self._transition_to(TaskStatus.FAILED)
@@ -244,16 +597,31 @@ class TetherRuntime:
                 await self._save_checkpoint()
                 break
 
-            if self.state.step_index >= 5:
+            if self.state.step_index >= self.max_steps:
+                logger.warning(
+                    "Step cap {} reached; ending task | task_id={}",
+                    self.max_steps, self.state.task_id,
+                )
                 await self._transition_to(TaskStatus.COMPLETED)
                 break
 
         await self._save_checkpoint()
         if self.state.status == TaskStatus.COMPLETED:
-            logger.info("Task completed | task_id={} steps={}", self.state.task_id, self.state.step_index)
+            logger.info(
+                "Task completed | task_id={} steps={} tokens={}",
+                self.state.task_id, self.state.step_index,
+                self.state.total_tokens,
+            )
         else:
-            logger.error("Task failed | task_id={} error={}", self.state.task_id, self.state.error_message)
+            logger.error(
+                "Task ended | task_id={} status={} error={}",
+                self.state.task_id, self.state.status.value,
+                self.state.error_message,
+            )
 
+    # ------------------------------------------------------------------
+    # Recovery
+    # ------------------------------------------------------------------
     def _clear_affected_tool_results(self, steps: List[int]) -> None:
         """Drop cached tool results for the steps being replayed."""
         if not steps:
@@ -273,6 +641,8 @@ class TetherRuntime:
 
         Analyzes the latest checkpoint + workspace drift, invalidates stale
         snapshots, clears affected tool results, then continues the loop.
+        The context pipeline is rebuilt from the recovered state so a
+        lowered ``context_budget`` takes effect immediately.
         """
         logger.info("🔄 Attempting smart recovery for task {}", task_id)
 
@@ -283,6 +653,7 @@ class TetherRuntime:
 
         assert result.task_state is not None
         self.state = result.task_state
+        self._rebuild_context_pipeline()
         await self._transition_to(TaskStatus.RECOVERING)
 
         self._clear_affected_tool_results(result.steps_to_replay)
@@ -290,10 +661,15 @@ class TetherRuntime:
         self._steps_skipped = result.steps_to_skip
 
         # Continue from the checkpointed step log so future checkpoints
-        # keep the full history.
+        # keep the full history (and context assembly sees touched files).
         snapshot = self.checkpoint_manager.load_full(task_id)
         if snapshot is not None:
             self._step_log = {int(k): v for k, v in snapshot.step_log.items()}
+            self._touched_files = [
+                path
+                for files in self._step_log.values()
+                for path in files
+            ][-_CURRENT_FILES_WINDOW:]
 
         self.state.error_message = None
         await self._transition_to(TaskStatus.RUNNING)
