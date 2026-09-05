@@ -7,9 +7,8 @@ so every code path stays runnable offline (CI included).
 
 import hashlib
 import time
-from typing import List, Optional
 
-from tether.llm.base import LLMProvider, LLMResponse
+from tether.llm.base import LLMResponse
 
 # Deterministic filler the mock streams back as "completion".
 _MOCK_COMPLETION = "def solution(x):\n    return x\n"
@@ -26,10 +25,10 @@ class MockProvider:
 
     async def complete(
         self,
-        messages: List[dict],
+        messages: list[dict],
         temperature: float = 0.2,
         max_tokens: int = 1024,
-        tools: Optional[List[dict]] = None,
+        tools: list[dict] | None = None,
     ) -> LLMResponse:
         """Return a deterministic completion with estimated token usage.
 

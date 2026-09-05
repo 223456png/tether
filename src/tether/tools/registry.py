@@ -8,7 +8,6 @@ merge its entries (without overwriting builtins) at construction.
 
 import inspect
 import threading
-from typing import Dict, List, Optional, Type, Union
 
 from tether.tools.base import Tool
 
@@ -18,10 +17,10 @@ class ToolRegistry:
 
     def __init__(self) -> None:
         """Create an empty registry with its own registration history."""
-        self._tools: Dict[str, Tool] = {}
-        self._history: List[str] = []
+        self._tools: dict[str, Tool] = {}
+        self._history: list[str] = []
 
-    def register(self, tool: Union[Type[Tool], Tool], overwrite: bool = True) -> None:
+    def register(self, tool: type[Tool] | Tool, overwrite: bool = True) -> None:
         """Register a Tool subclass (instantiated here) or a ready instance.
 
         ``overwrite=False`` keeps the existing entry on name collisions —
@@ -38,15 +37,15 @@ class ToolRegistry:
         self._history.append(tool.name)
         self._history = self._history[-100:]
 
-    def get(self, name: str) -> Optional[Tool]:
+    def get(self, name: str) -> Tool | None:
         """Return the tool registered under ``name`` (None if absent)."""
         return self._tools.get(name)
 
-    def list_tools(self) -> List[str]:
+    def list_tools(self) -> list[str]:
         """Return all registered tool names."""
         return list(self._tools.keys())
 
-    def get_tools_schema(self) -> List[dict]:
+    def get_tools_schema(self) -> list[dict]:
         """Return name/description/parameters for every tool (function calling)."""
         return [
             {
@@ -57,7 +56,7 @@ class ToolRegistry:
             for tool in self._tools.values()
         ]
 
-    def get_openai_tools_schema(self) -> List[dict]:
+    def get_openai_tools_schema(self) -> list[dict]:
         """Return tools in OpenAI function-calling payload format."""
         return [
             {
@@ -78,9 +77,9 @@ class ToolRegistry:
             lines.append(f"  - {tool.name}: {tool.description}")
         return "\n".join(lines)
 
-    def merge(self, other: "ToolRegistry", overwrite: bool = False) -> List[str]:
+    def merge(self, other: "ToolRegistry", overwrite: bool = False) -> list[str]:
         """Copy ``other``'s tools into this registry; returns merged names."""
-        for name, tool in other._tools.items():
+        for tool in other._tools.values():
             self.register(tool, overwrite=overwrite)
         return list(self._tools.keys())
 
@@ -88,7 +87,7 @@ class ToolRegistry:
 # ---------------------------------------------------------------------
 # Module-level default registry (backing the @register_tool decorator)
 # ---------------------------------------------------------------------
-_default_registry: Optional[ToolRegistry] = None
+_default_registry: ToolRegistry | None = None
 _default_lock = threading.Lock()
 
 

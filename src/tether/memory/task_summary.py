@@ -1,7 +1,6 @@
 """TaskSummary: the task skeleton layer (never pruned)."""
 
 from datetime import datetime, timezone
-from typing import List
 
 from pydantic import BaseModel, Field
 
@@ -17,10 +16,10 @@ class TaskSummary(MemoryEntry, BaseModel):
     entry_id: str = Field(default_factory=new_entry_id)
     task_id: str
     goal: str
-    current_plan: List[str] = Field(default_factory=list)
-    completed: List[str] = Field(default_factory=list)
+    current_plan: list[str] = Field(default_factory=list)
+    completed: list[str] = Field(default_factory=list)
     next_action: str = ""
-    constraints: List[str] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
     )

@@ -2,7 +2,6 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -11,8 +10,8 @@ class ToolResult:
 
     success: bool
     output: str = ""
-    error: Optional[str] = None
-    metadata: Optional[dict] = None  # tool-specific metadata
+    error: str | None = None
+    metadata: dict | None = None  # tool-specific metadata
 
 
 class Tool(ABC):

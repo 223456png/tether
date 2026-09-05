@@ -11,7 +11,6 @@ import json
 import threading
 import time
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 from loguru import logger
 
@@ -27,7 +26,7 @@ class CallRecord:
     tool_name: str
     params_hash: str  # MD5 of the sorted-params JSON
     timestamp: float
-    result: Optional[ToolResult] = None
+    result: ToolResult | None = None
 
 
 class CallInterceptor:
@@ -41,7 +40,7 @@ class CallInterceptor:
     def __init__(self, window_seconds: int = 5) -> None:
         """Store the dedup window and init per-tool record lists."""
         self.window_seconds = window_seconds
-        self._records: Dict[str, List[CallRecord]] = {}
+        self._records: dict[str, list[CallRecord]] = {}
         self._lock = threading.Lock()
         self._intercept_count = 0
 
@@ -52,7 +51,7 @@ class CallInterceptor:
 
     def check(
         self, tool_name: str, params: dict, cacheable: bool = True
-    ) -> Optional[ToolResult]:
+    ) -> ToolResult | None:
         """Return the cached result if this exact call happened recently.
 
         ``None`` means "not a duplicate, execute normally". Non-cacheable
@@ -114,7 +113,7 @@ class CallInterceptor:
             self._records.clear()
             logger.debug("Interceptor cache invalidated (workspace mutation)")
 
-    def clear(self, tool_name: Optional[str] = None) -> None:
+    def clear(self, tool_name: str | None = None) -> None:
         """Clear records (all tools, or one tool when ``tool_name`` given)."""
         with self._lock:
             if tool_name:

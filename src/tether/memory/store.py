@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from typing import TYPE_CHECKING
 
 from loguru import logger
 
@@ -47,7 +47,7 @@ class MemoryStore:
         tmp.replace(path)
 
     @staticmethod
-    def _read_json(path: Path) -> Optional[dict]:
+    def _read_json(path: Path) -> dict | None:
         """Read a JSON file, returning None if missing or corrupted."""
         if not path.exists():
             return None
@@ -66,7 +66,7 @@ class MemoryStore:
         self._write_json(path, summary.to_dict())
         logger.info("TaskSummary saved | task_id={}", summary.task_id)
 
-    def load_task_summary(self, task_id: str) -> Optional[TaskSummary]:
+    def load_task_summary(self, task_id: str) -> TaskSummary | None:
         """Load the task summary for ``task_id``, or None if absent."""
         path = self.memory_dir / task_id / "task_summary.json"
         data = self._read_json(path)
@@ -90,7 +90,7 @@ class MemoryStore:
         self._write_json(path, snapshot.to_dict())
         logger.info("FileSnapshot saved | task_id={} path={}", snapshot.task_id, snapshot.path)
 
-    def load_file_snapshot(self, task_id: str, file_path: str) -> Optional[FileSnapshot]:
+    def load_file_snapshot(self, task_id: str, file_path: str) -> FileSnapshot | None:
         """Load the snapshot whose ``path`` matches ``file_path`` (posix-normalized)."""
         target = Path(file_path).as_posix()
         for snap in self.list_file_snapshots(task_id):
@@ -99,12 +99,12 @@ class MemoryStore:
         logger.warning("FileSnapshot not found | task_id={} path={}", task_id, file_path)
         return None
 
-    def list_file_snapshots(self, task_id: str) -> List[FileSnapshot]:
+    def list_file_snapshots(self, task_id: str) -> list[FileSnapshot]:
         """Return all snapshots for ``task_id`` (empty list if none)."""
         d = self.memory_dir / task_id / "file_snapshots"
         if not d.exists():
             return []
-        snapshots: List[FileSnapshot] = []
+        snapshots: list[FileSnapshot] = []
         for f in sorted(d.glob("*.json")):
             data = self._read_json(f)
             if data is not None:
@@ -136,7 +136,7 @@ class MemoryStore:
         task_id: str,
         file_path: str,
         detector: "DriftDetector",
-    ) -> Tuple[Optional[FileSnapshot], "object"]:
+    ) -> tuple[FileSnapshot | None, "object"]:
         """Load a snapshot and run drift detection on it.
 
         Returns ``(snapshot, result)``. When no snapshot exists the result
@@ -166,12 +166,12 @@ class MemoryStore:
         self._write_json(path, note.to_dict())
         logger.info("EpisodicNote saved | task_id={} type={}", note.task_id, note.type)
 
-    def load_episodic_notes(self, task_id: str) -> List[EpisodicNotes]:
+    def load_episodic_notes(self, task_id: str) -> list[EpisodicNotes]:
         """Return all episodic notes for ``task_id`` (empty list if none)."""
         d = self.memory_dir / task_id / "episodic_notes"
         if not d.exists():
             return []
-        notes: List[EpisodicNotes] = []
+        notes: list[EpisodicNotes] = []
         for f in sorted(d.glob("*.json")):
             data = self._read_json(f)
             if data is not None:

@@ -10,7 +10,7 @@ echo ================================================
 echo   Tether Agent Workbench
 echo ================================================
 echo.
-echo   [1] Run full test suite        (63 tests, offline)
+echo   [1] Run full test suite        (offline)
 echo   [2] Run all offline benchmarks (5 experiments)
 echo   [3] Run a single experiment
 echo   [4] Run e2e experiment         (real LLM, needs DEEPSEEK_API_KEY)

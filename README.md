@@ -36,13 +36,16 @@ flowchart LR
 | 4 | `context/validator.py` | ROUGE-L + keyword compression validation with rollback |
 | 5 | `filesystem/drift.py` | Three-level file drift detection (stat → MD5 → AST symbols+signatures) |
 | 6 | `checkpoint/recovery.py` | Drift-aware recovery planning across 10 interruption scenarios |
-| 7 | `tools/` | Tool registry with duplicate-call interception (5s window) |
+| 7 | `tools/` | Tool registry with duplicate-call interception (5s window, side-effect-safe) |
 | 8 | `benchmarks/` | 6 benchmark experiments with baselines and ablations |
 | 9 | `llm/` | OpenAI-compatible provider layer (DeepSeek tested) + offline mock |
+| 10 | `runtime/runtime.py` `llm/` | LLM-driven agent loop: context assembly → OpenAI-style tool calls → done signal (mock fallback kept for offline tests) |
 
 ## Benchmark Results
 
 All numbers below are produced by the code in this repository. Run `python scripts/run_benchmark.py --all` to reproduce the five offline experiments; see [Reproducing the e2e experiment](#reproducing-the-e2e-experiment) for the real-LLM one. Per-experiment Markdown reports are committed under `src/tether/benchmarks/results/`; raw JSON/CSV dumps regenerate deterministically (seeded) via the same command.
+
+> **What the numbers measure.** The experiments drive the *components* (allocator, memory layers, drift detector, recovery manager) directly, not the end-to-end `TetherRuntime` loop — so they stay offline-reproducible and seeded. The loop itself is covered by the scripted-provider integration tests.
 
 ### 1. Context compression (20 HumanEval tasks, offline validation)
 
@@ -87,10 +90,10 @@ Takeaway: at n=20 the pass@1 differences are within noise, but the compressed ar
 ## Quickstart
 
 ```bash
-git clone https://github.com/<you>/tether.git
+git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 63 tests, all offline
+python -m pytest tests/ -q          # 86 tests, all offline
 ```
 
 Run the offline benchmarks:
@@ -99,6 +102,38 @@ Run the offline benchmarks:
 python scripts/run_benchmark.py --all            # 5 offline experiments
 python scripts/run_benchmark.py --experiment compression --num-samples 5
 ```
+
+### Running the LLM-driven agent loop
+
+```python
+import asyncio
+from pathlib import Path
+
+from tether.llm.factory import create_provider_from_env
+from tether.runtime.runtime import TetherRuntime
+
+# DEEPSEEK_API_KEY (or TETHER_LLM_*) set -> real provider; otherwise the
+# offline MockProvider (is_mock=True), so this snippet always runs.
+provider, is_mock = create_provider_from_env()
+
+runtime = TetherRuntime(
+    goal="Create hello.txt containing 'hi' and verify it reads back",
+    workspace_dir=Path("./my-workspace"),
+    llm_provider=provider,
+    max_steps=30,
+)
+asyncio.run(runtime.run())
+print(runtime.state.status, runtime.state.final_answer)
+print(runtime.state.total_tokens, "tokens")
+```
+
+Each turn: `ContextAssembler` builds the system context from the three-layer
+memory under the token budget → the model returns an OpenAI-style tool call
+or a final answer → the tool executes through the registry (with
+duplicate-call interception and workspace-boundary checks) → state, memory
+and a JSONL event stream (`logs/events.jsonl`) are updated → checkpoint.
+
+Without an API key the loop runs on a scripted/mock brain so every code path stays testable in CI at zero cost.
 
 ### Reproducing the e2e experiment
 
@@ -113,7 +148,8 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 ## Limitations (read before citing numbers)
 
 - **e2e sample size is small** (20 tasks × 3 arms). Differences of ≤15 percentage points are within noise; we report them as directionally consistent, not significant.
-- **Code execution is not sandboxed.** HumanEval completions run in a plain subprocess with a 10s timeout (standard practice, but do not point this at untrusted models).
+- **Benchmark numbers drive components, not the integrated loop** (see "What the numbers measure" above).
+- **Code execution is not sandboxed.** HumanEval completions run in a plain subprocess with a 10s timeout (standard practice, but do not point this at untrusted models). Tools restrict file access to the workspace directory, but the loop itself is not a security boundary.
 - **`file_deleted` recovery is impossible** by design (metadata-only snapshots); the DriftDetector still flags it.
 - **The drift test set is self-constructed** (10 change types × 10 samples). 100% accuracy means the ten mutation classes are covered, not production-level generalization.
 - **HumanEval subset is bundled offline** (20 problems) because the build environment had no network access to the upstream repo.
@@ -123,15 +159,15 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 
 ```
 src/tether/
-├── runtime/        # state machine + main loop
+├── runtime/        # state machine + LLM/mock agent loop + JSONL event stream
 ├── checkpoint/     # JSONL checkpoints + smart recovery
 ├── memory/         # TaskSummary / FileSnapshot / EpisodicNotes
 ├── context/        # BudgetAllocator + ROUGE-L validator + assembler
 ├── filesystem/     # DriftDetector (stat → MD5 → AST)
-├── tools/          # registry + duplicate-call interceptor
-├── llm/            # OpenAI-compatible provider + offline mock
+├── tools/          # per-runtime registry + side-effect-safe interceptor
+├── llm/            # OpenAI-compatible provider (function calling) + offline mock
 └── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 63 tests (all offline)
+tests/              # 86 tests (all offline, incl. scripted-provider loop tests)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 

@@ -6,7 +6,6 @@ critical information to an over-aggressive compression.
 
 import hashlib
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
 
 from loguru import logger
 from rouge_score import rouge_scorer
@@ -24,7 +23,7 @@ class ValidationResult:
     original_token_count: int
     compressed_token_count: int
     was_rolled_back: bool
-    reason: Optional[str] = None
+    reason: str | None = None
 
 
 class RougeValidator:
@@ -39,7 +38,7 @@ class RougeValidator:
         self.threshold = threshold
         self._scorer = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
         self._cache_size = cache_size
-        self._cache: Dict[Tuple[str, str], float] = {}
+        self._cache: dict[tuple[str, str], float] = {}
         self.cache_hits = 0
         self.cache_misses = 0
 
@@ -74,7 +73,7 @@ class RougeValidator:
         self,
         original_context: str,
         compressed_context: str,
-        required_keywords: Optional[List[str]] = None,
+        required_keywords: list[str] | None = None,
     ) -> ValidationResult:
         """Check semantic integrity of ``compressed_context`` vs original.
 

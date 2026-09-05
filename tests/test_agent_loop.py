@@ -5,11 +5,7 @@ pre-programmed LLMResponses (tool calls / final answers) so the full
 think -> tool -> checkpoint pipeline runs deterministically offline.
 """
 
-import asyncio
 from pathlib import Path
-from typing import List, Optional
-
-import pytest
 
 from tether.checkpoint.manager import CheckpointManager
 from tether.checkpoint.recovery import RecoveryManager
@@ -27,16 +23,16 @@ class ScriptedProvider:
     name = "scripted"
     model = "scripted-1"
 
-    def __init__(self, responses: List[LLMResponse]) -> None:
+    def __init__(self, responses: list[LLMResponse]) -> None:
         self.responses = list(responses)
-        self.calls: List[dict] = []
+        self.calls: list[dict] = []
 
     async def complete(
         self,
-        messages: List[dict],
+        messages: list[dict],
         temperature: float = 0.2,
         max_tokens: int = 1024,
-        tools: Optional[List[dict]] = None,
+        tools: list[dict] | None = None,
     ) -> LLMResponse:
         self.calls.append({"messages": messages, "tools": tools})
         if not self.responses:
@@ -303,3 +299,43 @@ async def test_recovery_writes_lesson_note(tmp_path: Path) -> None:
     assert result.success
     notes = memory_store.load_episodic_notes(state.task_id)
     assert any(n.type == "lesson" and "TIMEOUT" in n.content for n in notes)
+
+
+# ---------------------------------------------------------------------
+# Observability: JSONL event stream
+# ---------------------------------------------------------------------
+
+async def test_event_stream_records_lifecycle_and_tools(tmp_path: Path) -> None:
+    """The event log captures lifecycle, LLM turns and tool executions."""
+    provider = ScriptedProvider([
+        _tool_response("write_file", {"path": "a.txt", "content": "hi"}),
+        _final_response("done"),
+    ])
+    runtime = TetherRuntime(
+        "Events", tmp_path, llm_provider=provider, max_steps=10
+    )
+    await runtime.run()
+
+    events = runtime.event_recorder.query()
+    names = [e["event"] for e in events]
+    assert "task_started" in names
+    assert names.count("llm_turn") == 2
+    assert names.count("tool_executed") == 1
+    assert "task_completed" in names
+
+    tool_event = runtime.event_recorder.query("tool_executed")[0]
+    assert tool_event["tool"] == "write_file"
+    assert tool_event["cached"] is False
+
+    llm_turn = runtime.event_recorder.query("llm_turn")[0]
+    assert llm_turn["compression_level"] == "NONE"
+    assert llm_turn["prompt_tokens"] == 100
+
+    # Persisted to disk as JSONL, one JSON object per line.
+    log_file = tmp_path / "logs" / "events.jsonl"
+    assert log_file.exists()
+    lines = [ln for ln in log_file.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    assert len(lines) == len(events)
+    import json as _json
+    parsed = [_json.loads(ln) for ln in lines]
+    assert parsed[0]["event"] == "task_started"

@@ -10,7 +10,6 @@ Resolution order:
 """
 
 import os
-from typing import Tuple
 
 from loguru import logger
 
@@ -22,7 +21,7 @@ _DEFAULT_BASE_URL = "https://api.deepseek.com/v1"
 _DEFAULT_MODEL = "deepseek-chat"
 
 
-def create_provider_from_env() -> Tuple[LLMProvider, bool]:
+def create_provider_from_env() -> tuple[LLMProvider, bool]:
     """Return ``(provider, is_mock)`` based on the environment."""
     deepseek_key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
     if deepseek_key:

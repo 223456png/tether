@@ -6,7 +6,6 @@ Recovery is not "mechanically going back in time" — it decides, in the
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional
 
 from loguru import logger
 
@@ -38,7 +37,7 @@ class RecoveryScenario(Enum):
 
 
 # error_message keyword -> scenario (checked in order).
-_ERROR_SCENARIO_RULES: List[tuple] = [
+_ERROR_SCENARIO_RULES: list[tuple] = [
     (("timeout", "timed out"), RecoveryScenario.TIMEOUT),
     (("rate limit", "429", "ratelimit"), RecoveryScenario.API_RATE_LIMIT),
     (("context overflow", "context limit", "token limit"), RecoveryScenario.CONTEXT_OVERFLOW),
@@ -54,14 +53,14 @@ class RecoveryResult:
     """Outcome of a recovery analysis / execution."""
 
     success: bool
-    task_state: Optional[TaskState] = None
-    steps_to_replay: List[int] = field(default_factory=list)
-    steps_to_skip: List[int] = field(default_factory=list)
+    task_state: TaskState | None = None
+    steps_to_replay: list[int] = field(default_factory=list)
+    steps_to_skip: list[int] = field(default_factory=list)
     drift_detected: bool = False
-    drift_details: Dict[str, object] = field(default_factory=dict)
-    reason: Optional[str] = None
-    scenario: Optional[RecoveryScenario] = None
-    backoff_seconds: Optional[float] = None
+    drift_details: dict[str, object] = field(default_factory=dict)
+    reason: str | None = None
+    scenario: RecoveryScenario | None = None
+    backoff_seconds: float | None = None
     compression_applied: bool = False
 
 
@@ -78,13 +77,13 @@ class RecoveryManager:
         self.checkpoint_manager = checkpoint_manager
         self.memory_store = memory_store
         self.drift_detector = drift_detector
-        self._retry_counts: Dict[str, int] = {}
+        self._retry_counts: dict[str, int] = {}
 
     # ------------------------------------------------------------------
     # Scenario inference
     # ------------------------------------------------------------------
     @staticmethod
-    def _infer_error_scenario(error_message: Optional[str]) -> Optional[RecoveryScenario]:
+    def _infer_error_scenario(error_message: str | None) -> RecoveryScenario | None:
         """Map an error message to a scenario via keyword rules."""
         if not error_message:
             return None
@@ -99,7 +98,7 @@ class RecoveryManager:
     # ------------------------------------------------------------------
     def _detect_file_drift(
         self, snapshot: CheckpointSnapshot
-    ) -> Dict[str, DriftLevel]:
+    ) -> dict[str, DriftLevel]:
         """Compare checkpoint summaries against the live workspace.
 
         MD5 is compared directly (cheap, size/mtime independent). When the
@@ -107,7 +106,7 @@ class RecoveryManager:
         cascade refines CONTENT vs STRUCTURE.
         """
         root = self.drift_detector.workspace_root
-        levels: Dict[str, DriftLevel] = {}
+        levels: dict[str, DriftLevel] = {}
         for summary in snapshot.file_snapshots:
             path = summary["path"]
             file_path = root / path
@@ -128,10 +127,10 @@ class RecoveryManager:
         return levels
 
     def _affected_steps(
-        self, snapshot: CheckpointSnapshot, drifted_files: List[str]
-    ) -> Dict[str, List[int]]:
+        self, snapshot: CheckpointSnapshot, drifted_files: list[str]
+    ) -> dict[str, list[int]]:
         """Map drifted files to the steps that used them (via the step log)."""
-        mapping: Dict[str, List[int]] = {}
+        mapping: dict[str, list[int]] = {}
         for path in drifted_files:
             steps = [
                 int(step)
@@ -200,7 +199,7 @@ class RecoveryManager:
         current = state.step_index
 
         # Plan replay range according to drift severity / scenario.
-        replay: List[int] = []
+        replay: list[int] = []
         if drifted:
             structure_files = [
                 p for p, lv in drifted.items() if lv == DriftLevel.STRUCTURE
@@ -229,7 +228,7 @@ class RecoveryManager:
         replay = sorted(set(replay) & {s for s in range(1, current + 1)})
         skip = [s for s in range(1, current + 1) if s not in replay]
 
-        drift_details: Dict[str, object] = {
+        drift_details: dict[str, object] = {
             "levels": {p: lv.name for p, lv in levels.items()},
             "affected_files": list(drifted.keys()),
             "file_steps": affected,

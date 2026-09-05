@@ -4,7 +4,6 @@ import hashlib
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List
 
 from pydantic import BaseModel, Field
 
@@ -81,14 +80,14 @@ def infer_language(file_path: Path) -> str:
     return _SUFFIX_LANGUAGE.get(file_path.suffix.lower(), "unknown")
 
 
-def extract_symbols(text: str, language: str) -> List[str]:
+def extract_symbols(text: str, language: str) -> list[str]:
     """Extract top-level symbols (function/class names) via regex.
 
     Returns a de-duplicated list preserving first-seen order.
     """
     patterns = _SYMBOL_PATTERNS.get(language, _DEFAULT_SYMBOL_PATTERN)
     seen: set = set()
-    symbols: List[str] = []
+    symbols: list[str] = []
     for pattern in patterns:
         for name in pattern.findall(text):
             if name not in seen:
@@ -97,7 +96,7 @@ def extract_symbols(text: str, language: str) -> List[str]:
     return symbols
 
 
-def extract_signatures(text: str, language: str) -> List[str]:
+def extract_signatures(text: str, language: str) -> list[str]:
     """Extract function signatures (``name(params)``) for drift severity.
 
     Signature changes (e.g. added parameters) keep the symbol set stable
@@ -108,7 +107,7 @@ def extract_signatures(text: str, language: str) -> List[str]:
     if not patterns:
         return []
     seen: set = set()
-    signatures: List[str] = []
+    signatures: list[str] = []
     for pattern in patterns:
         for name, params in pattern.findall(text):
             normalized = " ".join(params.split())
@@ -139,8 +138,8 @@ class FileSnapshot(MemoryEntry, BaseModel):
     mtime: float
     language: str
     summary: str
-    symbols: List[str] = Field(default_factory=list)
-    signatures: List[str] = Field(default_factory=list)
+    symbols: list[str] = Field(default_factory=list)
+    signatures: list[str] = Field(default_factory=list)
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
     )

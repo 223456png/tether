@@ -1,6 +1,6 @@
 """Compression policy: levels and budget configuration."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import IntEnum
 
 

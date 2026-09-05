@@ -6,10 +6,11 @@ own per-runtime registry at construction time.
 """
 
 import inspect
-from typing import Any, Callable, Optional
+from collections.abc import Callable
+from typing import Any
 
 from tether.tools.base import Tool, ToolResult
-from tether.tools.registry import ToolRegistry, get_default_registry
+from tether.tools.registry import get_default_registry
 
 
 class FunctionTool(Tool):
@@ -51,8 +52,8 @@ class FunctionTool(Tool):
 
 
 def register_tool(
-    name: Optional[str] = None,
-    description: Optional[str] = None,
+    name: str | None = None,
+    description: str | None = None,
 ) -> Callable[[Any], Any]:
     """Register a Tool subclass or an async function into the registry.
 

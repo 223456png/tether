@@ -16,7 +16,6 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
 
 from loguru import logger
 
@@ -29,6 +28,7 @@ from tether.memory.episodic import EpisodicNotes
 from tether.memory.file_snapshot import FileSnapshot
 from tether.memory.store import MemoryStore
 from tether.memory.task_summary import TaskSummary
+from tether.runtime.events import EventRecorder
 from tether.runtime.state import TaskState, TaskStatus
 from tether.tools.base import Tool
 from tether.tools.intercept import CallInterceptor
@@ -77,7 +77,7 @@ class AgentDecision:
     """
 
     tool_name: str = ""
-    params: Dict[str, object] = field(default_factory=dict)
+    params: dict[str, object] = field(default_factory=dict)
     finished: bool = False
     final_answer: str = ""
     raw_action: str = ""  # display string for logs / tool history
@@ -101,7 +101,7 @@ class TetherRuntime:
         goal: str,
         workspace_dir: Path,
         tool_timeout: int = 5,
-        llm_provider: Optional[LLMProvider] = None,
+        llm_provider: LLMProvider | None = None,
         max_steps: int = 5,
     ) -> None:
         """Initialize runtime state, checkpoint manager and config.
@@ -126,11 +126,12 @@ class TetherRuntime:
         self.tool_interceptor = CallInterceptor(window_seconds=5)
         self._register_builtin_tools()
         self._stop_requested = False
-        self._step_log: Dict[int, List[str]] = {}
-        self._tool_history: List[Tuple[int, str, str]] = []
-        self._touched_files: List[str] = []
-        self._steps_to_replay: List[int] = []
-        self._steps_skipped: List[int] = []
+        self._step_log: dict[int, list[str]] = {}
+        self._tool_history: list[tuple[int, str, str]] = []
+        self._touched_files: list[str] = []
+        self._steps_to_replay: list[int] = []
+        self._steps_skipped: list[int] = []
+        self.event_recorder = EventRecorder(self.workspace_dir, task_id=self.state.task_id)
         self._rebuild_context_pipeline()
 
     def _rebuild_context_pipeline(self) -> None:
@@ -225,6 +226,15 @@ class TetherRuntime:
         self.state.prompt_tokens += response.prompt_tokens
         self.state.completion_tokens += response.completion_tokens
         self.state.touch()
+        self.event_recorder.record(
+            "llm_turn",
+            step=self.state.step_index,
+            prompt_tokens=response.prompt_tokens,
+            completion_tokens=response.completion_tokens,
+            compression_level=self.allocator.current_level.name,
+            tool_call=response.tool_calls[0].name if response.has_tool_calls else None,
+            latency_ms=round(response.latency_ms, 1),
+        )
 
         if response.has_tool_calls:
             call = response.tool_calls[0]
@@ -249,7 +259,7 @@ class TetherRuntime:
         return _SYSTEM_PROMPT_TEMPLATE.format(goal=self.state.goal)
 
     @staticmethod
-    def _format_call(name: str, params: Dict[str, object]) -> str:
+    def _format_call(name: str, params: dict[str, object]) -> str:
         """Compact display string for a tool call (long values elided)."""
         inner = ", ".join(
             f"{key}={value!r}" if len(str(value)) <= 40 else f"{key}=<...>"
@@ -268,12 +278,12 @@ class TetherRuntime:
     # Action parsing (legacy string path)
     # ------------------------------------------------------------------
     @staticmethod
-    def _extract_files(action: str) -> List[str]:
+    def _extract_files(action: str) -> list[str]:
         """Extract file-like arguments from an action string."""
         return _FILE_ARG_RE.findall(action)
 
     @staticmethod
-    def _files_from_params(params: Dict[str, object]) -> List[str]:
+    def _files_from_params(params: dict[str, object]) -> list[str]:
         """Extract file paths from structured params by parameter name."""
         return [
             Path(str(value)).as_posix()
@@ -283,7 +293,7 @@ class TetherRuntime:
             and value.strip()
         ]
 
-    def _parse_action(self, action: str) -> Tuple[str, dict]:
+    def _parse_action(self, action: str) -> tuple[str, dict]:
         """Parse an action string into (tool_name, params).
 
         Supports both ``tool(key='value')`` and positional
@@ -298,7 +308,7 @@ class TetherRuntime:
 
         tool_name = match.group(1)
         params_str = match.group(2).strip()
-        params: Dict[str, str] = {}
+        params: dict[str, str] = {}
 
         if params_str:
             if "=" in params_str.split(",")[0]:
@@ -329,7 +339,7 @@ class TetherRuntime:
     # ------------------------------------------------------------------
     # Tool execution
     # ------------------------------------------------------------------
-    async def _execute_tool(self, candidate: Union[str, AgentDecision]) -> str:
+    async def _execute_tool(self, candidate: str | AgentDecision) -> str:
         """Execute one tool call and return the text result.
 
         Accepts a legacy action string (parsed here) or a structured
@@ -342,7 +352,7 @@ class TetherRuntime:
             tool_name, params = self._parse_action(candidate)
         return await self._execute_call(tool_name, params)
 
-    async def _execute_call(self, tool_name: str, params: Dict[str, object]) -> str:
+    async def _execute_call(self, tool_name: str, params: dict[str, object]) -> str:
         """Run a (tool, params) pair through registry + interceptor."""
         tool = self.tool_registry.get(tool_name)
         if tool is None:
@@ -355,6 +365,10 @@ class TetherRuntime:
         # Duplicate read-only call within the window -> cached result.
         cached = self.tool_interceptor.check(tool_name, params, cacheable=cacheable)
         if cached is not None:
+            self.event_recorder.record(
+                "tool_executed", step=self.state.step_index,
+                tool=tool_name, cached=True, success=True,
+            )
             return f"[CACHED] {cached.output}"
 
         result = await tool.execute(**params)
@@ -362,6 +376,10 @@ class TetherRuntime:
         if not cacheable:
             # The workspace may have changed: no cached read can be trusted.
             self.tool_interceptor.invalidate_all()
+        self.event_recorder.record(
+            "tool_executed", step=self.state.step_index,
+            tool=tool_name, cached=False, success=result.success,
+        )
         logger.info(
             "Tool | tool={} params={} success={}",
             tool_name, self._format_call(tool_name, params), result.success,
@@ -375,7 +393,7 @@ class TetherRuntime:
         self._record_mistake_note(display, error)
         return f"ERROR: {error}"
 
-    def _note_touched_files(self, params: Dict[str, object]) -> None:
+    def _note_touched_files(self, params: dict[str, object]) -> None:
         """Track files touched by executed tools for context assembly."""
         for key, value in params.items():
             if (
@@ -391,7 +409,7 @@ class TetherRuntime:
     # Memory writing (three layers are kept alive by the loop itself)
     # ------------------------------------------------------------------
     def _update_task_summary(
-        self, action_display: str, success: bool, error: Optional[str] = None
+        self, action_display: str, success: bool, error: str | None = None
     ) -> None:
         """Refresh the TaskSummary layer after one executed step."""
         summary = self.memory_store.load_task_summary(self.state.task_id)
@@ -439,7 +457,7 @@ class TetherRuntime:
         )
         logger.info("Episodic mistake note recorded | {}", content[:120])
 
-    def _touch_episodic_notes(self, entry_ids: List[str]) -> None:
+    def _touch_episodic_notes(self, entry_ids: list[str]) -> None:
         """Increment usage stats for notes selected into the last context."""
         if not entry_ids:
             return
@@ -459,7 +477,7 @@ class TetherRuntime:
             self.state, self.memory_store, self._step_log
         )
 
-    async def _read_file_with_drift_check(self, file_path: str) -> Tuple[str, FileSnapshot]:
+    async def _read_file_with_drift_check(self, file_path: str) -> tuple[str, FileSnapshot]:
         """Read a file through the drift-detection flow.
 
         1. Load the cached snapshot (if any) and detect drift.
@@ -520,6 +538,11 @@ class TetherRuntime:
             "Task started | task_id={} goal={} brain={}",
             self.state.task_id, self.state.goal,
             "llm" if self.llm_provider is not None else "mock",
+        )
+        self.event_recorder.record(
+            "task_started", goal=self.state.goal,
+            brain="llm" if self.llm_provider is not None else "mock",
+            max_steps=self.max_steps,
         )
 
         while self.state.status not in (
@@ -612,17 +635,26 @@ class TetherRuntime:
                 self.state.task_id, self.state.step_index,
                 self.state.total_tokens,
             )
+            self.event_recorder.record(
+                "task_completed", steps=self.state.step_index,
+                total_tokens=self.state.total_tokens,
+            )
         else:
             logger.error(
                 "Task ended | task_id={} status={} error={}",
                 self.state.task_id, self.state.status.value,
                 self.state.error_message,
             )
+            self.event_recorder.record(
+                "task_ended", status=self.state.status.value,
+                steps=self.state.step_index,
+                error=self.state.error_message,
+            )
 
     # ------------------------------------------------------------------
     # Recovery
     # ------------------------------------------------------------------
-    def _clear_affected_tool_results(self, steps: List[int]) -> None:
+    def _clear_affected_tool_results(self, steps: list[int]) -> None:
         """Drop cached tool results for the steps being replayed."""
         if not steps:
             return
@@ -673,6 +705,11 @@ class TetherRuntime:
 
         self.state.error_message = None
         await self._transition_to(TaskStatus.RUNNING)
+        self.event_recorder.record(
+            "recovery", scenario=result.scenario.name if result.scenario else None,
+            replay=result.steps_to_replay, skip=result.steps_to_skip,
+            backoff_seconds=result.backoff_seconds,
+        )
         logger.info(
             "✅ Recovery complete. Replaying steps: {}", result.steps_to_replay,
         )

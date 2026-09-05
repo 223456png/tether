@@ -7,7 +7,6 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import List, Optional
 
 from loguru import logger
 
@@ -73,7 +72,7 @@ _BASE_CODE = (
 )
 
 
-def load_humaneval(num_samples: Optional[int] = None) -> List[dict]:
+def load_humaneval(num_samples: int | None = None) -> list[dict]:
     """Load HumanEval problems.
 
     Tries the official remote JSONL first (short timeout); falls back to
@@ -92,7 +91,7 @@ def load_humaneval(num_samples: Optional[int] = None) -> List[dict]:
     return tasks
 
 
-def _try_download_humaneval() -> List[dict]:
+def _try_download_humaneval() -> list[dict]:
     """Best-effort remote fetch; returns [] on any failure."""
     try:
         import urllib.request
@@ -108,7 +107,7 @@ def _try_download_humaneval() -> List[dict]:
         return []
 
 
-def _read_jsonl(path: Path) -> List[dict]:
+def _read_jsonl(path: Path) -> list[dict]:
     """Parse a JSONL file into dicts."""
     if not path.exists():
         return []
@@ -121,14 +120,14 @@ def _read_jsonl(path: Path) -> List[dict]:
 
 def generate_drift_samples(
     samples_per_type: int = 10, seed: int = 42
-) -> List[dict]:
+) -> list[dict]:
     """Generate the drift-detection dataset (10 types x N samples).
 
     Each sample describes a base file, a mutation, and the expected
     DriftLevel after the mutation is applied.
     """
     rng = random.Random(seed)
-    samples: List[dict] = []
+    samples: list[dict] = []
 
     for change_type in DRIFT_CHANGE_TYPES:
         for i in range(samples_per_type):

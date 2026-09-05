@@ -1,7 +1,7 @@
 """LLMProvider protocol and LLMResponse data type."""
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 
 @dataclass
@@ -13,7 +13,7 @@ class ToolCall:
     """
 
     name: str
-    arguments: Dict[str, Any] = field(default_factory=dict)
+    arguments: dict[str, Any] = field(default_factory=dict)
     id: str = ""
 
 
@@ -27,7 +27,7 @@ class LLMResponse:
     latency_ms: float = 0.0
     model: str = ""
     provider: str = ""
-    tool_calls: List[ToolCall] = field(default_factory=list)
+    tool_calls: list[ToolCall] = field(default_factory=list)
     extra: dict = field(default_factory=dict)
 
     @property
@@ -50,10 +50,10 @@ class LLMProvider(Protocol):
 
     async def complete(
         self,
-        messages: List[dict],
+        messages: list[dict],
         temperature: float = 0.2,
         max_tokens: int = 1024,
-        tools: Optional[List[dict]] = None,
+        tools: list[dict] | None = None,
     ) -> LLMResponse:
         """Return one completion for the OpenAI-style message list.
 

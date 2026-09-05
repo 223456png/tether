@@ -1,17 +1,15 @@
 """Phase 4 tests: ROUGE-L validator + assembler rollback integration."""
 
 from pathlib import Path
-from typing import List, Tuple
 from unittest.mock import MagicMock
 
 from tether.context import (
     BudgetAllocator,
     BudgetConfig,
-    CompressionLevel,
     ContextAssembler,
     RougeValidator,
 )
-from tether.memory import MemoryStore, TaskSummary
+from tether.memory import MemoryStore
 from tether.runtime.state import TaskState
 
 ORIGINAL = (
@@ -99,7 +97,7 @@ def test_assembler_integration_rollback(tmp_path: Path) -> None:
     task_state = TaskState(goal="Rollback goal")
     # Diverse per-tool content so truncation genuinely loses information
     # (repeated characters would keep ROUGE-L artificially high).
-    tools: List[Tuple[str, str]] = [
+    tools: list[tuple[str, str]] = [
         (f"tool_{i}", " ".join(f"detail_{i}_{j}" for j in range(120)))
         for i in range(10)
     ]

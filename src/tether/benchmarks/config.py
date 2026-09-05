@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional
 
 _BENCH_DIR = Path(__file__).parent
 _RESULTS_DIR = _BENCH_DIR / "results"
@@ -16,7 +15,7 @@ class ExperimentConfig:
     name: str
     description: str
     dataset_path: Path
-    num_samples: Optional[int] = None  # None = run everything
+    num_samples: int | None = None  # None = run everything
     seed: int = 42
     output_dir: Path = _RESULTS_DIR
     tether_config: dict = field(default_factory=dict)
@@ -26,22 +25,22 @@ class ExperimentConfig:
 class CompressionExperimentConfig(ExperimentConfig):
     """Context compression experiment: full vs last-N vs BudgetAllocator."""
 
-    baselines: List[str] = field(default_factory=lambda: ["full", "last_n", "budget"])
-    budget_levels: List[int] = field(default_factory=lambda: [0, 1, 2, 3, 4])
+    baselines: list[str] = field(default_factory=lambda: ["full", "last_n", "budget"])
+    budget_levels: list[int] = field(default_factory=lambda: [0, 1, 2, 3, 4])
 
 
 @dataclass
 class MemoryExperimentConfig(ExperimentConfig):
     """Memory ablation: none vs flat vs three-layer."""
 
-    variants: List[str] = field(default_factory=lambda: ["no_memory", "flat", "layered"])
+    variants: list[str] = field(default_factory=lambda: ["no_memory", "flat", "layered"])
 
 
 @dataclass
 class DriftExperimentConfig(ExperimentConfig):
     """Drift detection: 10 change types x N samples each."""
 
-    change_types: List[str] = field(default_factory=list)
+    change_types: list[str] = field(default_factory=list)
     samples_per_type: int = 10
 
 
@@ -70,14 +69,14 @@ class E2EExperimentConfig(ExperimentConfig):
     (flagged in the report) when no API key is configured.
     """
 
-    baselines: List[str] = field(default_factory=lambda: ["full", "last_n", "budget"])
-    budget_levels: List[int] = field(default_factory=lambda: [0, 1, 2, 3, 4])
+    baselines: list[str] = field(default_factory=lambda: ["full", "last_n", "budget"])
+    budget_levels: list[int] = field(default_factory=lambda: [0, 1, 2, 3, 4])
     default_num_samples: int = 5  # small by default: real API calls cost money
     execution_timeout: float = 10.0
     llm_model: str = "deepseek-chat"
 
 
-def default_configs(num_samples: Optional[int] = None) -> dict:
+def default_configs(num_samples: int | None = None) -> dict:
     """Build the six standard experiment configs.
 
     ``e2e`` defaults to ``default_num_samples`` (not all problems) when
