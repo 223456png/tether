@@ -1,0 +1,1406 @@
+{
+  "experiment": "recovery",
+  "description": "Recovery success across 10 interruption scenarios",
+  "variants": {
+    "process_crash": {
+      "results": [
+        {
+          "task_id": "process_crash_run0",
+          "variant": "process_crash",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 40.746199898421764,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "process_crash"
+          }
+        },
+        {
+          "task_id": "process_crash_run1",
+          "variant": "process_crash",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 34.663200029172,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "process_crash"
+          }
+        },
+        {
+          "task_id": "process_crash_run2",
+          "variant": "process_crash",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 36.48200002498925,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "process_crash"
+          }
+        },
+        {
+          "task_id": "process_crash_run3",
+          "variant": "process_crash",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 39.266500039957464,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "process_crash"
+          }
+        },
+        {
+          "task_id": "process_crash_run4",
+          "variant": "process_crash",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 35.790199995972216,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "process_crash"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 0.0,
+        "avg_recovery_ms": 37.38961999770254
+      }
+    },
+    "timeout": {
+      "results": [
+        {
+          "task_id": "timeout_run0",
+          "variant": "timeout",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.336799988523126,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "timeout"
+          }
+        },
+        {
+          "task_id": "timeout_run1",
+          "variant": "timeout",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 36.26349999103695,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "timeout"
+          }
+        },
+        {
+          "task_id": "timeout_run2",
+          "variant": "timeout",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.88810011185706,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "timeout"
+          }
+        },
+        {
+          "task_id": "timeout_run3",
+          "variant": "timeout",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.33109994512051,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "timeout"
+          }
+        },
+        {
+          "task_id": "timeout_run4",
+          "variant": "timeout",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 36.67209995910525,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "timeout"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 1.0,
+        "avg_recovery_ms": 35.29831999912858
+      }
+    },
+    "api_rate_limit": {
+      "results": [
+        {
+          "task_id": "api_rate_limit_run0",
+          "variant": "api_rate_limit",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 35.06779996678233,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "api_rate_limit"
+          }
+        },
+        {
+          "task_id": "api_rate_limit_run1",
+          "variant": "api_rate_limit",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.631600021384656,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "api_rate_limit"
+          }
+        },
+        {
+          "task_id": "api_rate_limit_run2",
+          "variant": "api_rate_limit",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 35.96870007459074,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "api_rate_limit"
+          }
+        },
+        {
+          "task_id": "api_rate_limit_run3",
+          "variant": "api_rate_limit",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 35.74069996830076,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "api_rate_limit"
+          }
+        },
+        {
+          "task_id": "api_rate_limit_run4",
+          "variant": "api_rate_limit",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 36.27729997970164,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "api_rate_limit"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 1.0,
+        "avg_recovery_ms": 35.537220002152026
+      }
+    },
+    "context_overflow": {
+      "results": [
+        {
+          "task_id": "context_overflow_run0",
+          "variant": "context_overflow",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 36.47729998920113,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "context_overflow"
+          }
+        },
+        {
+          "task_id": "context_overflow_run1",
+          "variant": "context_overflow",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 36.29680001176894,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "context_overflow"
+          }
+        },
+        {
+          "task_id": "context_overflow_run2",
+          "variant": "context_overflow",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 35.63259996008128,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "context_overflow"
+          }
+        },
+        {
+          "task_id": "context_overflow_run3",
+          "variant": "context_overflow",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 35.779899917542934,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "context_overflow"
+          }
+        },
+        {
+          "task_id": "context_overflow_run4",
+          "variant": "context_overflow",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 35.74850002769381,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "context_overflow"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 0.0,
+        "avg_recovery_ms": 35.98701998125762
+      }
+    },
+    "user_interrupt": {
+      "results": [
+        {
+          "task_id": "user_interrupt_run0",
+          "variant": "user_interrupt",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 35.279500065371394,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "user_interrupt"
+          }
+        },
+        {
+          "task_id": "user_interrupt_run1",
+          "variant": "user_interrupt",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 36.858599982224405,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "user_interrupt"
+          }
+        },
+        {
+          "task_id": "user_interrupt_run2",
+          "variant": "user_interrupt",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 37.0894999941811,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "user_interrupt"
+          }
+        },
+        {
+          "task_id": "user_interrupt_run3",
+          "variant": "user_interrupt",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 34.27709999959916,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "user_interrupt"
+          }
+        },
+        {
+          "task_id": "user_interrupt_run4",
+          "variant": "user_interrupt",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 34.98479991685599,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "user_interrupt"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 0.0,
+        "avg_recovery_ms": 35.69789999164641
+      }
+    },
+    "file_modified": {
+      "results": [
+        {
+          "task_id": "file_modified_run0",
+          "variant": "file_modified",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 43.45100000500679,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_modified"
+          }
+        },
+        {
+          "task_id": "file_modified_run1",
+          "variant": "file_modified",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 38.35089993663132,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_modified"
+          }
+        },
+        {
+          "task_id": "file_modified_run2",
+          "variant": "file_modified",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 36.77939996123314,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_modified"
+          }
+        },
+        {
+          "task_id": "file_modified_run3",
+          "variant": "file_modified",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 39.45809998549521,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_modified"
+          }
+        },
+        {
+          "task_id": "file_modified_run4",
+          "variant": "file_modified",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 36.69749991968274,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_modified"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 1.0,
+        "avg_recovery_ms": 38.94737996160984
+      }
+    },
+    "file_deleted": {
+      "results": [
+        {
+          "task_id": "file_deleted_run0",
+          "variant": "file_deleted",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 33.91370002645999,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_deleted"
+          }
+        },
+        {
+          "task_id": "file_deleted_run1",
+          "variant": "file_deleted",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 31.043400056660175,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_deleted"
+          }
+        },
+        {
+          "task_id": "file_deleted_run2",
+          "variant": "file_deleted",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 32.33860002364963,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_deleted"
+          }
+        },
+        {
+          "task_id": "file_deleted_run3",
+          "variant": "file_deleted",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 33.446399960666895,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_deleted"
+          }
+        },
+        {
+          "task_id": "file_deleted_run4",
+          "variant": "file_deleted",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 0,
+          "recovery_latency_ms": 32.56730001885444,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "file_deleted"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 0.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 0.0,
+        "avg_steps_lost": 0.0,
+        "avg_recovery_ms": 32.66188001725823
+      }
+    },
+    "tool_failure": {
+      "results": [
+        {
+          "task_id": "tool_failure_run0",
+          "variant": "tool_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.34829995967448,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "tool_failure"
+          }
+        },
+        {
+          "task_id": "tool_failure_run1",
+          "variant": "tool_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.591599949635565,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "tool_failure"
+          }
+        },
+        {
+          "task_id": "tool_failure_run2",
+          "variant": "tool_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 32.815300044603646,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "tool_failure"
+          }
+        },
+        {
+          "task_id": "tool_failure_run3",
+          "variant": "tool_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 33.172700088471174,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "tool_failure"
+          }
+        },
+        {
+          "task_id": "tool_failure_run4",
+          "variant": "tool_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.43929995410144,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "tool_failure"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 1.0,
+        "avg_recovery_ms": 33.87343999929726
+      }
+    },
+    "oom": {
+      "results": [
+        {
+          "task_id": "oom_run0",
+          "variant": "oom",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.492300008423626,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "oom"
+          }
+        },
+        {
+          "task_id": "oom_run1",
+          "variant": "oom",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.54489994328469,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "oom"
+          }
+        },
+        {
+          "task_id": "oom_run2",
+          "variant": "oom",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.55669991672039,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "oom"
+          }
+        },
+        {
+          "task_id": "oom_run3",
+          "variant": "oom",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 33.218399970792234,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "oom"
+          }
+        },
+        {
+          "task_id": "oom_run4",
+          "variant": "oom",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 35.50410002935678,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "oom"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 1.0,
+        "avg_recovery_ms": 34.463279973715544
+      }
+    },
+    "dependency_failure": {
+      "results": [
+        {
+          "task_id": "dependency_failure_run0",
+          "variant": "dependency_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 38.26379997190088,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "dependency_failure"
+          }
+        },
+        {
+          "task_id": "dependency_failure_run1",
+          "variant": "dependency_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 32.951500033959746,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "dependency_failure"
+          }
+        },
+        {
+          "task_id": "dependency_failure_run2",
+          "variant": "dependency_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.043399966321886,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "dependency_failure"
+          }
+        },
+        {
+          "task_id": "dependency_failure_run3",
+          "variant": "dependency_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.04119994957,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "dependency_failure"
+          }
+        },
+        {
+          "task_id": "dependency_failure_run4",
+          "variant": "dependency_failure",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.0,
+          "steps_lost": 1,
+          "recovery_latency_ms": 34.38939992338419,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "recovery": true,
+            "scenario": "dependency_failure"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 5,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "recovery_success_rate": 1.0,
+        "avg_steps_lost": 1.0,
+        "avg_recovery_ms": 34.73785996902734
+      }
+    }
+  }
+}

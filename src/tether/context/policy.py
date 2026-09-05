@@ -20,6 +20,11 @@ class BudgetConfig:
 
     TaskSummary and the System prompt are never pruned (core principle);
     their ratios reserve space, and `reserve_ratio` is a safety buffer.
+
+    The ratios double as *per-section hard caps*: after the global
+    compression level is chosen, any section still exceeding its share
+    is trimmed further so one greedy section cannot starve the rest.
+    Set ``enforce_section_caps=False`` to keep the pure level behavior.
     """
 
     total_budget: int = 16000
@@ -29,6 +34,10 @@ class BudgetConfig:
     episodic_ratio: float = 0.125
     tool_result_ratio: float = 0.25
     reserve_ratio: float = 0.125
+    enforce_section_caps: bool = True
+    # Visible-char budgets for truncated tool results (levels 1-3 / level 4).
+    tool_truncate_chars: int = 200
+    tool_minimal_chars: int = 100
 
     def __post_init__(self) -> None:
         """Validate that section ratios sum to ~1.0."""

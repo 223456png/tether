@@ -68,8 +68,17 @@ verify_steps:
 
 ## 后续方向（Roadmap）
 
-1. BudgetConfig 分段比例落地（目前仅 total_budget 生效）——按 section 预算裁剪替代全局档位。
-2. 工具结果截断升级为头+尾保留，并把各档位阈值做成可配置。
-3. LLM 调用流式输出（SSE），让 CLI 实时显示思考过程。
-4. 检查点压实（保留最近 N 条全量快照），避免长任务 JSONL 无界增长。
-5. 执行沙箱化（容器/受限子进程），把"不是安全边界"的 TODO 变成保证。
+1. BudgetConfig 分段比例落地（目前仅 total_budget 生效）——按 section 预算裁剪替代全局档位。✅ 已完成：allocate() 第二遍按 ratio 上限裁剪超限 section（tool 保最新、file 逐级降级、episodic 走收缩梯子），stats["section_trimmed"] 可观测；enforce_section_caps=False 可关闭。
+2. 工具结果截断升级为头+尾保留，并把各档位阈值做成可配置。✅ 已完成：_truncate_head_tail 头尾 2:1 分配可见预算，错误堆栈的结论（尾部）不再被砍掉；tool_truncate_chars / tool_minimal_chars 可配置；benchmark 数字重跑后与原表完全一致（681/537/574）。
+3. LLM 调用流式输出（SSE），让 CLI 实时显示思考过程。（待做）
+4. 检查点压实（保留最近 N 条全量快照），避免长任务 JSONL 无界增长。✅ 已完成：save_full 后自动 _compact，keep_last_checkpoints（默认 20）。
+5. 执行沙箱化（容器/受限子进程），把"不是安全边界"的 TODO 变成保证。（待做）
+
+### Round 3 补充决策
+
+| # | Decision | Choice | Rejected Alternatives |
+|---|----------|--------|----------------------|
+| 9 | 分段上限的实现位置 | allocate() 的第二遍（档位选择之后），render_at_level 保持纯档位语义 | 修改档位定义本身（破坏 benchmark 档位扫描的对照性） |
+| 10 | cap 触发后的 tool 裁剪 | 从最新往旧保留（recency-first），至少保留 1 条 | 均匀抽样（丢失最新状态）；按 token 加权（复杂度不成比例） |
+| 11 | 头尾比例 | 2:1（头部含触发输入，尾部含结论/traceback） | 1:1（头部信息密度通常更高）；只保留尾部 |
+| 12 | 压实触发时机 | save_full 末尾、超过阈值即重写（保留最新 N 条 v2） | 定期后台压实（引入并发）；按大小触发（行为不可预测） |

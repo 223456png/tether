@@ -2,7 +2,7 @@
 
 ### 配置
 - 实验描述: Context compression: full vs last-N vs BudgetAllocator
-- 运行日期: 2026-08-29T08:12:10+00:00
+- 运行日期: 2026-09-05T02:46:49+00:00
 - 变体数量: 3
 
 ### 关键指标

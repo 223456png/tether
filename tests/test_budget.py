@@ -68,7 +68,7 @@ def test_level_0_no_compression() -> None:
 
 def test_level_1_compresses_tools() -> None:
     """Large tool output exceeds budget at L0 but fits when truncated at L1."""
-    allocator = BudgetAllocator(BudgetConfig(total_budget=2000))
+    allocator = BudgetAllocator(BudgetConfig(total_budget=2000, enforce_section_caps=False))
     tools = [(f"run_test_{i}", "x" * 1000) for i in range(10)]  # ~3333 tokens at L0
     result = allocator.allocate(
         system_prompt="You are a coding agent.",
@@ -91,7 +91,7 @@ def test_level_1_compresses_tools() -> None:
 
 def test_level_2_filters_episodic() -> None:
     """Low-confidence episodic notes are dropped at L2."""
-    allocator = BudgetAllocator(BudgetConfig(total_budget=1500))
+    allocator = BudgetAllocator(BudgetConfig(total_budget=1500, enforce_section_caps=False))
     high = [_make_note("lesson " + "h" * 700, 0.9) for _ in range(6)]
     low = [_make_note("low " + "l" * 700, 0.4) for _ in range(2)]
     result = allocator.allocate(
@@ -112,7 +112,7 @@ def test_level_2_filters_episodic() -> None:
 
 def test_level_3_filters_files() -> None:
     """Non-current files degrade to path+md5 at L3; current files stay full."""
-    allocator = BudgetAllocator(BudgetConfig(total_budget=1000))
+    allocator = BudgetAllocator(BudgetConfig(total_budget=1000, enforce_section_caps=False))
     current = [_make_snapshot("src/a.py", "current-a" + "a" * 800),
                _make_snapshot("src/b.py", "current-b" + "b" * 800)]
     other = [_make_snapshot("src/c.py", "other-c" + "c" * 800),
@@ -138,7 +138,7 @@ def test_level_3_filters_files() -> None:
 
 def test_level_4_minimal() -> None:
     """Huge data forces MINIMAL: <=2 tools of <=100 chars, summary intact."""
-    allocator = BudgetAllocator(BudgetConfig(total_budget=500))
+    allocator = BudgetAllocator(BudgetConfig(total_budget=500, enforce_section_caps=False))
     tools = [(f"tool_{i}", "y" * 600) for i in range(5)]
     notes = [_make_note("note " + "n" * 200, 0.9) for _ in range(4)]
     snaps = [_make_snapshot("src/a.py", "current" + "a" * 300),
@@ -203,3 +203,110 @@ def test_assembler_integration(tmp_path: Path) -> None:
     # Section order: SYSTEM first, RECENT TOOLS last.
     assert context.index("[SYSTEM]") < context.index("[TASK SUMMARY]")
     assert context.index("[EPISODIC NOTES]") < context.index("[RECENT TOOLS]")
+
+
+# ---------------------------------------------------------------------
+# Head+tail truncation (configurable tool-result budgets)
+# ---------------------------------------------------------------------
+
+def test_head_tail_truncation_keeps_both_ends() -> None:
+    """Over-limit text keeps its start and end within the char budget."""
+    text = "HEAD" + "x" * 400 + "TAIL"
+    out = BudgetAllocator._truncate_head_tail(text, 100)
+
+    assert len(out) <= 100
+    assert out.startswith("HEAD")
+    assert out.endswith("TAIL")
+    assert "truncated" in out
+
+
+def test_head_tail_truncation_noop_under_limit() -> None:
+    """Text within the limit passes through untouched."""
+    assert BudgetAllocator._truncate_head_tail("short", 100) == "short"
+
+
+def test_tool_truncate_limits_configurable() -> None:
+    """tool_truncate_chars/tool_minimal_chars override the 200/100 defaults."""
+    allocator = BudgetAllocator(BudgetConfig(
+        total_budget=120, tool_truncate_chars=50, tool_minimal_chars=20,
+        enforce_section_caps=False,
+    ))
+    result = allocator.allocate(
+        system_prompt="s", task_summary=None, file_snapshots=[],
+        episodic_notes=[], tool_results=[("t", "y" * 500)], current_files=[],
+    )
+    assert result["level"] == CompressionLevel.COMPRESS_TOOL
+    line = result["tool_context"].splitlines()[0]
+    assert len(line.split("-> ", 1)[1]) <= 50
+
+
+# ---------------------------------------------------------------------
+# Per-section caps (second allocation pass)
+# ---------------------------------------------------------------------
+
+def _big_tools(n: int, size: int = 600) -> list[tuple[str, str]]:
+    return [(f"tool_{i}", "x" * size) for i in range(n)]
+
+
+def test_section_cap_keeps_newest_tool_results() -> None:
+    """An over-cap tool section keeps the newest results, drops the oldest.
+
+    Many *short-ish* results keep every entry alive through L1-L3 (they
+    only get truncated, not dropped), so the cap pass is what enforces
+    recency here.
+    """
+    tools = [(f"tool_{i}", "x" * 600) for i in range(50)]
+    allocator = BudgetAllocator(BudgetConfig(total_budget=4000))
+    result = allocator.allocate(
+        system_prompt="s", task_summary=_make_summary(), file_snapshots=[],
+        episodic_notes=[], tool_results=tools, current_files=[],
+    )
+
+    assert result["level"] == CompressionLevel.COMPRESS_TOOL
+    assert "tool_context" in result["stats"]["section_trimmed"]
+    assert "tool_49" in result["tool_context"]     # newest survives
+    assert "tool_0" not in result["tool_context"]  # oldest dropped
+    assert result["stats"]["compressed_tokens"] <= 4000
+
+
+def test_section_caps_rescue_oversized_context() -> None:
+    """Without caps the context busts the budget; with caps every section
+    gets its share and the total fits.
+
+    All files are "current" so no compression level drops them (even
+    MINIMAL keeps current files whole) — only the per-section file cap
+    can shrink this section.
+    """
+    snapshots = [
+        _make_snapshot(f"src/f{i}.py", "s" * 400) for i in range(10)
+    ]
+    kwargs = dict(
+        system_prompt="s", task_summary=_make_summary(),
+        file_snapshots=snapshots, episodic_notes=[],
+        tool_results=_big_tools(10),
+        current_files=[f"src/f{i}.py" for i in range(10)],
+    )
+
+    off = BudgetAllocator(BudgetConfig(
+        total_budget=1000, enforce_section_caps=False,
+    )).allocate(**kwargs)
+    on = BudgetAllocator(BudgetConfig(total_budget=1000)).allocate(**kwargs)
+
+    # Old behavior: forced MINIMAL yet still over budget (mechanism fail).
+    assert off["stats"]["compressed_tokens"] > 1000
+    # Caps: total fits and the file section was trimmed to its share.
+    assert on["stats"]["compressed_tokens"] <= 1000
+    assert "file_context" in on["stats"]["section_trimmed"]
+    # Files survive at least as md5 fingerprints, never vanish silently.
+    for i in range(10):
+        assert f"src/f{i}.py" in on["file_context"]
+
+
+def test_section_caps_disabled_reports_nothing() -> None:
+    """enforce_section_caps=False keeps the pure level behavior."""
+    allocator = BudgetAllocator(BudgetConfig(total_budget=800, enforce_section_caps=False))
+    result = allocator.allocate(
+        system_prompt="s", task_summary=_make_summary(), file_snapshots=[],
+        episodic_notes=[], tool_results=_big_tools(10), current_files=[],
+    )
+    assert result["stats"]["section_trimmed"] == []
