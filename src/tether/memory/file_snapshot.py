@@ -127,8 +127,19 @@ def compute_md5(file_path: Path) -> str:
     return digest.hexdigest()
 
 
+# Files up to this size may keep their content inside the snapshot so
+# recovery can restore them after external deletion (undo/restore).
+_MAX_CONTENT_BYTES = 64 * 1024
+
+
 class FileSnapshot(MemoryEntry, BaseModel):
-    """Cached metadata about a workspace file, used by the drift detector."""
+    """Cached metadata about a workspace file, used by the drift detector.
+
+    ``content`` optionally stores the file text (files up to
+    ``_MAX_CONTENT_BYTES`` only): content-backed snapshots let the
+    RecoveryManager restore a file that was deleted externally. Metadata
+    remains in ``md5``/``symbols`` either way.
+    """
 
     entry_id: str = Field(default_factory=new_entry_id)
     task_id: str
@@ -140,6 +151,7 @@ class FileSnapshot(MemoryEntry, BaseModel):
     summary: str
     symbols: list[str] = Field(default_factory=list)
     signatures: list[str] = Field(default_factory=list)
+    content: str | None = None
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
     )
@@ -154,12 +166,16 @@ class FileSnapshot(MemoryEntry, BaseModel):
         return cls.model_validate(data)
 
     @classmethod
-    def from_file(cls, task_id: str, file_path: Path) -> "FileSnapshot":
+    def from_file(
+        cls, task_id: str, file_path: Path, include_content: bool = False
+    ) -> "FileSnapshot":
         """Build a snapshot from a real file on disk.
 
-        Computes MD5 (streamed, 8KB chunks), size, mtime; infers language
+        Computes MD5 (streamed, 64KB chunks), size, mtime; infers language
         from the suffix and extracts symbols via regex. ``summary`` is a
         placeholder of "filename: top symbols" (LLM summaries come later).
+        With ``include_content=True`` the file text is stored (small files
+        only), making the snapshot restorable after deletion.
         """
         file_path = Path(file_path)
         stat = file_path.stat()
@@ -173,6 +189,9 @@ class FileSnapshot(MemoryEntry, BaseModel):
             summary = f"{file_path.name}: {', '.join(symbols[:5])}"
         else:
             summary = file_path.name
+        store_content = (
+            include_content and stat.st_size <= _MAX_CONTENT_BYTES
+        )
         return cls(
             task_id=task_id,
             path=file_path.as_posix(),
@@ -183,4 +202,5 @@ class FileSnapshot(MemoryEntry, BaseModel):
             summary=summary,
             symbols=symbols,
             signatures=extract_signatures(text, language),
+            content=text if store_content else None,
         )

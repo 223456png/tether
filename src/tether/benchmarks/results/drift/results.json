@@ -16,7 +16,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.875199916772544,
+          "latency_ms": 5.994500010274351,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -28,7 +28,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.875199916772544,
+              "detect_ms": 5.994500010274351,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -46,7 +46,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0196000803261995,
+          "latency_ms": 1.1224000481888652,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -58,7 +58,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0196000803261995,
+              "detect_ms": 1.1224000481888652,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -76,7 +76,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.34680001065135,
+          "latency_ms": 1.0055999737232924,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -88,7 +88,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.34680001065135,
+              "detect_ms": 1.0055999737232924,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -106,7 +106,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.968499924056232,
+          "latency_ms": 0.9280999656766653,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -118,7 +118,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.968499924056232,
+              "detect_ms": 0.9280999656766653,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -136,7 +136,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9349000174552202,
+          "latency_ms": 0.8912000339478254,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -148,7 +148,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9349000174552202,
+              "detect_ms": 0.8912000339478254,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -166,7 +166,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.889300019480288,
+          "latency_ms": 0.8876000065356493,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -178,7 +178,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.889300019480288,
+              "detect_ms": 0.8876000065356493,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -196,7 +196,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.884300097823143,
+          "latency_ms": 0.9028000058606267,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -208,7 +208,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.884300097823143,
+              "detect_ms": 0.9028000058606267,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -226,7 +226,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.2008999474346638,
+          "latency_ms": 1.0355999693274498,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -238,7 +238,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.2008999474346638,
+              "detect_ms": 1.0355999693274498,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -256,7 +256,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0563000105321407,
+          "latency_ms": 0.9407000616192818,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -268,7 +268,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0563000105321407,
+              "detect_ms": 0.9407000616192818,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -286,7 +286,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9123000781983137,
+          "latency_ms": 0.9138999739661813,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -298,7 +298,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9123000781983137,
+              "detect_ms": 0.9138999739661813,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -320,12 +320,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.5088100102730095,
-        "p95_latency_ms": 5.875199916772544,
+        "avg_latency_ms": 1.4622400049120188,
+        "p95_latency_ms": 5.994500010274351,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.5088100102730095
+        "avg_drift_detect_ms": 1.4622400049120188
       }
     },
     "comment_whitespace": {
@@ -342,7 +342,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.039800074882805,
+          "latency_ms": 0.8971000788733363,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -354,7 +354,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.039800074882805,
+              "detect_ms": 0.8971000788733363,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -372,7 +372,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.2158999452367425,
+          "latency_ms": 0.8888000156730413,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -384,7 +384,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.2158999452367425,
+              "detect_ms": 0.8888000156730413,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -402,7 +402,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.019699964672327,
+          "latency_ms": 1.3738999841734767,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -414,7 +414,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.019699964672327,
+              "detect_ms": 1.3738999841734767,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -432,7 +432,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9090999374166131,
+          "latency_ms": 0.9607999818399549,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -444,7 +444,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9090999374166131,
+              "detect_ms": 0.9607999818399549,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -462,7 +462,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.891599920578301,
+          "latency_ms": 0.9044000180438161,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -474,7 +474,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.891599920578301,
+              "detect_ms": 0.9044000180438161,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -492,7 +492,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.8835000917315483,
+          "latency_ms": 0.9034000104293227,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -504,7 +504,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.8835000917315483,
+              "detect_ms": 0.9034000104293227,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -522,7 +522,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.3453999999910593,
+          "latency_ms": 0.9050999069586396,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -534,7 +534,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.3453999999910593,
+              "detect_ms": 0.9050999069586396,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -552,7 +552,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9736999636515975,
+          "latency_ms": 0.9800000116229057,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -564,7 +564,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9736999636515975,
+              "detect_ms": 0.9800000116229057,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -582,7 +582,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9036000119522214,
+          "latency_ms": 1.074099913239479,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -594,7 +594,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9036000119522214,
+              "detect_ms": 1.074099913239479,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -612,7 +612,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9095999412238598,
+          "latency_ms": 0.9506000205874443,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -624,7 +624,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9095999412238598,
+              "detect_ms": 0.9506000205874443,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -646,12 +646,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.4091899851337075,
-        "p95_latency_ms": 5.039800074882805,
+        "avg_latency_ms": 0.9838199941441417,
+        "p95_latency_ms": 1.3738999841734767,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.4091899851337075
+        "avg_drift_detect_ms": 0.9838199941441417
       }
     },
     "append_content": {
@@ -668,7 +668,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.989799974486232,
+          "latency_ms": 5.45519997831434,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -680,7 +680,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.989799974486232,
+              "detect_ms": 5.45519997831434,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -698,7 +698,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9691999293863773,
+          "latency_ms": 1.4540000120177865,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -710,7 +710,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9691999293863773,
+              "detect_ms": 1.4540000120177865,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -728,7 +728,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9133000858128071,
+          "latency_ms": 0.9861000580713153,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -740,7 +740,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9133000858128071,
+              "detect_ms": 0.9861000580713153,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -758,7 +758,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9337000083178282,
+          "latency_ms": 0.9248999413102865,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -770,7 +770,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9337000083178282,
+              "detect_ms": 0.9248999413102865,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -788,7 +788,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.942799961194396,
+          "latency_ms": 0.9537999285385013,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -800,7 +800,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.942799961194396,
+              "detect_ms": 0.9537999285385013,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -818,7 +818,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.3053999282419682,
+          "latency_ms": 0.9160999907180667,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -830,7 +830,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.3053999282419682,
+              "detect_ms": 0.9160999907180667,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -839,6 +839,1902 @@
         {
           "task_id": "append_content_6",
           "variant": "append_content",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.080899965018034,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.080899965018034,
+              "expected": "CONTENT",
+              "got": "CONTENT"
+            }
+          }
+        },
+        {
+          "task_id": "append_content_7",
+          "variant": "append_content",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.0947000700980425,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.0947000700980425,
+              "expected": "CONTENT",
+              "got": "CONTENT"
+            }
+          }
+        },
+        {
+          "task_id": "append_content_8",
+          "variant": "append_content",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9237000485882163,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9237000485882163,
+              "expected": "CONTENT",
+              "got": "CONTENT"
+            }
+          }
+        },
+        {
+          "task_id": "append_content_9",
+          "variant": "append_content",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9137999732047319,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9137999732047319,
+              "expected": "CONTENT",
+              "got": "CONTENT"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 10,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 1.470319996587932,
+        "p95_latency_ms": 5.45519997831434,
+        "drift_accuracy": 1.0,
+        "drift_false_positive": 0.0,
+        "drift_false_negative": 0.0,
+        "avg_drift_detect_ms": 1.470319996587932
+      }
+    },
+    "file_deleted": {
+      "results": [
+        {
+          "task_id": "file_deleted_0",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11779996566474438,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11779996566474438,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_1",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11250004172325134,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11250004172325134,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_2",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.112100038677454,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.112100038677454,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_3",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.1409000251442194,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.1409000251442194,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_4",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.12099999003112316,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.12099999003112316,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_5",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11270004324615002,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11270004324615002,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_6",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11539994738996029,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11539994738996029,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_7",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11300004553049803,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11300004553049803,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_8",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.112100038677454,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.112100038677454,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_deleted_9",
+          "variant": "file_deleted",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.12010009959340096,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.12010009959340096,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 10,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.11776002356782556,
+        "p95_latency_ms": 0.1409000251442194,
+        "drift_accuracy": 1.0,
+        "drift_false_positive": 0.0,
+        "drift_false_negative": 0.0,
+        "avg_drift_detect_ms": 0.11776002356782556
+      }
+    },
+    "file_renamed": {
+      "results": [
+        {
+          "task_id": "file_renamed_0",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11390005238354206,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11390005238354206,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_1",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.13689999468624592,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.13689999468624592,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_2",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.14869996812194586,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.14869996812194586,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_3",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.12040010187774897,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.12040010187774897,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_4",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11290004476904869,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11290004476904869,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_5",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11339993216097355,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11339993216097355,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_6",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11370005086064339,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11370005086064339,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_7",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11239992454648018,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11239992454648018,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_8",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.13599998783320189,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.13599998783320189,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        },
+        {
+          "task_id": "file_renamed_9",
+          "variant": "file_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.11729996185749769,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.11729996185749769,
+              "expected": "MISSING",
+              "got": "MISSING"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 10,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.12256000190973282,
+        "p95_latency_ms": 0.14869996812194586,
+        "drift_accuracy": 1.0,
+        "drift_false_positive": 0.0,
+        "drift_false_negative": 0.0,
+        "avg_drift_detect_ms": 0.12256000190973282
+      }
+    },
+    "function_renamed": {
+      "results": [
+        {
+          "task_id": "function_renamed_0",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9904999751597643,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9904999751597643,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_1",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9438999695703387,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9438999695703387,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_2",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9180000051856041,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9180000051856041,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_3",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.049600075930357,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.049600075930357,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_4",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.0767000494524837,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.0767000494524837,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_5",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9570000693202019,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9570000693202019,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_6",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9250999428331852,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9250999428331852,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_7",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9191000135615468,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9191000135615468,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_8",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.986000057309866,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.986000057309866,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_renamed_9",
+          "variant": "function_renamed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.0729000205174088,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.0729000205174088,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 10,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.9838800178840756,
+        "p95_latency_ms": 1.0767000494524837,
+        "drift_accuracy": 1.0,
+        "drift_false_positive": 0.0,
+        "drift_false_negative": 0.0,
+        "avg_drift_detect_ms": 0.9838800178840756
+      }
+    },
+    "function_added": {
+      "results": [
+        {
+          "task_id": "function_added_0",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9612999856472015,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9612999856472015,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_1",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9217000333592296,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9217000333592296,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_2",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9253999451175332,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9253999451175332,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_3",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9085999336093664,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9085999336093664,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_4",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.1590999783948064,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.1590999783948064,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_5",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9747000876814127,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9747000876814127,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_6",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9218000341206789,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9218000341206789,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_7",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9214999154210091,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9214999154210091,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_8",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9252000600099564,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9252000600099564,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_added_9",
+          "variant": "function_added",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.3049999251961708,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.3049999251961708,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 10,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.9924299898557365,
+        "p95_latency_ms": 1.3049999251961708,
+        "drift_accuracy": 1.0,
+        "drift_false_positive": 0.0,
+        "drift_false_negative": 0.0,
+        "avg_drift_detect_ms": 0.9924299898557365
+      }
+    },
+    "function_removed": {
+      "results": [
+        {
+          "task_id": "function_removed_0",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 5.304999998770654,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 5.304999998770654,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_1",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9426999604329467,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9426999604329467,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_2",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9601999772712588,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9601999772712588,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_3",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.0662999702617526,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.0662999702617526,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_4",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.032399944961071,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.032399944961071,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_5",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9130999678745866,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9130999678745866,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_6",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.90079999063164,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.90079999063164,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_7",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9467999916523695,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9467999916523695,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_8",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.1648000217974186,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.1648000217974186,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "function_removed_9",
+          "variant": "function_removed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.006999984383583,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.006999984383583,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 10,
+        "success_rate": 1.0,
+        "avg_steps": 0.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 1.423909980803728,
+        "p95_latency_ms": 5.304999998770654,
+        "drift_accuracy": 1.0,
+        "drift_false_positive": 0.0,
+        "drift_false_negative": 0.0,
+        "avg_drift_detect_ms": 1.423909980803728
+      }
+    },
+    "signature_changed": {
+      "results": [
+        {
+          "task_id": "signature_changed_0",
+          "variant": "signature_changed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9769999887794256,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9769999887794256,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "signature_changed_1",
+          "variant": "signature_changed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9463999886065722,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9463999886065722,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "signature_changed_2",
+          "variant": "signature_changed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.9545000502839684,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 0.9545000502839684,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "signature_changed_3",
+          "variant": "signature_changed",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 1.0688999900594354,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "drift": {
+              "tp": true,
+              "tn": false,
+              "fp": false,
+              "fn": false,
+              "detect_ms": 1.0688999900594354,
+              "expected": "STRUCTURE",
+              "got": "STRUCTURE"
+            }
+          }
+        },
+        {
+          "task_id": "signature_changed_4",
+          "variant": "signature_changed",
           "success": true,
           "steps": 0,
           "prompt_tokens": 0,
@@ -861,1902 +2757,6 @@
               "fp": false,
               "fn": false,
               "detect_ms": 0.9775999933481216,
-              "expected": "CONTENT",
-              "got": "CONTENT"
-            }
-          }
-        },
-        {
-          "task_id": "append_content_7",
-          "variant": "append_content",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9079000446945429,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9079000446945429,
-              "expected": "CONTENT",
-              "got": "CONTENT"
-            }
-          }
-        },
-        {
-          "task_id": "append_content_8",
-          "variant": "append_content",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.8998999837785959,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.8998999837785959,
-              "expected": "CONTENT",
-              "got": "CONTENT"
-            }
-          }
-        },
-        {
-          "task_id": "append_content_9",
-          "variant": "append_content",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.8938000537455082,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.8938000537455082,
-              "expected": "CONTENT",
-              "got": "CONTENT"
-            }
-          }
-        }
-      ],
-      "metrics": {
-        "n_samples": 10,
-        "success_rate": 1.0,
-        "avg_steps": 0.0,
-        "avg_tokens": {
-          "prompt": 0.0,
-          "completion": 0.0,
-          "total": 0.0
-        },
-        "avg_file_reads": 0.0,
-        "avg_file_reads_per_step": 0.0,
-        "avg_disk_reads": 0.0,
-        "avg_stale_reads": 0.0,
-        "total_cost": 0.0,
-        "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.4733399963006377,
-        "p95_latency_ms": 5.989799974486232,
-        "drift_accuracy": 1.0,
-        "drift_false_positive": 0.0,
-        "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.4733399963006377
-      }
-    },
-    "file_deleted": {
-      "results": [
-        {
-          "task_id": "file_deleted_0",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11989998165518045,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11989998165518045,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_1",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.15089998487383127,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.15089998487383127,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_2",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.12600002810359,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.12600002810359,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_3",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11409993749111891,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11409993749111891,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_4",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11220003943890333,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11220003943890333,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_5",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11060002725571394,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11060002725571394,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_6",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11229992378503084,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11229992378503084,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_7",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11170003563165665,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11170003563165665,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_8",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.1110999146476388,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.1110999146476388,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_deleted_9",
-          "variant": "file_deleted",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.13719999697059393,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.13719999697059393,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        }
-      ],
-      "metrics": {
-        "n_samples": 10,
-        "success_rate": 1.0,
-        "avg_steps": 0.0,
-        "avg_tokens": {
-          "prompt": 0.0,
-          "completion": 0.0,
-          "total": 0.0
-        },
-        "avg_file_reads": 0.0,
-        "avg_file_reads_per_step": 0.0,
-        "avg_disk_reads": 0.0,
-        "avg_stale_reads": 0.0,
-        "total_cost": 0.0,
-        "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 0.12059998698532581,
-        "p95_latency_ms": 0.15089998487383127,
-        "drift_accuracy": 1.0,
-        "drift_false_positive": 0.0,
-        "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 0.12059998698532581
-      }
-    },
-    "file_renamed": {
-      "results": [
-        {
-          "task_id": "file_renamed_0",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.12869993224740028,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.12869993224740028,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_1",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.12559990864247084,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.12559990864247084,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_2",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11659995652735233,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11659995652735233,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_3",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.1148000592365861,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.1148000592365861,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_4",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11410005390644073,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11410005390644073,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_5",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11329993139952421,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11329993139952421,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_6",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.1151000615209341,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.1151000615209341,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_7",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.125700025819242,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.125700025819242,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_8",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.11930009350180626,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.11930009350180626,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        },
-        {
-          "task_id": "file_renamed_9",
-          "variant": "file_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.1132000470533967,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.1132000470533967,
-              "expected": "MISSING",
-              "got": "MISSING"
-            }
-          }
-        }
-      ],
-      "metrics": {
-        "n_samples": 10,
-        "success_rate": 1.0,
-        "avg_steps": 0.0,
-        "avg_tokens": {
-          "prompt": 0.0,
-          "completion": 0.0,
-          "total": 0.0
-        },
-        "avg_file_reads": 0.0,
-        "avg_file_reads_per_step": 0.0,
-        "avg_disk_reads": 0.0,
-        "avg_stale_reads": 0.0,
-        "total_cost": 0.0,
-        "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 0.11864000698551536,
-        "p95_latency_ms": 0.12869993224740028,
-        "drift_accuracy": 1.0,
-        "drift_false_positive": 0.0,
-        "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 0.11864000698551536
-      }
-    },
-    "function_renamed": {
-      "results": [
-        {
-          "task_id": "function_renamed_0",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 5.889700027182698,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 5.889700027182698,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_1",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.1720000766217709,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.1720000766217709,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_2",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.1020000092685223,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.1020000092685223,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_3",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0248000035062432,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0248000035062432,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_4",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.951700028963387,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.951700028963387,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_5",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.91559998691082,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.91559998691082,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_6",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.2045999756082892,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.2045999756082892,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_7",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9509999072179198,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9509999072179198,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_8",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9118999587371945,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9118999587371945,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_renamed_9",
-          "variant": "function_renamed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.047499943524599,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.047499943524599,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        }
-      ],
-      "metrics": {
-        "n_samples": 10,
-        "success_rate": 1.0,
-        "avg_steps": 0.0,
-        "avg_tokens": {
-          "prompt": 0.0,
-          "completion": 0.0,
-          "total": 0.0
-        },
-        "avg_file_reads": 0.0,
-        "avg_file_reads_per_step": 0.0,
-        "avg_disk_reads": 0.0,
-        "avg_stale_reads": 0.0,
-        "total_cost": 0.0,
-        "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.5170799917541444,
-        "p95_latency_ms": 5.889700027182698,
-        "drift_accuracy": 1.0,
-        "drift_false_positive": 0.0,
-        "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.5170799917541444
-      }
-    },
-    "function_added": {
-      "results": [
-        {
-          "task_id": "function_added_0",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 5.845599924214184,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 5.845599924214184,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_1",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.1177000124007463,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.1177000124007463,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_2",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0477000614628196,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0477000614628196,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_3",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9500000160187483,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9500000160187483,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_4",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.4413000317290425,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.4413000317290425,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_5",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0206999722868204,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0206999722868204,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_6",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9592999704182148,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9592999704182148,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_7",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9384999284520745,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9384999284520745,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_8",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9392000501975417,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9392000501975417,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_added_9",
-          "variant": "function_added",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.37489999178797,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.37489999178797,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        }
-      ],
-      "metrics": {
-        "n_samples": 10,
-        "success_rate": 1.0,
-        "avg_steps": 0.0,
-        "avg_tokens": {
-          "prompt": 0.0,
-          "completion": 0.0,
-          "total": 0.0
-        },
-        "avg_file_reads": 0.0,
-        "avg_file_reads_per_step": 0.0,
-        "avg_disk_reads": 0.0,
-        "avg_stale_reads": 0.0,
-        "total_cost": 0.0,
-        "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.5634899958968163,
-        "p95_latency_ms": 5.845599924214184,
-        "drift_accuracy": 1.0,
-        "drift_false_positive": 0.0,
-        "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.5634899958968163
-      }
-    },
-    "function_removed": {
-      "results": [
-        {
-          "task_id": "function_removed_0",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 5.648500053212047,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 5.648500053212047,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_1",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9740999666973948,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9740999666973948,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_2",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9752999758347869,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9752999758347869,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_3",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0771999368444085,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0771999368444085,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_4",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.055200002156198,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.055200002156198,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_5",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9725999552756548,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9725999552756548,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_6",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9559000609442592,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9559000609442592,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_7",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9267000714316964,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9267000714316964,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_8",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0822999756783247,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0822999756783247,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "function_removed_9",
-          "variant": "function_removed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 0.9867999469861388,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 0.9867999469861388,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        }
-      ],
-      "metrics": {
-        "n_samples": 10,
-        "success_rate": 1.0,
-        "avg_steps": 0.0,
-        "avg_tokens": {
-          "prompt": 0.0,
-          "completion": 0.0,
-          "total": 0.0
-        },
-        "avg_file_reads": 0.0,
-        "avg_file_reads_per_step": 0.0,
-        "avg_disk_reads": 0.0,
-        "avg_stale_reads": 0.0,
-        "total_cost": 0.0,
-        "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.4654599945060909,
-        "p95_latency_ms": 5.648500053212047,
-        "drift_accuracy": 1.0,
-        "drift_false_positive": 0.0,
-        "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.4654599945060909
-      }
-    },
-    "signature_changed": {
-      "results": [
-        {
-          "task_id": "signature_changed_0",
-          "variant": "signature_changed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 5.401200032792985,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 5.401200032792985,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "signature_changed_1",
-          "variant": "signature_changed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0082999942824244,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0082999942824244,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "signature_changed_2",
-          "variant": "signature_changed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.2051000958308578,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.2051000958308578,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "signature_changed_3",
-          "variant": "signature_changed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.0837999871000648,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.0837999871000648,
-              "expected": "STRUCTURE",
-              "got": "STRUCTURE"
-            }
-          }
-        },
-        {
-          "task_id": "signature_changed_4",
-          "variant": "signature_changed",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 0,
-          "completion_tokens": 0,
-          "total_tokens": 0,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "latency_ms": 1.005799975246191,
-          "steps_lost": 0,
-          "recovery_latency_ms": 0.0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "drift": {
-              "tp": true,
-              "tn": false,
-              "fp": false,
-              "fn": false,
-              "detect_ms": 1.005799975246191,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2774,7 +2774,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9129999671131372,
+          "latency_ms": 0.9260999504476786,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2786,7 +2786,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9129999671131372,
+              "detect_ms": 0.9260999504476786,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2804,7 +2804,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9104000637307763,
+          "latency_ms": 0.9240000508725643,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2816,7 +2816,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9104000637307763,
+              "detect_ms": 0.9240000508725643,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2834,7 +2834,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.046599936671555,
+          "latency_ms": 0.9289999725297093,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2846,7 +2846,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.046599936671555,
+              "detect_ms": 0.9289999725297093,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2864,7 +2864,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.7662999453023076,
+          "latency_ms": 1.198599929921329,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2876,7 +2876,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.7662999453023076,
+              "detect_ms": 1.198599929921329,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2894,7 +2894,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9873000672087073,
+          "latency_ms": 1.001400058157742,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2906,7 +2906,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9873000672087073,
+              "detect_ms": 1.001400058157742,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2928,12 +2928,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.5327800065279007,
-        "p95_latency_ms": 5.401200032792985,
+        "avg_latency_ms": 0.9903499973006546,
+        "p95_latency_ms": 1.198599929921329,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.5327800065279007
+        "avg_drift_detect_ms": 0.9903499973006546
       }
     },
     "multi_file": {
@@ -2950,7 +2950,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.673200008459389,
+          "latency_ms": 0.9364000288769603,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2962,7 +2962,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.673200008459389,
+              "detect_ms": 0.9364000288769603,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -2980,7 +2980,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0689999908208847,
+          "latency_ms": 0.9225000394508243,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2992,7 +2992,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0689999908208847,
+              "detect_ms": 0.9225000394508243,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3010,7 +3010,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9742999682202935,
+          "latency_ms": 0.9360000258311629,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3022,7 +3022,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9742999682202935,
+              "detect_ms": 0.9360000258311629,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3040,7 +3040,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9432999650016427,
+          "latency_ms": 1.0255000088363886,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3052,7 +3052,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9432999650016427,
+              "detect_ms": 1.0255000088363886,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3070,7 +3070,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9273000760003924,
+          "latency_ms": 0.9435000829398632,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3082,7 +3082,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9273000760003924,
+              "detect_ms": 0.9435000829398632,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3100,7 +3100,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0960999643430114,
+          "latency_ms": 0.9249000577256083,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3112,7 +3112,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0960999643430114,
+              "detect_ms": 0.9249000577256083,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3130,7 +3130,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9543000487610698,
+          "latency_ms": 0.9639000054448843,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3142,7 +3142,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9543000487610698,
+              "detect_ms": 0.9639000054448843,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3160,7 +3160,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9339000098407269,
+          "latency_ms": 1.046899938955903,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3172,7 +3172,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9339000098407269,
+              "detect_ms": 1.046899938955903,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3190,7 +3190,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9669000282883644,
+          "latency_ms": 1.0222999844700098,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3202,7 +3202,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9669000282883644,
+              "detect_ms": 1.0222999844700098,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3220,7 +3220,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.4201999874785542,
+          "latency_ms": 0.9315999923273921,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3232,7 +3232,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.4201999874785542,
+              "detect_ms": 0.9315999923273921,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3254,12 +3254,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.495850004721433,
-        "p95_latency_ms": 5.673200008459389,
+        "avg_latency_ms": 0.9653500164858997,
+        "p95_latency_ms": 1.046899938955903,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.495850004721433
+        "avg_drift_detect_ms": 0.9653500164858997
       }
     }
   }

@@ -82,3 +82,12 @@ verify_steps:
 | 10 | cap 触发后的 tool 裁剪 | 从最新往旧保留（recency-first），至少保留 1 条 | 均匀抽样（丢失最新状态）；按 token 加权（复杂度不成比例） |
 | 11 | 头尾比例 | 2:1（头部含触发输入，尾部含结论/traceback） | 1:1（头部信息密度通常更高）；只保留尾部 |
 | 12 | 压实触发时机 | save_full 末尾、超过阈值即重写（保留最新 N 条 v2） | 定期后台压实（引入并发）；按大小触发（行为不可预测） |
+
+### Round 4 补充决策：被删文件的还原能力
+
+| # | Decision | Choice | Rejected Alternatives |
+|---|----------|--------|----------------------|
+| 13 | 内容存储范围 | 仅 agent 触碰过（read/write）的文件 + ≤64KB 上限，opt-in include_content | 全部文件存内容（存储爆炸）；完全不存（file_deleted 永远 0%） |
+| 14 | 还原执行点 | RecoveryManager._detect_file_drift 内：MISSING → 尝试从快照写回 → MATCH | 单独的还原阶段（多一遍扫描）；留给上层 runtime（恢复逻辑应自洽） |
+| 15 | 还原后的重放计划 | 内容写回后 md5 一致 → MATCH → 不需要重放该文件相关步骤 | 保守重放（文件字节级一致，重放是浪费） |
+| 16 | benchmark 口径 | 恢复实验改为内容感知快照（如实反映 runtime 新行为），README/Limitations 同步改写并保留"未触碰文件不可还原"的限制 | 只改数字不改口径（报告与能力脱节） |
