@@ -7,6 +7,22 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Lint (ruff)
+        run: ruff check src tests
+
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -33,13 +49,12 @@ jobs:
           # Ensure the LLM factory resolves to the offline MockProvider.
           DEEPSEEK_API_KEY: ""
           TETHER_LLM_API_KEY: ""
-        run: python -m pytest tests/ -q
+        run: python -m pytest tests/ -q --junitxml=test-results.xml
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results-${{ matrix.os }}-${{ matrix.python-version }}
-          path: |
-            .pytest_cache/
+          path: test-results.xml
           retention-days: 7
