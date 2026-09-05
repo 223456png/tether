@@ -1,0 +1,471 @@
+{
+  "experiment": "intercept",
+  "description": "Duplicate-call interception rate",
+  "variants": {
+    "interceptor": {
+      "results": [
+        {
+          "task_id": "HumanEval/0",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.32329990062862635,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/1",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2519000554457307,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/2",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2392000751569867,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/3",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2351000439375639,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/4",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2343000378459692,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/5",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.23300002794712782,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/6",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.23070001043379307,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/7",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2280999906361103,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/8",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.229199999012053,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/9",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.22799998987466097,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/10",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.24090008810162544,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/11",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.22909999825060368,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/12",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.23009988944977522,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/13",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.22719998378306627,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/14",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.22499996703118086,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/15",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.22639997769147158,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/16",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.22799998987466097,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/17",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2658000448718667,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/18",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.25070004630833864,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        },
+        {
+          "task_id": "HumanEval/19",
+          "variant": "interceptor",
+          "success": true,
+          "steps": 5,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 0.2429999876767397,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 255,
+          "intercepted": 3,
+          "duplicates": 3,
+          "extra": {
+            "intercept": true
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 20,
+        "success_rate": 1.0,
+        "avg_steps": 5.0,
+        "avg_tokens": {
+          "prompt": 0.0,
+          "completion": 0.0,
+          "total": 0.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 0.23995000519789755,
+        "p95_latency_ms": 0.2658000448718667,
+        "intercept_count": 60,
+        "intercept_rate": 1.0,
+        "tokens_saved_by_intercept": 5100
+      }
+    }
+  }
+}

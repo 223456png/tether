@@ -32,7 +32,7 @@ flowchart LR
 | Phase | Component | What it does |
 |-------|-----------|--------------|
 | 1 | `runtime/` `checkpoint/` | Async state machine, JSONL checkpoints, tool timeout breaker |
-| 2–3 | `memory/` `context/` | Three-layer memory (TaskSummary / FileSnapshot / EpisodicNotes) + budget-allocated context assembly |
+| 2–3 | `memory/` `context/` | Three-layer memory (TaskSummary / FileSnapshot / EpisodicNotes) + budget-allocated context assembly (5 trim levels + per-section caps + head/tail truncation) |
 | 4 | `context/validator.py` | ROUGE-L + keyword compression validation with rollback |
 | 5 | `filesystem/drift.py` | Three-level file drift detection (stat → MD5 → AST symbols+signatures) |
 | 6 | `checkpoint/recovery.py` | Drift-aware recovery planning across 10 interruption scenarios |
@@ -93,7 +93,7 @@ Takeaway: at n=20 the pass@1 differences are within noise, but the compressed ar
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 93 tests, all offline
+python -m pytest tests/ -q          # 102 tests, all offline
 ```
 
 Or drive an agent task from the command line (no API key needed — it
@@ -179,17 +179,23 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 Known next steps, in rough priority order (design notes in
 `docs/designs/`):
 
-1. **Per-section budget allocation** — `BudgetConfig` section ratios are
-   defined but only `total_budget` drives the allocator today; switch
-   from global compression levels to per-section trimming.
-2. **Head+tail tool-result truncation** — the current 100–200 char cuts
-   are benchmark-tuned; real tasks need configurable limits that keep
-   both the start and the end of long outputs.
-3. **Streaming LLM calls** (SSE) so the CLI can show progress live.
-4. **Checkpoint compaction** — keep the last N full snapshots so the
-   JSONL history does not grow unboundedly on long tasks.
-5. **Sandboxed execution** — containerize test runs to make the
+1. **Streaming LLM calls** (SSE) so the CLI can show progress live.
+2. **Sandboxed execution** — containerize test runs to make the
    "not a security boundary" caveat an actual guarantee.
+3. **Cross-task episodic memory** — notes are task-scoped today;
+   a shared store would let lessons transfer across tasks.
+
+Recently shipped (was on this list, now done):
+
+- ✅ **Per-section budget caps** — the `BudgetConfig` ratios now act as
+  hard caps: after the global level is chosen, any section still over
+  its share (tool results / file context / episodic notes) is trimmed
+  further, so one greedy section can't starve the others.
+- ✅ **Head+tail tool-result truncation** — long outputs keep both the
+  start and the end (the verdict lives at the bottom of logs) within
+  configurable char budgets (`tool_truncate_chars` / `tool_minimal_chars`).
+- ✅ **Checkpoint compaction** — the JSONL history keeps the newest N
+  full snapshots, so long tasks no longer grow it without bound.
 
 ## Project Layout
 
@@ -198,13 +204,13 @@ src/tether/
 ├── runtime/        # state machine + LLM/mock agent loop + JSONL event stream
 ├── checkpoint/     # JSONL checkpoints + smart recovery
 ├── memory/         # TaskSummary / FileSnapshot / EpisodicNotes
-├── context/        # BudgetAllocator + ROUGE-L validator + assembler
+├── context/        # BudgetAllocator (levels + per-section caps) + ROUGE-L validator
 ├── filesystem/     # DriftDetector (stat → MD5 → AST)
 ├── tools/          # per-runtime registry + side-effect-safe interceptor + real run_test
 ├── llm/            # OpenAI-compatible provider (function calling) + offline mock
 ├── cli.py          # `tether run --goal ...` command-line entry point
 └── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 93 tests (all offline, incl. scripted-provider loop tests)
+tests/              # 102 tests (all offline, incl. scripted-provider loop tests)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 

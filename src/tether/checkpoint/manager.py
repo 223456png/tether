@@ -55,16 +55,24 @@ class CheckpointManager:
     """Append-only JSONL checkpoint storage.
 
     Each task gets one ``{task_id}.jsonl`` file under ``{workspace_dir}/checkpoints``.
-    Every save appends one JSON line, so the file is a full history of states.
+    Every save appends one JSON line, so the file is a history of states.
     Lines come in two flavors: plain TaskState (Phase 1, "v1") and full
     CheckpointSnapshot lines tagged ``checkpoint_version: 2``.
+
+    To bound growth on long tasks, ``save_full`` compacts the file once
+    more than ``keep_last_checkpoints`` full lines accumulate: only the
+    newest N full snapshots survive. Readers only ever need the last
+    line, so older ones are safe to drop.
     """
 
-    def __init__(self, workspace_dir: Path) -> None:
-        """Create the checkpoints directory under ``workspace_dir`` if needed."""
+    def __init__(
+        self, workspace_dir: Path, keep_last_checkpoints: int = 20
+    ) -> None:
+        """Create the checkpoints directory; store the compaction bound."""
         self.workspace_dir = Path(workspace_dir)
         self.checkpoint_dir = self.workspace_dir / "checkpoints"
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self.keep_last_checkpoints = max(keep_last_checkpoints, 1)
 
     def _checkpoint_path(self, task_id: str) -> Path:
         """Return the JSONL file path for ``task_id``."""
@@ -139,9 +147,34 @@ class CheckpointManager:
         path = self._checkpoint_path(state.task_id)
         with path.open("a", encoding="utf-8") as f:
             f.write(json.dumps(snapshot.to_dict(), ensure_ascii=False) + "\n")
+        self._compact(state.task_id)
         logger.info(
             "Full checkpoint saved | task_id={} step={} status={} files={}",
             state.task_id, state.step_index, state.status.value, len(summaries),
+        )
+
+    def _compact(self, task_id: str) -> None:
+        """Rewrite the JSONL keeping only the newest N full snapshots.
+
+        Runs after every ``save_full``; a no-op until the file outgrows
+        ``keep_last_checkpoints``. Legacy v1 lines are dropped too —
+        ``load()`` falls back to the embedded state of full lines.
+        """
+        path = self._checkpoint_path(task_id)
+        records = self._read_lines(task_id)
+        full = [r for r in records if r.get("checkpoint_version") == 2]
+        if len(full) <= self.keep_last_checkpoints:
+            return
+        keep = full[-self.keep_last_checkpoints:]
+        tmp = path.with_suffix(".jsonl.tmp")
+        tmp.write_text(
+            "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in keep),
+            encoding="utf-8",
+        )
+        tmp.replace(path)
+        logger.info(
+            "Checkpoint file compacted | task_id={} kept={} dropped={}",
+            task_id, len(keep), len(full) - len(keep),
         )
 
     def load_full(self, task_id: str) -> CheckpointSnapshot | None:
