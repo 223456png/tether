@@ -20,7 +20,12 @@ from tether.benchmarks.datasets import (
 )
 from tether.benchmarks.metrics import TaskResult, compute_metrics
 from tether.checkpoint import CheckpointManager, RecoveryManager
-from tether.context import BudgetAllocator, BudgetConfig, RougeValidator
+from tether.context import (
+    BudgetAllocator,
+    BudgetConfig,
+    CompressionLevel,
+    RougeValidator,
+)
 from tether.context.assembler import ContextAssembler
 from tether.context.budget import estimate_tokens
 from tether.filesystem import DriftDetector
@@ -252,12 +257,21 @@ class BenchmarkRunner:
             "latency_ms": (time.perf_counter() - start) * 1000,
         }
 
-        # BudgetAllocator: most aggressive level that still validates wins.
+        # BudgetAllocator arm: lowest-token candidate that still validates.
+        # Search space: (a) the global level ladder, plus (b) per-section
+        # refinements — sections are independent under the caps model, so
+        # for each validating level the tool section is additionally
+        # recency-fitted down a halving ladder of its ratio share
+        # (25% / 12.5% / 6.25% of full-context tokens). Every candidate
+        # passes the same ROUGE-L + keyword gate; the cheapest survivor
+        # wins. No validating candidate -> rollback to full (success
+        # preserved, zero savings).
         start = time.perf_counter()
         levels = sorted(
             getattr(self.config, "budget_levels", [0, 1, 2, 3, 4]),
             reverse=True,
         )
+        tool_share = getattr(self.config, "tool_result_ratio", 0.25)
         chosen_level, budget_tokens, budget_context = 0, full_tokens, full_context
         for level in levels:
             if level <= 0:
@@ -268,14 +282,32 @@ class BenchmarkRunner:
             )
             candidate = ContextAssembler._join(sections)
             tokens = estimate_tokens(candidate)
-            if validator.validate(
+            if not validator.validate(
                 full_context, candidate, required_keywords=keywords
             ).passed:
+                continue
+            if tokens < budget_tokens:
                 chosen_level, budget_tokens, budget_context = level, tokens, candidate
-                break
+            # Per-section refinement: keep-newest tool fitting under the
+            # halving ladder, rendered at the minimal truncation budget.
+            for frac in (1.0, 0.5, 0.25):
+                cap = int(full_tokens * tool_share * frac)
+                fitted = dict(sections)
+                fitted["tool_context"] = allocator._fit_tool_section(
+                    data["tools"], CompressionLevel.MINIMAL, cap,
+                )
+                fit_ctx = ContextAssembler._join(fitted)
+                fit_tokens = estimate_tokens(fit_ctx)
+                if fit_tokens >= budget_tokens:
+                    continue
+                if validator.validate(
+                    full_context, fit_ctx, required_keywords=keywords
+                ).passed:
+                    chosen_level = level
+                    budget_tokens, budget_context = fit_tokens, fit_ctx
         reduction = 1 - budget_tokens / max(1, full_tokens)
         variants["budget"] = {
-            # Rolled back to full context when no level validated: the
+            # Rolled back to full context when no candidate validated: the
             # task still succeeds (Phase-4 rollback guarantee), just
             # without savings.
             "success": True,

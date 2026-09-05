@@ -91,3 +91,4 @@ verify_steps:
 | 14 | 还原执行点 | RecoveryManager._detect_file_drift 内：MISSING → 尝试从快照写回 → MATCH | 单独的还原阶段（多一遍扫描）；留给上层 runtime（恢复逻辑应自洽） |
 | 15 | 还原后的重放计划 | 内容写回后 md5 一致 → MATCH → 不需要重放该文件相关步骤 | 保守重放（文件字节级一致，重放是浪费） |
 | 16 | benchmark 口径 | 恢复实验改为内容感知快照（如实反映 runtime 新行为），README/Limitations 同步改写并保留"未触碰文件不可还原"的限制 | 只改数字不改口径（报告与能力脱节） |
+| 17 | 压缩搜索空间 | 全局档位阶梯 + 工具段 recency-fit 减半梯子（25%/12.5%/6.25%，由 tool_result_ratio 推导，无调参魔法数），全部候选过同一 ROUGE-L + 关键词门槛，取最低 token 存活者 | 只扫全局档位（分段独立后浪费搜索空间）；调参式 fraction 网格（对 benchmark 过拟合）。效果：−15.8% → −22.1%（681→531），成功率保持 100%，延迟 29ms→139ms 为搜索的真实代价 |
