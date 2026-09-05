@@ -55,6 +55,15 @@ def build_parser() -> argparse.ArgumentParser:
         help="MCP server command to connect before running (repeatable, "
              "shell-quoted, e.g. --mcp-cmd \"python server.py\")",
     )
+    run.add_argument(
+        "--require-approval", action="store_true",
+        help="Pause for console confirmation before write_file/run_test",
+    )
+    run.add_argument(
+        "--max-tokens", type=int, default=None,
+        help="Hard cap on cumulative LLM tokens; the task stops (STOPPED) "
+             "when reached (default: unlimited)",
+    )
 
     report = sub.add_parser(
         "report", help="Summarize a task's events.jsonl into a markdown report"
@@ -68,6 +77,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Write the report to this file instead of stdout",
     )
     return parser
+
+
+async def _console_gate(tool: str, params: dict) -> bool:
+    """Human-in-the-loop gate: ask on the console before executing."""
+    answer = await asyncio.to_thread(
+        input, f"[tether approve] run {tool}({params})? [y/N] "
+    )
+    return answer.strip().lower() in ("y", "yes")
 
 
 async def _run(args: argparse.Namespace) -> int:
@@ -90,6 +107,8 @@ async def _run(args: argparse.Namespace) -> int:
         llm_provider=provider,
         max_steps=args.max_steps,
         max_consecutive_failures=args.max_consecutive_failures,
+        approval_gate=_console_gate if args.require_approval else None,
+        max_total_tokens=args.max_tokens,
     )
 
     for mcp_cmd in args.mcp_cmd or []:

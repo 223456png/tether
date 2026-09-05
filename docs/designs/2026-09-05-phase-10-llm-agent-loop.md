@@ -103,3 +103,11 @@ verify_steps:
 | 21 | 规划载体 | `update_plan` 工具写 TaskSummary.current_plan（永不裁剪层），模型显式调用 | 解析模型回复文本中的计划（脆弱）；单独 planning pass（多一倍 LLM 调用） |
 | 22 | CLI --mock 语义 | 无 key/--mock 时 llm_provider=None → 回退 mock thinker（会真实执行工具，可演示） | 把 MockProvider 当大脑（从不返回 tool call，第一步即"完成"，无演示价值）——本轮修复的退化 |
 | 23 | 运行报表 | reporting.py 纯函数聚合 events.jsonl → markdown，CLI `tether report` | 读日志正则抽取（脆弱）；引入 dashboard 框架（过重） |
+
+### Round 7 补充决策：审批门 / 成本熔断
+
+| # | Decision | Choice | Rejected Alternatives |
+|---|----------|--------|----------------------|
+| 24 | 审批门拦截点 | _execute_call 内、缓存检查之前；只拦 mutating 工具（默认 write_file/run_test，approval_tools 可配） | 拦全部工具（读也要人批，不可用）；放在 LLM 回复解析层（mock 路径失控） |
+| 25 | 拒绝后的语义 | DENIED 作为观察回流（任务继续，模型可换路子），不计入连续失败熔断 | 拒绝即失败（用户否决 ≠ 工具故障）；静默跳过（模型不知道被拒） |
+| 26 | 成本熔断时机 | 每轮 think 之前检查累计 token ≥ max_total_tokens → STOPPED（存检查点，可恢复） | FAILED（超预算不是故障）；think 内部抛异常（污染错误通道） |

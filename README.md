@@ -117,6 +117,10 @@ Plug in any MCP server's tools with `--mcp-cmd` (repeatable):
 tether run --goal "..." --workspace ./ws --mcp-cmd "python path/to/mcp_server.py"
 ```
 
+Safety rails for real usage: `--require-approval` pauses mutating tools
+for console confirmation, and `--max-tokens N` enforces a hard cost
+ceiling (the task stops with status STOPPED and a saved checkpoint).
+
 Run the offline benchmarks:
 
 ```bash
@@ -165,6 +169,15 @@ Two loop behaviors worth knowing:
 - **`run_test` is real.** It spawns `python -m pytest <file>` inside the
   workspace and returns the pass/fail summary — on failure the traceback
   tail comes back as the error, so the agent can see *why* and fix it.
+- **Human-in-the-loop approval.** With `--require-approval` (or an
+  `approval_gate` callable), mutating tools (`write_file`, `run_test`)
+  pause for confirmation before executing; a rejection becomes a
+  `DENIED` observation the model can adapt to.
+- **Hard cost ceiling.** `--max-tokens N` stops the loop (status
+  STOPPED, checkpoint saved) once cumulative LLM token usage reaches N.
+- **The model plans.** The `update_plan` tool writes the agent's plan
+  into the never-pruned TaskSummary layer, so it survives compression
+  and re-enters every turn's context.
 
 Without an API key the loop runs on a scripted/mock brain so every code path stays testable in CI at zero cost.
 
@@ -226,7 +239,7 @@ src/tether/
 ├── reporting.py    # events.jsonl -> one-page markdown run report
 ├── cli.py          # `tether run` / `tether report` command-line entry points
 └── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 118 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
+tests/              # 124 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 
