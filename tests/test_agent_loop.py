@@ -432,3 +432,47 @@ async def test_event_stream_records_lifecycle_and_tools(tmp_path: Path) -> None:
     import json as _json
     parsed = [_json.loads(ln) for ln in lines]
     assert parsed[0]["event"] == "task_started"
+
+
+# ---------------------------------------------------------------------
+# Agent self-planning (update_plan tool)
+# ---------------------------------------------------------------------
+
+async def test_update_plan_persists_and_enters_context(tmp_path: Path) -> None:
+    """The model's plan lands in TaskSummary and re-enters the context."""
+    provider = ScriptedProvider([
+        _tool_response("update_plan", {"plan": ["read the file", "fix the bug", "run tests"]}),
+        _tool_response("read_file", {"path": "seed.txt"}),
+        _final_response("done"),
+    ])
+    (tmp_path / "seed.txt").write_text("seed", encoding="utf-8")
+    runtime = TetherRuntime(
+        "Fix the bug", tmp_path, llm_provider=provider, max_steps=10
+    )
+    await runtime.run()
+
+    summary = runtime.memory_store.load_task_summary(runtime.state.task_id)
+    assert summary is not None
+    assert summary.current_plan == ["read the file", "fix the bug", "run tests"]
+
+    # The plan re-enters the context of the NEXT turn (the assembled
+    # system prompt of the second LLM call).
+    second_context = provider.calls[1]["messages"][0]["content"]
+    assert "read the file" in second_context
+    assert "run tests" in second_context
+
+
+async def test_update_plan_rejects_empty(tmp_path: Path) -> None:
+    """An empty plan is a structured tool error, not a crash."""
+    provider = ScriptedProvider([
+        _tool_response("update_plan", {"plan": []}),
+        _final_response("done"),
+    ])
+    runtime = TetherRuntime(
+        "Empty plan", tmp_path, llm_provider=provider, max_steps=10
+    )
+    await runtime.run()
+
+    outputs = [out for _, _, out in runtime._tool_history]
+    assert outputs[0].startswith("ERROR:")
+    assert runtime.state.status == TaskStatus.COMPLETED

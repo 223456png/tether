@@ -92,3 +92,14 @@ verify_steps:
 | 15 | 还原后的重放计划 | 内容写回后 md5 一致 → MATCH → 不需要重放该文件相关步骤 | 保守重放（文件字节级一致，重放是浪费） |
 | 16 | benchmark 口径 | 恢复实验改为内容感知快照（如实反映 runtime 新行为），README/Limitations 同步改写并保留"未触碰文件不可还原"的限制 | 只改数字不改口径（报告与能力脱节） |
 | 17 | 压缩搜索空间 | 全局档位阶梯 + 工具段 recency-fit 减半梯子（25%/12.5%/6.25%，由 tool_result_ratio 推导，无调参魔法数），全部候选过同一 ROUGE-L + 关键词门槛，取最低 token 存活者 | 只扫全局档位（分段独立后浪费搜索空间）；调参式 fraction 网格（对 benchmark 过拟合）。效果：−15.8% → −22.1%（681→531），成功率保持 100%，延迟 29ms→139ms 为搜索的真实代价 |
+
+### Round 6 补充决策：MCP 接入 / 模型自规划 / 运行报表
+
+| # | Decision | Choice | Rejected Alternatives |
+|---|----------|--------|----------------------|
+| 18 | MCP 传输实现 | 标准库 Popen + 行式 JSON-RPC，读线程 + executor 超时，asyncio.to_thread 包装 | asyncio.create_subprocess_exec（受 Windows 事件循环策略影响）；引入 mcp SDK（重依赖，违背零依赖约束） |
+| 19 | MCP 工具命名 | `mcp_{server}_{tool}` 加前缀注册，register overwrite=False | 直接用远端名（与内置工具撞名会静默覆盖） |
+| 20 | MCP 工具缓存语义 | 一律 side_effect_free=False（远端语义未知，宁可真执行） | 默认可缓存（旧结果风险不可控） |
+| 21 | 规划载体 | `update_plan` 工具写 TaskSummary.current_plan（永不裁剪层），模型显式调用 | 解析模型回复文本中的计划（脆弱）；单独 planning pass（多一倍 LLM 调用） |
+| 22 | CLI --mock 语义 | 无 key/--mock 时 llm_provider=None → 回退 mock thinker（会真实执行工具，可演示） | 把 MockProvider 当大脑（从不返回 tool call，第一步即"完成"，无演示价值）——本轮修复的退化 |
+| 23 | 运行报表 | reporting.py 纯函数聚合 events.jsonl → markdown，CLI `tether report` | 读日志正则抽取（脆弱）；引入 dashboard 框架（过重） |

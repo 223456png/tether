@@ -1,10 +1,11 @@
-"""Builtin tools: read_file / write_file / search_code / run_test."""
+"""Builtin tools: read_file / write_file / search_code / run_test / update_plan."""
 
 import asyncio
 import subprocess
 import sys
 from pathlib import Path
 
+from tether.memory.store import MemoryStore
 from tether.tools.base import Tool, ToolResult
 
 # Internal workspace directories never scanned by search_code.
@@ -265,4 +266,70 @@ class RunTestTool(Tool):
             output=summary,
             error=f"Tests failed (exit {exit_code}): {path}\n{summary}",
             metadata={"path": path, "exit_code": exit_code},
+        )
+
+
+class UpdatePlanTool(Tool):
+    """Lets the agent maintain its own plan in the TaskSummary layer.
+
+    The plan is written to ``TaskSummary.current_plan`` — the one memory
+    section the allocator never prunes — so it survives compression and
+    re-enters every subsequent turn's context. The model should call this
+    when the approach changes or a step completes.
+    """
+
+    name = "update_plan"
+    description = (
+        "Create or update your task plan (ordered steps). Call this when "
+        "the approach changes or whenever a plan step completes."
+    )
+    # Mutates task memory: keep out of the duplicate-call cache.
+    side_effect_free = False
+
+    _MAX_STEPS = 20
+
+    def __init__(
+        self, workspace: Path, memory_store: MemoryStore, task_id: str, goal: str
+    ) -> None:
+        """Bind to the runtime's memory store, task id and goal."""
+        self.workspace = Path(workspace)  # unused; kept for uniform construction
+        self._store = memory_store
+        self._task_id = task_id
+        self._goal = goal
+
+    def get_parameters_schema(self) -> dict:
+        """Schema: one required array of ordered plan steps."""
+        return {
+            "type": "object",
+            "properties": {
+                "plan": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Ordered plan steps (replace the whole plan)",
+                }
+            },
+            "required": ["plan"],
+        }
+
+    async def execute(self, plan: list) -> ToolResult:
+        """Replace ``TaskSummary.current_plan`` with the given steps."""
+        steps = [str(step).strip() for step in plan if str(step).strip()][
+            : self._MAX_STEPS
+        ]
+        if not steps:
+            return ToolResult(success=False, error="Plan is empty")
+        summary = self._store.load_task_summary(self._task_id)
+        if summary is None:
+            # Agents typically plan as their FIRST action — synthesize the
+            # summary instead of failing.
+            from tether.memory.task_summary import TaskSummary
+
+            summary = TaskSummary(task_id=self._task_id, goal=self._goal)
+        summary.current_plan = steps
+        self._store.save_task_summary(summary)
+        rendered = "\n".join(f"  {i}. {s}" for i, s in enumerate(steps, 1))
+        return ToolResult(
+            success=True,
+            output=f"Plan updated ({len(steps)} steps):\n{rendered}",
+            metadata={"steps": len(steps)},
         )
