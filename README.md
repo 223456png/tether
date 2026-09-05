@@ -93,7 +93,14 @@ Takeaway: at n=20 the pass@1 differences are within noise, but the compressed ar
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 86 tests, all offline
+python -m pytest tests/ -q          # 93 tests, all offline
+```
+
+Or drive an agent task from the command line (no API key needed — it
+falls back to the offline mock brain):
+
+```bash
+tether run --goal "Create hello.txt containing 'hi' and verify it" --workspace ./ws
 ```
 
 Run the offline benchmarks:
@@ -133,6 +140,18 @@ or a final answer → the tool executes through the registry (with
 duplicate-call interception and workspace-boundary checks) → state, memory
 and a JSONL event stream (`logs/events.jsonl`) are updated → checkpoint.
 
+Two loop behaviors worth knowing:
+
+- **Errors are observations, not verdicts.** With
+  `max_consecutive_failures=N` (the CLI default is 3), a tool exception or
+  timeout is fed back into the tool history so the model can retry with
+  different arguments; a circuit breaker fails the task only after N
+  *consecutive* failures. The default `0` preserves strict fail-fast for
+  the mock brain, which cannot adapt.
+- **`run_test` is real.** It spawns `python -m pytest <file>` inside the
+  workspace and returns the pass/fail summary — on failure the traceback
+  tail comes back as the error, so the agent can see *why* and fix it.
+
 Without an API key the loop runs on a scripted/mock brain so every code path stays testable in CI at zero cost.
 
 ### Reproducing the e2e experiment
@@ -155,6 +174,23 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 - **HumanEval subset is bundled offline** (20 problems) because the build environment had no network access to the upstream repo.
 - **Compression ratios are modest** (16–21%) vs learned compressors; the trade is a hard semantic-preservation guarantee.
 
+## Roadmap
+
+Known next steps, in rough priority order (design notes in
+`docs/designs/`):
+
+1. **Per-section budget allocation** — `BudgetConfig` section ratios are
+   defined but only `total_budget` drives the allocator today; switch
+   from global compression levels to per-section trimming.
+2. **Head+tail tool-result truncation** — the current 100–200 char cuts
+   are benchmark-tuned; real tasks need configurable limits that keep
+   both the start and the end of long outputs.
+3. **Streaming LLM calls** (SSE) so the CLI can show progress live.
+4. **Checkpoint compaction** — keep the last N full snapshots so the
+   JSONL history does not grow unboundedly on long tasks.
+5. **Sandboxed execution** — containerize test runs to make the
+   "not a security boundary" caveat an actual guarantee.
+
 ## Project Layout
 
 ```
@@ -164,10 +200,11 @@ src/tether/
 ├── memory/         # TaskSummary / FileSnapshot / EpisodicNotes
 ├── context/        # BudgetAllocator + ROUGE-L validator + assembler
 ├── filesystem/     # DriftDetector (stat → MD5 → AST)
-├── tools/          # per-runtime registry + side-effect-safe interceptor
+├── tools/          # per-runtime registry + side-effect-safe interceptor + real run_test
 ├── llm/            # OpenAI-compatible provider (function calling) + offline mock
+├── cli.py          # `tether run --goal ...` command-line entry point
 └── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 86 tests (all offline, incl. scripted-provider loop tests)
+tests/              # 93 tests (all offline, incl. scripted-provider loop tests)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 

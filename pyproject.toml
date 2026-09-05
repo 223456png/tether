@@ -22,8 +22,14 @@ dev = [
     "ruff>=0.5.0",
 ]
 
+[project.scripts]
+tether = "tether.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+tether = ["py.typed"]
 
 [tool.ruff]
 line-length = 88

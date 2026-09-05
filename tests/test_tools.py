@@ -311,3 +311,42 @@ async def test_read_after_write_is_fresh(tmp_path: Path) -> None:
     outputs = [out for _, _, out in runtime._tool_history]
     assert outputs[0] == "OLD"
     assert "NEW" in outputs[2] and not outputs[2].startswith("[CACHED]")
+
+
+# ---------------------------------------------------------------------
+# Real pytest runner (run_test)
+# ---------------------------------------------------------------------
+
+def test_run_test_real_pytest_pass(tmp_path: Path) -> None:
+    """A passing test file returns success with the pytest summary."""
+    from tether.tools.builtin import RunTestTool
+
+    tests = tmp_path / "tests"
+    tests.mkdir()
+    (tests / "test_ok.py").write_text(
+        "def test_ok():\n    assert 1 + 1 == 2\n", encoding="utf-8"
+    )
+    tool = RunTestTool(tmp_path)
+    result = asyncio.run(tool.execute(path="tests/test_ok.py"))
+
+    assert result.success is True
+    assert "passed" in result.output
+    assert result.metadata["exit_code"] == 0
+
+
+def test_run_test_real_pytest_fail(tmp_path: Path) -> None:
+    """A failing test file returns failure with the traceback tail."""
+    from tether.tools.builtin import RunTestTool
+
+    tests = tmp_path / "tests"
+    tests.mkdir()
+    (tests / "test_bad.py").write_text(
+        "def test_bad():\n    assert 1 + 1 == 3\n", encoding="utf-8"
+    )
+    tool = RunTestTool(tmp_path)
+    result = asyncio.run(tool.execute(path="tests/test_bad.py"))
+
+    assert result.success is False
+    assert "failed" in result.error.lower()
+    assert "assert" in result.error
+    assert result.metadata["exit_code"] != 0
