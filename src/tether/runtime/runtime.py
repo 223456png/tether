@@ -141,6 +141,7 @@ class TetherRuntime:
         self._touched_files: list[str] = []
         self._steps_to_replay: list[int] = []
         self._steps_skipped: list[int] = []
+        self._mcp_clients: list = []
         self.event_recorder = EventRecorder(self.workspace_dir, task_id=self.state.task_id)
         self._rebuild_context_pipeline()
 
@@ -161,15 +162,47 @@ class TetherRuntime:
             ReadFileTool,
             RunTestTool,
             SearchTool,
+            UpdatePlanTool,
             WriteFileTool,
         )
         from tether.tools.registry import get_default_registry
 
         for tool_cls in (ReadFileTool, WriteFileTool, SearchTool, RunTestTool):
             self.tool_registry.register(tool_cls(self.workspace_dir))
+        # The planner writes into the TaskSummary layer (never pruned).
+        self.tool_registry.register(
+            UpdatePlanTool(
+                self.workspace_dir, self.memory_store,
+                self.state.task_id, self.state.goal,
+            )
+        )
         # Decorator-registered tools join the runtime's registry without
         # overwriting the workspace-bound builtins.
         self.tool_registry.merge(get_default_registry(), overwrite=False)
+
+    # ------------------------------------------------------------------
+    # MCP integration
+    # ------------------------------------------------------------------
+    async def connect_mcp(
+        self, command: list[str], server_name: str | None = None
+    ) -> list[str]:
+        """Connect to an MCP server over stdio and register its tools.
+
+        The server's tools join this runtime's registry as
+        ``mcp_{server}_{tool}`` and are immediately callable by the LLM
+        through the normal tool-call path. Failures raise ``MCPError`` —
+        callers decide whether an unreachable tool server is fatal.
+        """
+        from tether.mcp import MCPClient, StdioTransport, register_mcp_tools
+
+        client = MCPClient(StdioTransport(command, cwd=self.workspace_dir))
+        client.initialize()
+        registered = register_mcp_tools(self.tool_registry, client, server_name)
+        self._mcp_clients.append(client)
+        self.event_recorder.record(
+            "mcp_connected", server=server_name or "auto", tools=registered,
+        )
+        return registered
 
     # ------------------------------------------------------------------
     # Thinking (mock or LLM)

@@ -1,10 +1,15 @@
 # Tether
 
+[![CI](https://github.com/223456png/tether/actions/workflows/ci.yml/badge.svg)](https://github.com/223456png/tether/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 **A memory-and-context management layer for long-running LLM coding agents — with real, reproducible benchmarks.**
 
 Tether is an experimental agent runtime that answers a practical question: *as a coding agent works for hours, how do you keep its context small, its memory correct, and its progress recoverable — without silently losing information?*
 
-It is built as a pipeline of independently testable components (state machine → three-layer memory → budget-allocated compression → drift detection → smart recovery → tool interception), and every claim in this README is backed by a benchmark you can run yourself.
+It is built as a pipeline of independently testable components (LLM-driven tool loop → three-layer memory → budget-allocated compression → drift detection → smart recovery → tool interception → MCP ecosystem access), and every claim in this README is backed by a benchmark you can run yourself.
 
 > **Positioning.** Tether is not chasing SOTA compression ratios (LLMLingua-style learned compressors reach 10–20×). It is a *deterministic, zero-model* pipeline whose value proposition is verifiable safety: every compression is validated (ROUGE-L + keyword survival) and rolled back when it would lose information. The benchmarks below measure exactly that trade-off.
 
@@ -40,6 +45,7 @@ flowchart LR
 | 8 | `benchmarks/` | 6 benchmark experiments with baselines and ablations |
 | 9 | `llm/` | OpenAI-compatible provider layer (DeepSeek tested) + offline mock |
 | 10 | `runtime/runtime.py` `llm/` | LLM-driven agent loop: context assembly → OpenAI-style tool calls → done signal (mock fallback kept for offline tests) |
+| 11 | `mcp.py` `tools/builtin` | MCP client (stdio JSON-RPC, zero deps): any MCP server's tools join the registry; `update_plan` tool lets the model maintain its own plan |
 
 ## Benchmark Results
 
@@ -97,10 +103,18 @@ python -m pytest tests/ -q          # 102 tests, all offline
 ```
 
 Or drive an agent task from the command line (no API key needed — it
-falls back to the offline mock brain):
+falls back to the offline mock brain), then turn the event stream into
+a one-page report:
 
 ```bash
 tether run --goal "Create hello.txt containing 'hi' and verify it" --workspace ./ws
+tether report --events ./ws/logs/events.jsonl          # markdown summary
+```
+
+Plug in any MCP server's tools with `--mcp-cmd` (repeatable):
+
+```bash
+tether run --goal "..." --workspace ./ws --mcp-cmd "python path/to/mcp_server.py"
 ```
 
 Run the offline benchmarks:
@@ -208,9 +222,11 @@ src/tether/
 ├── filesystem/     # DriftDetector (stat → MD5 → AST)
 ├── tools/          # per-runtime registry + side-effect-safe interceptor + real run_test
 ├── llm/            # OpenAI-compatible provider (function calling) + offline mock
-├── cli.py          # `tether run --goal ...` command-line entry point
+├── mcp.py          # MCP client (stdio JSON-RPC): external tool servers -> registry
+├── reporting.py    # events.jsonl -> one-page markdown run report
+├── cli.py          # `tether run` / `tether report` command-line entry points
 └── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 107 tests (all offline, incl. scripted-provider loop tests)
+tests/              # 118 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 
