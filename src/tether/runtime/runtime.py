@@ -13,6 +13,7 @@ Two "brain" modes share the same loop:
 import asyncio
 import random
 import re
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -104,6 +105,9 @@ class TetherRuntime:
         llm_provider: LLMProvider | None = None,
         max_steps: int = 5,
         max_consecutive_failures: int = 0,
+        approval_gate: Callable[[str, dict], Awaitable[bool]] | None = None,
+        approval_tools: set[str] | None = None,
+        max_total_tokens: int | None = None,
     ) -> None:
         """Initialize runtime state, checkpoint manager and config.
 
@@ -118,6 +122,16 @@ class TetherRuntime:
         the error is fed back as an *observation* so the model can retry
         with different arguments, and the circuit breaker stops hopeless
         loops after N consecutive failures.
+
+        Human-in-the-loop: when ``approval_gate`` (an async callable
+        ``(tool_name, params) -> bool``) is set, every call to a tool in
+        ``approval_tools`` (default: write_file, run_test) is paused for
+        approval before execution. A rejection becomes a ``DENIED``
+        observation the model can adapt to — the task is not failed.
+
+        ``max_total_tokens`` stops the loop (status STOPPED, checkpoint
+        saved) once cumulative LLM token usage reaches the cap: a hard
+        cost ceiling. Raise the attribute and ``resume()`` to continue.
         """
         self.workspace_dir = Path(workspace_dir)
         self.tool_timeout = tool_timeout
@@ -125,6 +139,9 @@ class TetherRuntime:
         self.max_steps = max_steps
         self.max_consecutive_failures = max_consecutive_failures
         self._consecutive_failures = 0
+        self.approval_gate = approval_gate
+        self.approval_tools = approval_tools or {"write_file", "run_test"}
+        self.max_total_tokens = max_total_tokens
         self.state = TaskState(goal=goal)
         self.checkpoint_manager = CheckpointManager(self.workspace_dir)
         self.memory_store = MemoryStore(self.workspace_dir)
@@ -405,6 +422,21 @@ class TetherRuntime:
         self._note_touched_files(params)
         cacheable = getattr(tool, "side_effect_free", True)
 
+        # Human-in-the-loop: mutating tools pause for approval.
+        if self.approval_gate is not None and tool_name in self.approval_tools:
+            approved = await self.approval_gate(tool_name, params)
+            self.event_recorder.record(
+                "tool_approval", step=self.state.step_index,
+                tool=tool_name, approved=approved,
+            )
+            if not approved:
+                display = self._format_call(tool_name, params)
+                logger.warning("Tool denied by approval gate | {}", display)
+                self._update_task_summary(
+                    display, success=False, error="denied by approval gate"
+                )
+                return f"DENIED: user rejected {display}"
+
         # Duplicate read-only call within the window -> cached result.
         cached = self.tool_interceptor.check(tool_name, params, cacheable=cacheable)
         if cached is not None:
@@ -658,6 +690,20 @@ class TetherRuntime:
             if self._stop_requested:
                 await self._transition_to(TaskStatus.STOPPED)
                 logger.info("Task stopped by request | step={}", self.state.step_index)
+                break
+
+            # Hard cost ceiling: stop before burning another LLM turn.
+            if (
+                self.max_total_tokens is not None
+                and self.llm_provider is not None
+                and self.state.total_tokens >= self.max_total_tokens
+            ):
+                self.state.error_message = (
+                    f"Token budget exhausted: {self.state.total_tokens} tokens used "
+                    f">= cap {self.max_total_tokens}"
+                )
+                await self._transition_to(TaskStatus.STOPPED)
+                logger.warning("Token budget reached | {}", self.state.error_message)
                 break
 
             self.state.step_index += 1
