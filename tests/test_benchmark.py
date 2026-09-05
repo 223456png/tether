@@ -19,7 +19,7 @@ def test_config_validation() -> None:
     configs = default_configs()
 
     assert set(configs) == {
-        "compression", "memory", "drift", "recovery", "intercept", "e2e"
+        "compression", "memory", "drift", "recovery", "intercept", "agent", "e2e"
     }
     comp = configs["compression"]
     assert comp.baselines == ["full", "last_n", "budget"]

@@ -11,6 +11,7 @@ Two "brain" modes share the same loop:
 """
 
 import asyncio
+import inspect
 import random
 import re
 from collections.abc import Awaitable, Callable
@@ -108,6 +109,7 @@ class TetherRuntime:
         approval_gate: Callable[[str, dict], Awaitable[bool]] | None = None,
         approval_tools: set[str] | None = None,
         max_total_tokens: int | None = None,
+        on_llm_delta: Callable[[str], None] | None = None,
     ) -> None:
         """Initialize runtime state, checkpoint manager and config.
 
@@ -132,6 +134,10 @@ class TetherRuntime:
         ``max_total_tokens`` stops the loop (status STOPPED, checkpoint
         saved) once cumulative LLM token usage reaches the cap: a hard
         cost ceiling. Raise the attribute and ``resume()`` to continue.
+
+        ``on_llm_delta`` (a sync callable receiving each content chunk)
+        enables streaming output for providers that support it — used by
+        the CLI's ``--stream`` to show the model's answer live.
         """
         self.workspace_dir = Path(workspace_dir)
         self.tool_timeout = tool_timeout
@@ -142,6 +148,7 @@ class TetherRuntime:
         self.approval_gate = approval_gate
         self.approval_tools = approval_tools or {"write_file", "run_test"}
         self.max_total_tokens = max_total_tokens
+        self.on_llm_delta = on_llm_delta
         self.state = TaskState(goal=goal)
         self.checkpoint_manager = CheckpointManager(self.workspace_dir)
         self.memory_store = MemoryStore(self.workspace_dir)
@@ -279,9 +286,18 @@ class TetherRuntime:
             self.state.step_index, self.llm_provider.name,
             self.llm_provider.model, self.allocator.current_level.name,
         )
+        extra_kwargs: dict = {}
+        if (
+            self.on_llm_delta is not None
+            and "on_delta" in inspect.signature(
+                self.llm_provider.complete
+            ).parameters
+        ):
+            extra_kwargs["on_delta"] = self.on_llm_delta
         response = await self.llm_provider.complete(
             messages,
             tools=self.tool_registry.get_openai_tools_schema(),
+            **extra_kwargs,
         )
         self.state.prompt_tokens += response.prompt_tokens
         self.state.completion_tokens += response.completion_tokens

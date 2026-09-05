@@ -111,3 +111,11 @@ verify_steps:
 | 24 | 审批门拦截点 | _execute_call 内、缓存检查之前；只拦 mutating 工具（默认 write_file/run_test，approval_tools 可配） | 拦全部工具（读也要人批，不可用）；放在 LLM 回复解析层（mock 路径失控） |
 | 25 | 拒绝后的语义 | DENIED 作为观察回流（任务继续，模型可换路子），不计入连续失败熔断 | 拒绝即失败（用户否决 ≠ 工具故障）；静默跳过（模型不知道被拒） |
 | 26 | 成本熔断时机 | 每轮 think 之前检查累计 token ≥ max_total_tokens → STOPPED（存检查点，可恢复） | FAILED（超预算不是故障）；think 内部抛异常（污染错误通道） |
+
+### Round 8 补充决策：Agent 级集成评测 / SSE 流式
+
+| # | Decision | Choice | Rejected Alternatives |
+|---|----------|--------|----------------------|
+| 27 | agent 评测的"大脑" | 确定性规则策略（ScriptedPolicy + 观察通道解析），驱动真实 TetherRuntime 循环，按最终工作区状态判定成败 | MockProvider 当大脑（从不调工具，无评测意义）；预录制响应序列（非闭环，测不到观察通道）；真实 LLM（不可离线复现） |
+| 28 | 策略的观察通道 | 与真实 LLM 同源：解析组装后 context 的 [RECENT TOOLS] 完整 entry（多行） | 内部直读 runtime 状态（绕过被测通道，评测失真）。首跑即抓到"多行工具输出被单行截断"的通道缺陷，评测价值自证 |
+| 29 | 流式管线位置 | provider.complete(on_delta=...) 按能力探测传递（inspect 签名），runtime 存 on_llm_delta 回调，CLI --stream 打印 | 改 LLMProvider 协议强制全部实现流式（破坏现有 provider）；runtime 内置打印（不可测/不可换） |

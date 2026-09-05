@@ -1,0 +1,596 @@
+{
+  "experiment": "agent",
+  "description": "Agent-level integration eval: TetherRuntime end-to-end over scripted goal-directed tasks (offline, deterministic)",
+  "variants": {
+    "create_verify": {
+      "results": [
+        {
+          "task_id": "agent-create_verify-0",
+          "variant": "create_verify",
+          "success": true,
+          "steps": 3,
+          "prompt_tokens": 300,
+          "completion_tokens": 45,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 80.30600007623434,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "create_verify",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-create_verify-5",
+          "variant": "create_verify",
+          "success": true,
+          "steps": 3,
+          "prompt_tokens": 300,
+          "completion_tokens": 45,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 69.12500003818423,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "create_verify",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-create_verify-10",
+          "variant": "create_verify",
+          "success": true,
+          "steps": 3,
+          "prompt_tokens": 300,
+          "completion_tokens": 45,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 73.47050006501377,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "create_verify",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-create_verify-15",
+          "variant": "create_verify",
+          "success": true,
+          "steps": 3,
+          "prompt_tokens": 300,
+          "completion_tokens": 45,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 66.87260000035167,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "create_verify",
+            "status": "completed"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 4,
+        "success_rate": 1.0,
+        "avg_steps": 3.0,
+        "avg_tokens": {
+          "prompt": 300.0,
+          "completion": 45.0,
+          "total": 345.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 72.443525044946,
+        "p95_latency_ms": 80.30600007623434
+      }
+    },
+    "edit_existing": {
+      "results": [
+        {
+          "task_id": "agent-edit_existing-1",
+          "variant": "edit_existing",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 91.96859993971884,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "edit_existing",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-edit_existing-6",
+          "variant": "edit_existing",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 96.56390000600368,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "edit_existing",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-edit_existing-11",
+          "variant": "edit_existing",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 91.65499999653548,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "edit_existing",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-edit_existing-16",
+          "variant": "edit_existing",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 97.21319994423538,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "edit_existing",
+            "status": "completed"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 4,
+        "success_rate": 1.0,
+        "avg_steps": 4.0,
+        "avg_tokens": {
+          "prompt": 400.0,
+          "completion": 55.0,
+          "total": 455.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 94.35017497162335,
+        "p95_latency_ms": 97.21319994423538
+      }
+    },
+    "search_fix": {
+      "results": [
+        {
+          "task_id": "agent-search_fix-2",
+          "variant": "search_fix",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 93.3641999727115,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "search_fix",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-search_fix-7",
+          "variant": "search_fix",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 95.90820001903921,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "search_fix",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-search_fix-12",
+          "variant": "search_fix",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 93.6339000472799,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "search_fix",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-search_fix-17",
+          "variant": "search_fix",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 92.42819994688034,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "search_fix",
+            "status": "completed"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 4,
+        "success_rate": 1.0,
+        "avg_steps": 4.0,
+        "avg_tokens": {
+          "prompt": 400.0,
+          "completion": 55.0,
+          "total": 455.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 93.83362499647774,
+        "p95_latency_ms": 95.90820001903921
+      }
+    },
+    "plan_execute": {
+      "results": [
+        {
+          "task_id": "agent-plan_execute-3",
+          "variant": "plan_execute",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 98.91920001246035,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "plan_execute",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-plan_execute-8",
+          "variant": "plan_execute",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 99.40679999999702,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "plan_execute",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-plan_execute-13",
+          "variant": "plan_execute",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 102.5861999951303,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "plan_execute",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-plan_execute-18",
+          "variant": "plan_execute",
+          "success": true,
+          "steps": 4,
+          "prompt_tokens": 400,
+          "completion_tokens": 55,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 99.40140007529408,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "plan_execute",
+            "status": "completed"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 4,
+        "success_rate": 1.0,
+        "avg_steps": 4.0,
+        "avg_tokens": {
+          "prompt": 400.0,
+          "completion": 55.0,
+          "total": 455.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 100.07840002072044,
+        "p95_latency_ms": 102.5861999951303
+      }
+    },
+    "test_report": {
+      "results": [
+        {
+          "task_id": "agent-test_report-4",
+          "variant": "test_report",
+          "success": true,
+          "steps": 2,
+          "prompt_tokens": 200,
+          "completion_tokens": 35,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 449.60639998316765,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "test_report",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-test_report-9",
+          "variant": "test_report",
+          "success": true,
+          "steps": 2,
+          "prompt_tokens": 200,
+          "completion_tokens": 35,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 424.90959994029254,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "test_report",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-test_report-14",
+          "variant": "test_report",
+          "success": true,
+          "steps": 2,
+          "prompt_tokens": 200,
+          "completion_tokens": 35,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 411.97479993570596,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "test_report",
+            "status": "completed"
+          }
+        },
+        {
+          "task_id": "agent-test_report-19",
+          "variant": "test_report",
+          "success": true,
+          "steps": 2,
+          "prompt_tokens": 200,
+          "completion_tokens": 35,
+          "total_tokens": 0,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "latency_ms": 410.8989000087604,
+          "steps_lost": 0,
+          "recovery_latency_ms": 0.0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "agent": true,
+            "task": "test_report",
+            "status": "completed"
+          }
+        }
+      ],
+      "metrics": {
+        "n_samples": 4,
+        "success_rate": 1.0,
+        "avg_steps": 2.0,
+        "avg_tokens": {
+          "prompt": 200.0,
+          "completion": 35.0,
+          "total": 235.0
+        },
+        "avg_file_reads": 0.0,
+        "avg_file_reads_per_step": 0.0,
+        "avg_disk_reads": 0.0,
+        "avg_stale_reads": 0.0,
+        "total_cost": 0.0,
+        "avg_cost_per_task": 0.0,
+        "avg_latency_ms": 424.34742496698163,
+        "p95_latency_ms": 449.60639998316765
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ import json
 import time
 import urllib.error
 import urllib.request
+from collections.abc import Callable
 from typing import Any
 
 from loguru import logger
@@ -47,6 +48,7 @@ class OpenAICompatProvider:
         temperature: float = 0.2,
         max_tokens: int = 1024,
         tools: list[dict] | None = None,
+        on_delta: Callable[[str], None] | None = None,
     ) -> LLMResponse:
         """Call the chat completions endpoint with retry + backoff.
 
@@ -56,6 +58,10 @@ class OpenAICompatProvider:
         the call retried, up to ``_MAX_TOKEN_CEILING``. Responses that
         request tool calls are returned as-is (empty content is normal
         there and must not trigger the truncation retry).
+
+        With ``on_delta`` the request uses SSE streaming and the callable
+        receives each content chunk as it arrives (the assembled full
+        text still comes back on the response).
         """
         start = time.perf_counter()
         last_error: Exception | None = None
@@ -70,12 +76,20 @@ class OpenAICompatProvider:
             }
             if tools:
                 payload["tools"] = tools
+            if on_delta is not None:
+                payload["stream"] = True
+                payload["stream_options"] = {"include_usage": True}
             response: LLMResponse | None = None
             for attempt in range(1, self.max_retries + 1):
                 try:
-                    body = await asyncio.to_thread(
-                        self._post, json.dumps(payload).encode("utf-8")
-                    )
+                    if on_delta is not None:
+                        body = await asyncio.to_thread(
+                            self._post_stream, payload, on_delta
+                        )
+                    else:
+                        body = await asyncio.to_thread(
+                            self._post, json.dumps(payload).encode("utf-8")
+                        )
                     response = self._parse_response(body, start)
                     break
                 except (
@@ -128,6 +142,27 @@ class OpenAICompatProvider:
         with urllib.request.urlopen(request, timeout=self.timeout_seconds) as resp:
             return json.loads(resp.read().decode("utf-8"))
 
+    def _post_stream(self, payload: dict, on_delta: Callable[[str], None]) -> dict:
+        """Blocking streaming POST (runs in a thread).
+
+        Parses the SSE line protocol, forwards each content delta to
+        ``on_delta`` as it arrives, and assembles an OpenAI-style
+        response body so the normal parsing path can consume it.
+        """
+        url = f"{self.base_url}/chat/completions"
+        request = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}",
+                "Accept": "text/event-stream",
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=self.timeout_seconds) as resp:
+            return accumulate_sse(resp, on_delta)
+
     def _parse_response(self, body: dict, start: float) -> LLMResponse:
         """Extract content + tool calls + usage from an OpenAI-style body."""
         latency_ms = (time.perf_counter() - start) * 1000
@@ -176,6 +211,50 @@ class OpenAICompatProvider:
                 )
             )
         return calls
+
+
+def accumulate_sse(line_iter, on_delta: Callable[[str], None]) -> dict:
+    """Fold an SSE chunk stream into an OpenAI-style response body.
+
+    ``line_iter`` yields already-decoded lines (a file-like response
+    object iterates lines). ``data: [DONE]`` terminates the stream.
+    """
+    content_parts: list[str] = []
+    finish_reason = ""
+    usage: dict = {}
+    model = ""
+    for raw in line_iter:
+        line = raw.decode("utf-8") if isinstance(raw, bytes) else raw
+        line = line.strip()
+        if not line.startswith("data:"):
+            continue
+        data = line[len("data:"):].strip()
+        if data == "[DONE]":
+            break
+        try:
+            chunk = json.loads(data)
+        except json.JSONDecodeError:
+            logger.debug("Skipping malformed SSE chunk: {}", data[:80])
+            continue
+        model = chunk.get("model", model)
+        if chunk.get("usage"):
+            usage = chunk["usage"]
+        choices = chunk.get("choices") or [{}]
+        delta = choices[0].get("delta") or {}
+        piece = delta.get("content") or ""
+        if piece:
+            content_parts.append(piece)
+            on_delta(piece)
+        if choices[0].get("finish_reason"):
+            finish_reason = choices[0]["finish_reason"]
+    return {
+        "model": model,
+        "choices": [{
+            "message": {"role": "assistant", "content": "".join(content_parts)},
+            "finish_reason": finish_reason,
+        }],
+        "usage": usage,
+    }
 
 
 # Convenience alias: DeepSeek is just a preset endpoint.

@@ -120,6 +120,19 @@ class ReportGenerator:
                 else "| 拦截率 | n/a |"
             )
             rows.append(f"| 节省 Token | {saved} |")
+        elif experiment_name == "agent":
+            total = len(results)
+            success = sum(1 for r in results if r["success"])
+            by_task: dict = {}
+            for r in results:
+                stats = by_task.setdefault(r["variant"], {"pass": 0, "total": 0})
+                stats["total"] += 1
+                stats["pass"] += 1 if r["success"] else 0
+            rows.append(f"| 任务完成率 | {success / total:.2%} ({success}/{total}) |" if total else "| 任务完成率 | n/a |")
+            for task, stats in by_task.items():
+                rows.append(
+                    f"| {task} | {stats['pass']}/{stats['total']} 通过 |"
+                )
         elif experiment_name == "memory":
             by_variant: dict = {}
             for r in results:
@@ -241,6 +254,22 @@ class ReportGenerator:
                 f"5 秒窗口内的重复调用拦截率 {rate:.0%}"
                 f"（{intercepted}/{duplicates}），"
                 f"共节省 {saved} Token 的冗余工具输出。"
+            )
+        if experiment_name == "agent":
+            total = len(results)
+            success = sum(1 for r in results if r["success"])
+            failed = sorted({
+                r["variant"] for r in results if not r["success"]
+            })
+            note = (
+                f"；失败任务类型：{', '.join(failed)}"
+                if failed else "（全部任务类型的端到端验证均通过）"
+            )
+            return (
+                f"确定性策略驱动真实 TetherRuntime 循环完成 {total} 个合成任务，"
+                f"端到端成功率 {success / total if total else 0:.0%}{note}。"
+                f"本实验测的是运行时整环（上下文组装 → 结构化工具调用 → 记忆 → "
+                f"检查点），不衡量模型智能。"
             )
         if experiment_name == "e2e":
             is_mock = any(

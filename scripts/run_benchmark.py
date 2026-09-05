@@ -28,9 +28,9 @@ from tether.benchmarks.config import default_configs  # noqa: E402
 from tether.benchmarks.report import ReportGenerator  # noqa: E402
 from tether.benchmarks.runner import BenchmarkRunner  # noqa: E402
 
-_EXPERIMENTS = ["compression", "memory", "drift", "recovery", "intercept", "e2e"]
+_EXPERIMENTS = ["compression", "memory", "drift", "recovery", "intercept", "agent", "e2e"]
 # --all deliberately excludes e2e: real API calls cost money.
-_OFFLINE_EXPERIMENTS = ["compression", "memory", "drift", "recovery", "intercept"]
+_OFFLINE_EXPERIMENTS = ["compression", "memory", "drift", "recovery", "intercept", "agent"]
 
 
 async def main() -> None:
