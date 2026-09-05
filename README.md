@@ -53,7 +53,7 @@ All numbers below are produced by the code in this repository. Run `python scrip
 |----------|--------------|----------------------|
 | Full context (baseline) | 681 | 100% |
 | Last-N truncation | 537 (−21%) | **65%** — drops early tool results |
-| **BudgetAllocator (ours)** | **574 (−16%)** | **100%** — ROUGE-L validated, rollback on failure |
+| **BudgetAllocator (ours)** | **531 (−22%)** | **100%** — ROUGE-L validated, rollback on failure |
 
 ### 2. Real-LLM end-to-end, pass@1 (20 HumanEval tasks × 3 arms, DeepSeek, greedy decoding)
 
@@ -172,7 +172,7 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 - **`file_deleted` recovery covers only touched files.** Files the agent read or wrote get content-backed snapshots (≤64KB each) and can be restored after external deletion; files never touched by the agent cannot be recovered.
 - **The drift test set is self-constructed** (10 change types × 10 samples). 100% accuracy means the ten mutation classes are covered, not production-level generalization.
 - **HumanEval subset is bundled offline** (20 problems) because the build environment had no network access to the upstream repo.
-- **Compression ratios are modest** (16–21%) vs learned compressors; the trade is a hard semantic-preservation guarantee.
+- **Compression ratio is ~22% vs learned compressors' 10–20×**; the trade is a hard semantic-preservation guarantee (every compression passes ROUGE-L + keyword validation or rolls back).
 
 ## Roadmap
 

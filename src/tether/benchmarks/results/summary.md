@@ -4,17 +4,17 @@
 |------|------|--------|--------|--------------|
 | compression | full | 20 | 100.00% | 0 |
 | compression | last_n | 20 | 65.00% | 17 |
-| compression | budget | 20 | 100.00% | 28 |
+| compression | budget | 20 | 100.00% | 139 |
 | memory | no_memory | 20 | 100.00% | 0 |
 | memory | flat | 20 | 45.00% | 0 |
 | memory | layered | 20 | 100.00% | 0 |
-| drift | content_logic | 10 | 100.00% | 1 |
+| drift | content_logic | 10 | 100.00% | 2 |
 | drift | comment_whitespace | 10 | 100.00% | 1 |
-| drift | append_content | 10 | 100.00% | 1 |
+| drift | append_content | 10 | 100.00% | 2 |
 | drift | file_deleted | 10 | 100.00% | 0 |
 | drift | file_renamed | 10 | 100.00% | 0 |
 | drift | function_renamed | 10 | 100.00% | 1 |
-| drift | function_added | 10 | 100.00% | 1 |
+| drift | function_added | 10 | 100.00% | 2 |
 | drift | function_removed | 10 | 100.00% | 1 |
 | drift | signature_changed | 10 | 100.00% | 1 |
 | drift | multi_file | 10 | 100.00% | 1 |
