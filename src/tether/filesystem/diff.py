@@ -1,9 +1,8 @@
 """Symbol-level diff utilities used by drift detection."""
 
-from typing import Dict, List
 
 
-def compare_symbols(old_symbols: List[str], new_symbols: List[str]) -> Dict[str, object]:
+def compare_symbols(old_symbols: list[str], new_symbols: list[str]) -> dict[str, object]:
     """Compare two symbol lists.
 
     Returns added/removed/common symbol names plus a ``changed`` flag that

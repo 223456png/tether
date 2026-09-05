@@ -10,11 +10,11 @@ import json
 import time
 import urllib.error
 import urllib.request
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from loguru import logger
 
-from tether.llm.base import LLMProvider, LLMResponse, ToolCall
+from tether.llm.base import LLMResponse, ToolCall
 
 _RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 
@@ -43,10 +43,10 @@ class OpenAICompatProvider:
 
     async def complete(
         self,
-        messages: List[dict],
+        messages: list[dict],
         temperature: float = 0.2,
         max_tokens: int = 1024,
-        tools: Optional[List[dict]] = None,
+        tools: list[dict] | None = None,
     ) -> LLMResponse:
         """Call the chat completions endpoint with retry + backoff.
 
@@ -58,11 +58,11 @@ class OpenAICompatProvider:
         there and must not trigger the truncation retry).
         """
         start = time.perf_counter()
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
         budget = max_tokens
 
         while True:
-            payload: Dict[str, Any] = {
+            payload: dict[str, Any] = {
                 "model": self.model,
                 "messages": messages,
                 "temperature": temperature,
@@ -70,7 +70,7 @@ class OpenAICompatProvider:
             }
             if tools:
                 payload["tools"] = tools
-            response: Optional[LLMResponse] = None
+            response: LLMResponse | None = None
             for attempt in range(1, self.max_retries + 1):
                 try:
                     body = await asyncio.to_thread(
@@ -146,14 +146,14 @@ class OpenAICompatProvider:
         )
 
     @staticmethod
-    def _parse_tool_calls(raw_calls: Any) -> List[ToolCall]:
+    def _parse_tool_calls(raw_calls: Any) -> list[ToolCall]:
         """Normalize the ``message.tool_calls`` payload into ToolCalls.
 
         ``arguments`` arrives as a JSON *string* on the wire; malformed
         JSON degrades to empty arguments rather than failing the whole
         completion (the runtime surfaces a tool-level error instead).
         """
-        calls: List[ToolCall] = []
+        calls: list[ToolCall] = []
         for raw in raw_calls or []:
             if not isinstance(raw, dict):
                 continue

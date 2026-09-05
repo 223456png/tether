@@ -18,7 +18,6 @@ from tether.tools import (
 )
 from tether.tools.builtin import ReadFileTool
 
-
 # ---------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------
@@ -288,9 +287,8 @@ def test_interceptor_invalidate_all() -> None:
 
 async def test_read_after_write_is_fresh(tmp_path: Path) -> None:
     """read -> write(same file) -> read returns new content, not [CACHED]."""
-    from tether.llm.base import LLMResponse, ToolCall
-
     from tests.test_agent_loop import ScriptedProvider, _final_response
+    from tether.llm.base import LLMResponse, ToolCall
 
     def _call(name: str, arguments: dict) -> LLMResponse:
         return LLMResponse(

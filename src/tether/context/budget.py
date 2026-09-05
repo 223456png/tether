@@ -1,6 +1,5 @@
 """BudgetAllocator: level-based (0-4) context pruning under a token budget."""
 
-from typing import Dict, List, Optional, Tuple
 
 from loguru import logger
 
@@ -28,7 +27,7 @@ class BudgetAllocator:
         """Store config; start at level 0 with empty stats."""
         self.config = config
         self._current_level = CompressionLevel.NONE
-        self._last_compression_stats: Dict[str, object] = {}
+        self._last_compression_stats: dict[str, object] = {}
 
     @property
     def current_level(self) -> CompressionLevel:
@@ -36,7 +35,7 @@ class BudgetAllocator:
         return self._current_level
 
     @property
-    def last_compression_stats(self) -> Dict[str, object]:
+    def last_compression_stats(self) -> dict[str, object]:
         """Stats dict from the most recent allocate() call."""
         return self._last_compression_stats
 
@@ -44,7 +43,7 @@ class BudgetAllocator:
     # Section renderers
     # ------------------------------------------------------------------
     @staticmethod
-    def _render_task_summary(summary: Optional[TaskSummary]) -> str:
+    def _render_task_summary(summary: TaskSummary | None) -> str:
         """Render TaskSummary in full (never pruned)."""
         if summary is None:
             return "(no task summary)"
@@ -64,13 +63,13 @@ class BudgetAllocator:
 
     @staticmethod
     def _render_files(
-        snapshots: List[FileSnapshot],
-        current_files: List[str],
+        snapshots: list[FileSnapshot],
+        current_files: list[str],
         level: CompressionLevel,
     ) -> str:
         """Render file snapshots according to the compression level."""
         current = {str(f).replace("\\", "/") for f in current_files}
-        lines: List[str] = []
+        lines: list[str] = []
         for snap in snapshots:
             is_current = snap.path in current
             if not is_current:
@@ -89,9 +88,9 @@ class BudgetAllocator:
 
     @staticmethod
     def _select_episodic(
-        notes: List[EpisodicNotes],
+        notes: list[EpisodicNotes],
         level: CompressionLevel,
-    ) -> List[EpisodicNotes]:
+    ) -> list[EpisodicNotes]:
         """Pick the notes that survive at ``level`` (confidence + usage rank)."""
         min_conf = _EPISODIC_MIN_CONFIDENCE[level]
         max_notes = _EPISODIC_MAX_NOTES[level]
@@ -104,7 +103,7 @@ class BudgetAllocator:
     @classmethod
     def _render_episodic(
         cls,
-        notes: List[EpisodicNotes],
+        notes: list[EpisodicNotes],
         level: CompressionLevel,
     ) -> str:
         """Render episodic notes, filtered by confidence/count per level."""
@@ -117,7 +116,7 @@ class BudgetAllocator:
 
     @staticmethod
     def _render_tools(
-        tool_results: List[Tuple[str, str]],
+        tool_results: list[tuple[str, str]],
         level: CompressionLevel,
     ) -> str:
         """Render recent tool results, truncated per level."""
@@ -138,12 +137,12 @@ class BudgetAllocator:
         self,
         level: CompressionLevel,
         system_prompt: str,
-        task_summary: Optional[TaskSummary],
-        file_snapshots: List[FileSnapshot],
-        episodic_notes: List[EpisodicNotes],
-        tool_results: List[Tuple[str, str]],
-        current_files: List[str],
-    ) -> Dict[str, str]:
+        task_summary: TaskSummary | None,
+        file_snapshots: list[FileSnapshot],
+        episodic_notes: list[EpisodicNotes],
+        tool_results: list[tuple[str, str]],
+        current_files: list[str],
+    ) -> dict[str, str]:
         """Render every context section at the given compression level."""
         return {
             "system": system_prompt,
@@ -156,12 +155,12 @@ class BudgetAllocator:
     def render_uncompressed(
         self,
         system_prompt: str,
-        task_summary: Optional[TaskSummary],
-        file_snapshots: List[FileSnapshot],
-        episodic_notes: List[EpisodicNotes],
-        tool_results: List[Tuple[str, str]],
-        current_files: List[str],
-    ) -> Dict[str, str]:
+        task_summary: TaskSummary | None,
+        file_snapshots: list[FileSnapshot],
+        episodic_notes: list[EpisodicNotes],
+        tool_results: list[tuple[str, str]],
+        current_files: list[str],
+    ) -> dict[str, str]:
         """Render all sections at Level 0 (used as the validation baseline)."""
         return self._render_all(
             CompressionLevel.NONE, system_prompt, task_summary,
@@ -172,12 +171,12 @@ class BudgetAllocator:
         self,
         level: int,
         system_prompt: str,
-        task_summary: Optional[TaskSummary],
-        file_snapshots: List[FileSnapshot],
-        episodic_notes: List[EpisodicNotes],
-        tool_results: List[Tuple[str, str]],
-        current_files: List[str],
-    ) -> Dict[str, str]:
+        task_summary: TaskSummary | None,
+        file_snapshots: list[FileSnapshot],
+        episodic_notes: list[EpisodicNotes],
+        tool_results: list[tuple[str, str]],
+        current_files: list[str],
+    ) -> dict[str, str]:
         """Render all sections at an explicit compression level.
 
         Used by the benchmark to sweep levels independently of a token
@@ -191,11 +190,11 @@ class BudgetAllocator:
     def allocate(
         self,
         system_prompt: str,
-        task_summary: Optional[TaskSummary],
-        file_snapshots: List[FileSnapshot],
-        episodic_notes: List[EpisodicNotes],
-        tool_results: List[Tuple[str, str]],
-        current_files: List[str],
+        task_summary: TaskSummary | None,
+        file_snapshots: list[FileSnapshot],
+        episodic_notes: list[EpisodicNotes],
+        tool_results: list[tuple[str, str]],
+        current_files: list[str],
     ) -> dict:
         """Pick the mildest compression level fitting the budget.
 

@@ -122,7 +122,7 @@ def test_detect_missing_file(tmp_path: Path) -> None:
 def test_memory_store_invalidate(tmp_path: Path) -> None:
     """invalidate_file_snapshot removes the stored snapshot."""
     store = MemoryStore(tmp_path)
-    p = _write(tmp_path, "src/app.py", PY_CODE)
+    _write(tmp_path, "src/app.py", PY_CODE)
     snap = _snap(tmp_path, "src/app.py")
     store.save_file_snapshot(snap)
 

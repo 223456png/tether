@@ -3,7 +3,6 @@
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List
 
 
 class ReportGenerator:
@@ -24,7 +23,7 @@ class ReportGenerator:
         """Generate a Markdown report for one experiment."""
         payload = self._load(experiment_name)
         variants = payload["variants"]
-        lines: List[str] = [
+        lines: list[str] = [
             f"## {experiment_name} 实验结果",
             "",
             "### 配置",
@@ -75,9 +74,9 @@ class ReportGenerator:
         return "\n".join(lines)
 
     @staticmethod
-    def _specialized_rows(experiment_name: str, results: List[dict]) -> List[str]:
+    def _specialized_rows(experiment_name: str, results: list[dict]) -> list[str]:
         """Build experiment-specific metric rows from all results."""
-        rows: List[str] = []
+        rows: list[str] = []
         if experiment_name == "drift":
             drift = [r["extra"]["drift"] for r in results if r["extra"].get("drift")]
             total = len(drift)
@@ -164,7 +163,7 @@ class ReportGenerator:
 
     @staticmethod
     def _conclusion(
-        experiment_name: str, variants: dict, results: List[dict]
+        experiment_name: str, variants: dict, results: list[dict]
     ) -> str:
         """Auto-derive a one-paragraph conclusion from the metrics."""
         def _metrics(variant: str) -> dict:
@@ -211,9 +210,11 @@ class ReportGenerator:
             fn = sum(1 for d in drift if d.get("fn"))
             accuracy = (tp + tn) / total if total else 0
             fn_rate = fn / (fn + tp) if (fn + tp) else 0
+            fp_rate = fp / total if total else 0
             return (
                 f"10 类文件变更共 {total} 个样本，三级级联检测（stat -> MD5 -> "
-                f"符号结构）准确率 {accuracy:.1%}，漏报率 {fn_rate:.1%}，"
+                f"符号结构）准确率 {accuracy:.1%}，误报率 {fp_rate:.1%}，"
+                f"漏报率 {fn_rate:.1%}，"
                 f"平均单文件检测耗时 "
                 f"{sum(d['detect_ms'] for d in drift) / total:.2f}ms。"
             )
@@ -271,9 +272,9 @@ class ReportGenerator:
             )
         return ""
 
-    def generate_table(self, experiments: List[str]) -> str:
+    def generate_table(self, experiments: list[str]) -> str:
         """Generate a cross-experiment summary table."""
-        lines: List[str] = [
+        lines: list[str] = [
             "# Tether Benchmark 汇总报告",
             "",
             "| 实验 | 变体 | 样本数 | 成功率 | 平均延迟(ms) |",

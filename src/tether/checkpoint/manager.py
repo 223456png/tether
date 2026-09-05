@@ -4,7 +4,6 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional
 
 from loguru import logger
 
@@ -24,10 +23,10 @@ class CheckpointSnapshot:
     """
 
     task_state: TaskState
-    file_snapshots: List[Dict[str, str]] = field(default_factory=list)
-    workspace_files: List[str] = field(default_factory=list)
+    file_snapshots: list[dict[str, str]] = field(default_factory=list)
+    workspace_files: list[str] = field(default_factory=list)
     timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
-    step_log: Dict[str, List[str]] = field(default_factory=dict)
+    step_log: dict[str, list[str]] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """Serialize to a JSON-compatible dict (JSONL line payload)."""
@@ -71,7 +70,7 @@ class CheckpointManager:
         """Return the JSONL file path for ``task_id``."""
         return self.checkpoint_dir / f"{task_id}.jsonl"
 
-    def _read_lines(self, task_id: str) -> List[dict]:
+    def _read_lines(self, task_id: str) -> list[dict]:
         """Read all non-empty JSON lines for ``task_id`` (empty list if absent)."""
         path = self._checkpoint_path(task_id)
         if not path.exists():
@@ -97,7 +96,7 @@ class CheckpointManager:
             state.task_id, state.step_index, state.status.value,
         )
 
-    def load(self, task_id: str) -> Optional[TaskState]:
+    def load(self, task_id: str) -> TaskState | None:
         """Load the latest plain TaskState line for ``task_id``.
 
         Full (v2) checkpoint lines are skipped so this keeps returning the
@@ -117,7 +116,7 @@ class CheckpointManager:
         self,
         state: TaskState,
         memory_store: "object",
-        step_log: Optional[Dict[int, List[str]]] = None,
+        step_log: dict[int, list[str]] | None = None,
     ) -> None:
         """Append a full checkpoint (v2) including a workspace fingerprint.
 
@@ -145,7 +144,7 @@ class CheckpointManager:
             state.task_id, state.step_index, state.status.value, len(summaries),
         )
 
-    def load_full(self, task_id: str) -> Optional[CheckpointSnapshot]:
+    def load_full(self, task_id: str) -> CheckpointSnapshot | None:
         """Load the latest full (v2) checkpoint as a CheckpointSnapshot.
 
         Falls back to wrapping the latest plain line (empty fingerprint)
@@ -164,9 +163,9 @@ class CheckpointManager:
         logger.warning("No checkpoint found for task {}", task_id)
         return None
 
-    def scan_workspace(self) -> List[str]:
+    def scan_workspace(self) -> list[str]:
         """List all workspace files (relative posix paths), ignoring internals."""
-        files: List[str] = []
+        files: list[str] = []
         if not self.workspace_dir.exists():
             return files
         for p in sorted(self.workspace_dir.rglob("*")):
@@ -178,7 +177,7 @@ class CheckpointManager:
             files.append(rel.as_posix())
         return files
 
-    def list_checkpoints(self, task_id: str) -> List[Path]:
+    def list_checkpoints(self, task_id: str) -> list[Path]:
         """Return checkpoint file paths for ``task_id`` (extensible for future shards)."""
         path = self._checkpoint_path(task_id)
         return [path] if path.exists() else []

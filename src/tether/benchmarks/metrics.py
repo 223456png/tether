@@ -1,7 +1,6 @@
 """Metric computation for benchmark results."""
 
 from dataclasses import asdict, dataclass, field
-from typing import List, Optional
 
 
 @dataclass
@@ -37,12 +36,12 @@ class TaskResult:
         return asdict(self)
 
 
-def _mean(values: List[float]) -> float:
+def _mean(values: list[float]) -> float:
     """Arithmetic mean (0.0 for empty lists)."""
     return sum(values) / len(values) if values else 0.0
 
 
-def _percentile(values: List[float], pct: float) -> float:
+def _percentile(values: list[float], pct: float) -> float:
     """Nearest-rank percentile."""
     if not values:
         return 0.0
@@ -51,7 +50,7 @@ def _percentile(values: List[float], pct: float) -> float:
     return ordered[rank - 1]
 
 
-def compute_metrics(results: List[TaskResult]) -> dict:
+def compute_metrics(results: list[TaskResult]) -> dict:
     """Aggregate a list of TaskResults into summary metrics.
 
     Only the metric families relevant to the experiment's TaskResults

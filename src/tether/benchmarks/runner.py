@@ -1,6 +1,5 @@
 """BenchmarkRunner: executes the five Tether experiments."""
 
-import asyncio
 import csv
 import json
 import random
@@ -8,7 +7,6 @@ import tempfile
 import time
 import zlib
 from pathlib import Path
-from typing import Dict, List
 
 from loguru import logger
 
@@ -40,15 +38,15 @@ class BenchmarkRunner:
     def __init__(self, config: ExperimentConfig) -> None:
         """Bind the experiment config and prepare the output dir."""
         self.config = config
-        self.results: List[TaskResult] = []
-        self.metrics_by_variant: Dict[str, dict] = {}
+        self.results: list[TaskResult] = []
+        self.metrics_by_variant: dict[str, dict] = {}
         self.output_dir = config.output_dir / config.name
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
-    async def run_experiment(self) -> List[TaskResult]:
+    async def run_experiment(self) -> list[TaskResult]:
         """Dispatch to the experiment named in the config."""
         handlers = {
             "compression": self._run_compression,
@@ -94,9 +92,9 @@ class BenchmarkRunner:
         logger.info("Results saved | {} -> {}", self.config.name, json_path)
         return json_path
 
-    def _group_by_variant(self) -> Dict[str, List[TaskResult]]:
+    def _group_by_variant(self) -> dict[str, list[TaskResult]]:
         """Group results by experiment arm."""
-        groups: Dict[str, List[TaskResult]] = {}
+        groups: dict[str, list[TaskResult]] = {}
         for r in self.results:
             groups.setdefault(r.variant, []).append(r)
         return groups
@@ -104,10 +102,10 @@ class BenchmarkRunner:
     # ------------------------------------------------------------------
     # Experiment 1: context compression
     # ------------------------------------------------------------------
-    async def _run_compression(self) -> List[TaskResult]:
+    async def _run_compression(self) -> list[TaskResult]:
         """Compare full context / last-N / BudgetAllocator per task."""
         tasks = load_humaneval(self.config.num_samples)
-        results: List[TaskResult] = []
+        results: list[TaskResult] = []
 
         for task in tasks:
             data = self._build_task_context(task)
@@ -291,10 +289,10 @@ class BenchmarkRunner:
     # ------------------------------------------------------------------
     # Experiment 2: memory ablation
     # ------------------------------------------------------------------
-    async def _run_memory(self) -> List[TaskResult]:
+    async def _run_memory(self) -> list[TaskResult]:
         """Compare no-memory / flat / layered caching on file reads."""
         tasks = load_humaneval(self.config.num_samples)
-        results: List[TaskResult] = []
+        results: list[TaskResult] = []
 
         for task in tasks:
             rng = random.Random(zlib.crc32(task["task_id"].encode()))
@@ -343,7 +341,7 @@ class BenchmarkRunner:
     # ------------------------------------------------------------------
     # Experiment 3: drift detection
     # ------------------------------------------------------------------
-    async def _run_drift(self) -> List[TaskResult]:
+    async def _run_drift(self) -> list[TaskResult]:
         """Run DriftDetector over the 10-type mutation dataset."""
         samples = generate_drift_samples(
             samples_per_type=getattr(self.config, "samples_per_type", 10),
@@ -351,7 +349,7 @@ class BenchmarkRunner:
         )
         if self.config.num_samples:
             # Slice per change type so every type stays represented.
-            by_type: Dict[str, List[dict]] = {}
+            by_type: dict[str, list[dict]] = {}
             for s in samples:
                 by_type.setdefault(s["change_type"], []).append(s)
             samples = [
@@ -359,7 +357,7 @@ class BenchmarkRunner:
                 for change_type in by_type
                 for s in by_type[change_type][: self.config.num_samples]
             ]
-        results: List[TaskResult] = []
+        results: list[TaskResult] = []
 
         with tempfile.TemporaryDirectory() as tmp:
             ws = Path(tmp)
@@ -412,10 +410,10 @@ class BenchmarkRunner:
     # ------------------------------------------------------------------
     # Experiment 4: recovery scenarios
     # ------------------------------------------------------------------
-    async def _run_recovery(self) -> List[TaskResult]:
+    async def _run_recovery(self) -> list[TaskResult]:
         """Run RecoveryManager over the 10 interruption scenarios."""
         runs_per = getattr(self.config, "runs_per_scenario", 5)
-        results: List[TaskResult] = []
+        results: list[TaskResult] = []
 
         for scenario_name, error_message in RECOVERY_SCENARIOS:
             for run_idx in range(runs_per):
@@ -477,12 +475,12 @@ class BenchmarkRunner:
     # ------------------------------------------------------------------
     # Experiment 5: interception
     # ------------------------------------------------------------------
-    async def _run_intercept(self) -> List[TaskResult]:
+    async def _run_intercept(self) -> list[TaskResult]:
         """Measure duplicate-call interception over scripted task runs."""
         from tether.tools.intercept import CallInterceptor
 
         tasks = load_humaneval(self.config.num_samples)
-        results: List[TaskResult] = []
+        results: list[TaskResult] = []
 
         for task in tasks:
             interceptor = CallInterceptor(window_seconds=5)
@@ -495,10 +493,10 @@ class BenchmarkRunner:
             intercepted = 0
             duplicates = 0
             saved_tokens = 0
-            seen: Dict[str, str] = {}
+            seen: dict[str, str] = {}
 
             start = time.perf_counter()
-            for step, call_idx in enumerate(script, start=1):
+            for _step, call_idx in enumerate(script, start=1):
                 params = {"index": call_idx}
                 key = json.dumps(params, sort_keys=True)
                 is_duplicate = key in seen
@@ -534,7 +532,7 @@ class BenchmarkRunner:
     # ------------------------------------------------------------------
     # Experiment 6: real-LLM end-to-end (pass@1)
     # ------------------------------------------------------------------
-    async def _run_e2e(self) -> List[TaskResult]:
+    async def _run_e2e(self) -> list[TaskResult]:
         """Measure real pass@1 under the three context strategies.
 
         For each HumanEval task the three variant contexts (from the
@@ -555,7 +553,7 @@ class BenchmarkRunner:
             )
 
         tasks = load_humaneval(self.config.num_samples)
-        results: List[TaskResult] = []
+        results: list[TaskResult] = []
         failed_tasks = 0
 
         for task in tasks:

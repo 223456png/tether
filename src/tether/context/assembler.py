@@ -1,6 +1,5 @@
 """ContextAssembler: loads memory layers, allocates budget, validates, assembles."""
 
-from typing import Dict, List, Optional, Tuple
 
 from loguru import logger
 
@@ -26,7 +25,7 @@ class ContextAssembler:
     def __init__(
         self,
         allocator: BudgetAllocator,
-        validator: Optional[RougeValidator] = None,
+        validator: RougeValidator | None = None,
         enable_validation: bool = True,
     ) -> None:
         """Store allocator and validator; validation is on by default."""
@@ -36,7 +35,7 @@ class ContextAssembler:
         self.rollback_count = 0
 
     @staticmethod
-    def _join(sections: Dict[str, str]) -> str:
+    def _join(sections: dict[str, str]) -> str:
         """Join rendered sections into the final context string."""
         headers = {
             "system": "[SYSTEM]",
@@ -51,7 +50,7 @@ class ContextAssembler:
 
     def _load_memory(
         self, task_state: TaskState, memory_store: MemoryStore
-    ) -> Tuple[TaskSummary, List[FileSnapshot], List[EpisodicNotes]]:
+    ) -> tuple[TaskSummary, list[FileSnapshot], list[EpisodicNotes]]:
         """Load the three memory layers, synthesizing a summary if absent."""
         summary = memory_store.load_task_summary(task_state.task_id)
         if summary is None:
@@ -66,7 +65,7 @@ class ContextAssembler:
         return summary, snapshots, notes
 
     @staticmethod
-    def _extract_keywords(summary: TaskSummary) -> List[str]:
+    def _extract_keywords(summary: TaskSummary) -> list[str]:
         """Extract must-survive keywords from the task summary."""
         return [s for s in (summary.goal, summary.next_action) if s]
 
@@ -75,8 +74,8 @@ class ContextAssembler:
         system_prompt: str,
         task_state: TaskState,
         memory_store: MemoryStore,
-        tool_results: List[Tuple[str, str]],
-        current_files: List[str],
+        tool_results: list[tuple[str, str]],
+        current_files: list[str],
     ) -> str:
         """Load memory, allocate budget, validate compression, assemble.
 

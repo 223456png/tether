@@ -1,7 +1,6 @@
 """Builtin tools: read_file / write_file / search_code / run_test."""
 
 from pathlib import Path
-from typing import List, Optional, Tuple
 
 from loguru import logger
 
@@ -12,7 +11,7 @@ _IGNORED_DIRS = {"checkpoints", "memory", "logs", ".git", "__pycache__",
                  ".pytest_cache", ".libs", "node_modules", ".venv"}
 
 
-def resolve_in_workspace(workspace: Path, path: str) -> Tuple[Optional[Path], Optional[str]]:
+def resolve_in_workspace(workspace: Path, path: str) -> tuple[Path | None, str | None]:
     """Resolve ``path`` under ``workspace``, refusing escapes.
 
     Returns ``(full_path, None)`` on success or ``(None, error_message)``
@@ -143,7 +142,7 @@ class SearchTool(Tool):
 
     async def execute(self, pattern: str) -> ToolResult:
         """Scan workspace text files and return up to 20 matching lines."""
-        matches: List[str] = []
+        matches: list[str] = []
         if self.workspace.exists():
             for p in sorted(self.workspace.rglob("*")):
                 if len(matches) >= 20:

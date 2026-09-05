@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tether"
-version = "0.1.0"
-description = "Tether: a runtime for long-running coding agents (Phase 1: state machine + checkpoint + tool timeout)"
+version = "0.2.0"
+description = "Tether: a runtime for long-running coding agents — LLM-driven tool loop, three-layer memory, budgeted context compression, drift-aware recovery"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Tether Team" }]
@@ -19,10 +19,29 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
+    "ruff>=0.5.0",
 ]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # import sorting
+    "B",   # bugbear (common bugs)
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501", # long lines in prompts/docstrings are fine; formatter not enforced
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

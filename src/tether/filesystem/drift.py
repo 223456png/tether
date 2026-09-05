@@ -8,7 +8,6 @@ the cached snapshot (handled by the caller / MemoryStore).
 from dataclasses import dataclass, field
 from enum import IntEnum
 from pathlib import Path
-from typing import Dict, Optional, Tuple
 
 from loguru import logger
 
@@ -40,7 +39,7 @@ class DriftResult:
 
     level: DriftLevel
     detected: bool
-    details: Dict[str, object] = field(default_factory=dict)
+    details: dict[str, object] = field(default_factory=dict)
 
 
 class DriftDetector:
@@ -54,9 +53,9 @@ class DriftDetector:
         """Store workspace root; ``enable_ast`` toggles symbol-level checks."""
         self.workspace_root = Path(workspace_root)
         self.enable_ast = enable_ast
-        self._cache: Dict[str, Tuple[int, int, DriftResult]] = {}
+        self._cache: dict[str, tuple[int, int, DriftResult]] = {}
 
-    def _cached_detect(self, snapshot: FileSnapshot) -> Optional[DriftResult]:
+    def _cached_detect(self, snapshot: FileSnapshot) -> DriftResult | None:
         """Return a cached result if the file's stat has not changed."""
         file_path = self.workspace_root / snapshot.path
         try:
