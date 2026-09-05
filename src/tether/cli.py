@@ -13,6 +13,7 @@ import argparse
 import asyncio
 import shlex
 import sys
+from collections.abc import Callable
 from pathlib import Path
 
 from tether.llm.factory import create_provider_from_env
@@ -64,6 +65,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Hard cap on cumulative LLM tokens; the task stops (STOPPED) "
              "when reached (default: unlimited)",
     )
+    run.add_argument(
+        "--stream", action="store_true",
+        help="Stream the model's output live as it is generated "
+             "(requires a real LLM provider; ignored in mock mode)",
+    )
 
     report = sub.add_parser(
         "report", help="Summarize a task's events.jsonl into a markdown report"
@@ -85,6 +91,14 @@ async def _console_gate(tool: str, params: dict) -> bool:
         input, f"[tether approve] run {tool}({params})? [y/N] "
     )
     return answer.strip().lower() in ("y", "yes")
+
+
+def _stream_printer() -> "Callable[[str], None]":
+    """Build the streaming callback: print content chunks live."""
+    def on_delta(piece: str) -> None:
+        print(piece, end="", flush=True)
+
+    return on_delta
 
 
 async def _run(args: argparse.Namespace) -> int:
@@ -109,6 +123,7 @@ async def _run(args: argparse.Namespace) -> int:
         max_consecutive_failures=args.max_consecutive_failures,
         approval_gate=_console_gate if args.require_approval else None,
         max_total_tokens=args.max_tokens,
+        on_llm_delta=_stream_printer() if (args.stream and provider is not None) else None,
     )
 
     for mcp_cmd in args.mcp_cmd or []:

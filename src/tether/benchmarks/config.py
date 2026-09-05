@@ -60,6 +60,14 @@ class InterceptExperimentConfig(ExperimentConfig):
 
 
 @dataclass
+class AgentExperimentConfig(ExperimentConfig):
+    """Agent-level integration eval: the real TetherRuntime loop driven
+    by a deterministic goal-directed policy over synthetic tasks."""
+
+    max_steps: int = 12
+
+
+@dataclass
 class E2EExperimentConfig(ExperimentConfig):
     """Real-LLM end-to-end: compressed context -> generation -> pass@1.
 
@@ -110,6 +118,15 @@ def default_configs(num_samples: int | None = None) -> dict:
         "intercept": InterceptExperimentConfig(
             name="intercept",
             description="Duplicate-call interception rate",
+            dataset_path=_DATASETS_DIR / "humaneval",
+            num_samples=num_samples,
+        ),
+        "agent": AgentExperimentConfig(
+            name="agent",
+            description=(
+                "Agent-level integration eval: TetherRuntime end-to-end over "
+                "scripted goal-directed tasks (offline, deterministic)"
+            ),
             dataset_path=_DATASETS_DIR / "humaneval",
             num_samples=num_samples,
         ),

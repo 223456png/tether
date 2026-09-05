@@ -42,16 +42,16 @@ flowchart LR
 | 5 | `filesystem/drift.py` | Three-level file drift detection (stat → MD5 → AST symbols+signatures) |
 | 6 | `checkpoint/recovery.py` | Drift-aware recovery planning across 10 interruption scenarios, with content-restore for deleted files |
 | 7 | `tools/` | Tool registry with duplicate-call interception (5s window, side-effect-safe) |
-| 8 | `benchmarks/` | 6 benchmark experiments with baselines and ablations |
+| 8 | `benchmarks/` | 7 benchmark experiments with baselines and ablations (incl. agent-level integration eval) |
 | 9 | `llm/` | OpenAI-compatible provider layer (DeepSeek tested) + offline mock |
 | 10 | `runtime/runtime.py` `llm/` | LLM-driven agent loop: context assembly → OpenAI-style tool calls → done signal (mock fallback kept for offline tests) |
 | 11 | `mcp.py` `tools/builtin` | MCP client (stdio JSON-RPC, zero deps): any MCP server's tools join the registry; `update_plan` tool lets the model maintain its own plan |
 
 ## Benchmark Results
 
-All numbers below are produced by the code in this repository. Run `python scripts/run_benchmark.py --all` to reproduce the five offline experiments; see [Reproducing the e2e experiment](#reproducing-the-e2e-experiment) for the real-LLM one. Per-experiment Markdown reports are committed under `src/tether/benchmarks/results/`; raw JSON/CSV dumps regenerate deterministically (seeded) via the same command.
+All numbers below are produced by the code in this repository. Run `python scripts/run_benchmark.py --all` to reproduce the six offline experiments; see [Reproducing the e2e experiment](#reproducing-the-e2e-experiment) for the real-LLM one. Per-experiment Markdown reports are committed under `src/tether/benchmarks/results/`; raw JSON/CSV dumps regenerate deterministically (seeded) via the same command.
 
-> **What the numbers measure.** The experiments drive the *components* (allocator, memory layers, drift detector, recovery manager) directly, not the end-to-end `TetherRuntime` loop — so they stay offline-reproducible and seeded. The loop itself is covered by the scripted-provider integration tests.
+> **What the numbers measure.** The compression/memory/drift/recovery/intercept experiments drive the *components* directly (offline-reproducible, seeded); the **agent experiment (7)** drives the *real* `TetherRuntime` loop end-to-end with a deterministic goal-directed policy, closing that gap. Model intelligence is only measured by the e2e experiment (6).
 
 ### 1. Context compression (20 HumanEval tasks, offline validation)
 
@@ -93,13 +93,28 @@ Takeaway: at n=20 the pass@1 differences are within noise, but the compressed ar
 
 **100% interception** (60/60 duplicate calls in the 5s window), saving 5100 tokens of redundant tool output.
 
+### 7. Agent-level integration eval (20 scripted tasks × 5 task types, offline)
+
+A deterministic, goal-directed policy stands in for the LLM and drives the **real `TetherRuntime` loop** (context assembly → structured tool calls → memory writes → checkpoints → events) over synthetic file-manipulation tasks; success is verified against the final workspace state.
+
+| Task type | Result |
+|-----------|--------|
+| create-and-verify | 4/4 |
+| edit-existing | 4/4 |
+| search-then-fix (closed-loop, reacts to observations) | 4/4 |
+| plan-execute (`update_plan` → execute) | 4/4 |
+| test-and-report (real pytest) | 4/4 |
+| **Overall** | **100% (20/20), avg 3.4 steps/task** |
+
+This closes the gap the other experiments leave: it exercises the harness as one pipeline, offline and deterministically. Its first run caught a real defect (multi-line tool output truncated in the observation channel) — which is exactly what an integration eval is for.
+
 ## Quickstart
 
 ```bash
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 102 tests, all offline
+python -m pytest tests/ -q          # 133 tests, all offline
 ```
 
 Or drive an agent task from the command line (no API key needed — it
@@ -178,6 +193,9 @@ Two loop behaviors worth knowing:
 - **The model plans.** The `update_plan` tool writes the agent's plan
   into the never-pruned TaskSummary layer, so it survives compression
   and re-enters every turn's context.
+- **Streaming output.** `--stream` (or an `on_llm_delta` callback)
+  emits the model's answer live over SSE — providers without streaming
+  support are called unchanged.
 
 Without an API key the loop runs on a scripted/mock brain so every code path stays testable in CI at zero cost.
 
@@ -203,26 +221,28 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 
 ## Roadmap
 
-Known next steps, in rough priority order (design notes in
-`docs/designs/`):
+Remaining ideas (design notes in `docs/designs/`):
 
-1. **Streaming LLM calls** (SSE) so the CLI can show progress live.
-2. **Sandboxed execution** — containerize test runs to make the
+1. **Sandboxed execution** — containerize test runs to make the
    "not a security boundary" caveat an actual guarantee.
-3. **Cross-task episodic memory** — notes are task-scoped today;
+2. **Cross-task episodic memory** — notes are task-scoped today;
    a shared store would let lessons transfer across tasks.
+3. **Conversation compaction** — the tool history is windowed today;
+   LLM/deterministic summarization would extend long-horizon recall.
 
 Recently shipped (was on this list, now done):
 
-- ✅ **Per-section budget caps** — the `BudgetConfig` ratios now act as
-  hard caps: after the global level is chosen, any section still over
-  its share (tool results / file context / episodic notes) is trimmed
-  further, so one greedy section can't starve the others.
-- ✅ **Head+tail tool-result truncation** — long outputs keep both the
-  start and the end (the verdict lives at the bottom of logs) within
-  configurable char budgets (`tool_truncate_chars` / `tool_minimal_chars`).
-- ✅ **Checkpoint compaction** — the JSONL history keeps the newest N
-  full snapshots, so long tasks no longer grow it without bound.
+- ✅ **Per-section budget caps** + head+tail truncation (−22% compression
+  at 100% validation success).
+- ✅ **Checkpoint compaction** — bounded JSONL history.
+- ✅ **MCP client** — any MCP server's tools join the registry.
+- ✅ **`update_plan`** — the model maintains its own plan in memory.
+- ✅ **Approval gate + token budget** — human-in-the-loop and a hard
+  cost ceiling.
+- ✅ **Streaming** — SSE delta streaming end-to-end (provider → runtime
+  callback → CLI `--stream`).
+- ✅ **Agent-level integration eval** — 20 scripted tasks through the
+  real loop, 100% pass (benchmark 7 above).
 
 ## Project Layout
 
@@ -238,8 +258,8 @@ src/tether/
 ├── mcp.py          # MCP client (stdio JSON-RPC): external tool servers -> registry
 ├── reporting.py    # events.jsonl -> one-page markdown run report
 ├── cli.py          # `tether run` / `tether report` command-line entry points
-└── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 124 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
+└── benchmarks/     # 7 experiments, metrics, reports, datasets (+ agent-level eval)
+tests/              # 133 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 

@@ -59,6 +59,7 @@ class BenchmarkRunner:
             "drift": self._run_drift,
             "recovery": self._run_recovery,
             "intercept": self._run_intercept,
+            "agent": self._run_agent,
             "e2e": self._run_e2e,
         }
         handler = handlers.get(self.config.name)
@@ -506,6 +507,64 @@ class BenchmarkRunner:
                 recovery_latency_ms=latency_ms,
                 extra={"recovery": True, "scenario": scenario_name},
             )
+
+    # ------------------------------------------------------------------
+    # Experiment: agent-level integration eval
+    # ------------------------------------------------------------------
+    async def _run_agent(self) -> list[TaskResult]:
+        """Drive the real ``TetherRuntime`` loop over scripted tasks.
+
+        Each task runs in a fresh temp workspace with a deterministic,
+        goal-directed policy standing in for the LLM; success is verified
+        against the final workspace/runtime state. This is the offline
+        end-to-end check the component-level experiments don't cover:
+        it exercises context assembly, structured tool calls, memory
+        writes, interception and checkpointing as one pipeline.
+        """
+        from tether.benchmarks.agent_tasks import (
+            PolicyProvider,
+            ScriptedPolicy,
+            build_agent_tasks,
+        )
+        from tether.runtime.runtime import TetherRuntime
+
+        total = self.config.num_samples or 20
+        templates = build_agent_tasks()
+        max_steps = getattr(self.config, "max_steps", 12)
+        results: list[TaskResult] = []
+
+        for run_idx in range(total):
+            spec = templates[run_idx % len(templates)]
+            with tempfile.TemporaryDirectory() as tmp:
+                ws = Path(tmp)
+                spec.setup(ws)
+                provider = PolicyProvider(
+                    ScriptedPolicy(spec.steps(run_idx), spec.answer)
+                )
+                runtime = TetherRuntime(
+                    spec.goal, ws, llm_provider=provider,
+                    max_steps=max_steps, tool_timeout=30,
+                )
+                start = time.perf_counter()
+                await runtime.run()
+                duration_ms = (time.perf_counter() - start) * 1000
+
+                success = spec.verify(ws, runtime, run_idx)
+                results.append(TaskResult(
+                    task_id=f"agent-{spec.name}-{run_idx}",
+                    variant=spec.name,
+                    success=success,
+                    steps=runtime.state.step_index,
+                    prompt_tokens=runtime.state.prompt_tokens,
+                    completion_tokens=runtime.state.completion_tokens,
+                    latency_ms=duration_ms,
+                    extra={
+                        "agent": True,
+                        "task": spec.name,
+                        "status": runtime.state.status.value,
+                    },
+                ))
+        return results
 
     # ------------------------------------------------------------------
     # Experiment 5: interception
