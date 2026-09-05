@@ -396,12 +396,34 @@ class TetherRuntime:
         )
         display = self._format_call(tool_name, params)
         if result.success:
+            if tool_name == "write_file":
+                self._snapshot_written_file(params)
             self._update_task_summary(display, success=True)
             return result.output
         error = result.error or "unknown error"
         self._update_task_summary(display, success=False, error=error)
         self._record_mistake_note(display, error)
         return f"ERROR: {error}"
+
+    def _snapshot_written_file(self, params: dict[str, object]) -> None:
+        """Persist a content-backed snapshot for a file the agent wrote.
+
+        Content-backed snapshots are what makes external deletions
+        restorable (undo/restore); the 64KB per-file cap in FileSnapshot
+        bounds the storage cost.
+        """
+        rel_path = params.get("path")
+        if not isinstance(rel_path, str) or not rel_path.strip():
+            return
+        full_path = self.workspace_dir / rel_path
+        if not full_path.exists():
+            return
+        snap = FileSnapshot.from_file(
+            self.state.task_id, full_path, include_content=True
+        )
+        snap.path = Path(rel_path).as_posix()
+        self.memory_store.save_file_snapshot(snap)
+        logger.debug("Content-backed snapshot saved | path={}", snap.path)
 
     def _note_touched_files(self, params: dict[str, object]) -> None:
         """Track files touched by executed tools for context assembly."""
@@ -517,7 +539,9 @@ class TetherRuntime:
         if not full_path.exists():
             raise FileNotFoundError(f"File missing while reading: {rel}")
 
-        new_snap = FileSnapshot.from_file(self.state.task_id, full_path)
+        new_snap = FileSnapshot.from_file(
+            self.state.task_id, full_path, include_content=True
+        )
         new_snap.path = rel  # store paths relative to the workspace
         self.memory_store.save_file_snapshot(new_snap)
         return full_path.read_text(encoding="utf-8", errors="replace"), new_snap

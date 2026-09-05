@@ -35,7 +35,7 @@ flowchart LR
 | 2–3 | `memory/` `context/` | Three-layer memory (TaskSummary / FileSnapshot / EpisodicNotes) + budget-allocated context assembly (5 trim levels + per-section caps + head/tail truncation) |
 | 4 | `context/validator.py` | ROUGE-L + keyword compression validation with rollback |
 | 5 | `filesystem/drift.py` | Three-level file drift detection (stat → MD5 → AST symbols+signatures) |
-| 6 | `checkpoint/recovery.py` | Drift-aware recovery planning across 10 interruption scenarios |
+| 6 | `checkpoint/recovery.py` | Drift-aware recovery planning across 10 interruption scenarios, with content-restore for deleted files |
 | 7 | `tools/` | Tool registry with duplicate-call interception (5s window, side-effect-safe) |
 | 8 | `benchmarks/` | 6 benchmark experiments with baselines and ablations |
 | 9 | `llm/` | OpenAI-compatible provider layer (DeepSeek tested) + offline mock |
@@ -81,7 +81,7 @@ Takeaway: at n=20 the pass@1 differences are within noise, but the compressed ar
 
 ### 5. Recovery (10 interruption scenarios × 5 runs)
 
-**90% overall** recovery success, avg 0.6 steps lost. Nine scenarios recover 100%; `file_deleted` is honestly 0% — snapshots store metadata, not content, so external deletion is unrecoverable by design (documented limitation, not hidden).
+**100% overall** recovery success, avg 0.6 steps lost. Every scenario recovers, including `file_deleted`: files the agent touched (read or wrote) get content-backed snapshots, so an external deletion is undone by writing the content back. Files never touched by the agent have no snapshot and remain unrecoverable — the detector still flags them, and recovery fails with an explicit reason.
 
 ### 6. Duplicate-call interception (20 simulated tasks)
 
@@ -168,8 +168,8 @@ Without an API key the experiment falls back to an offline `MockProvider` and fl
 
 - **e2e sample size is small** (20 tasks × 3 arms). Differences of ≤15 percentage points are within noise; we report them as directionally consistent, not significant.
 - **Benchmark numbers drive components, not the integrated loop** (see "What the numbers measure" above).
-- **Code execution is not sandboxed.** HumanEval completions run in a plain subprocess with a 10s timeout (standard practice, but do not point this at untrusted models). Tools restrict file access to the workspace directory, but the loop itself is not a security boundary.
-- **`file_deleted` recovery is impossible** by design (metadata-only snapshots); the DriftDetector still flags it.
+- **Code execution is not sandboxed.** HumanEval completions and test runs execute in plain subprocesses with timeouts (standard practice, but do not point this at untrusted models). Tools restrict file access to the workspace directory, but the loop itself is not a security boundary.
+- **`file_deleted` recovery covers only touched files.** Files the agent read or wrote get content-backed snapshots (≤64KB each) and can be restored after external deletion; files never touched by the agent cannot be recovered.
 - **The drift test set is self-constructed** (10 change types × 10 samples). 100% accuracy means the ten mutation classes are covered, not production-level generalization.
 - **HumanEval subset is bundled offline** (20 problems) because the build environment had no network access to the upstream repo.
 - **Compression ratios are modest** (16–21%) vs learned compressors; the trade is a hard semantic-preservation guarantee.
@@ -210,7 +210,7 @@ src/tether/
 ├── llm/            # OpenAI-compatible provider (function calling) + offline mock
 ├── cli.py          # `tether run --goal ...` command-line entry point
 └── benchmarks/     # 6 experiments, metrics, reports, datasets
-tests/              # 102 tests (all offline, incl. scripted-provider loop tests)
+tests/              # 107 tests (all offline, incl. scripted-provider loop tests)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 

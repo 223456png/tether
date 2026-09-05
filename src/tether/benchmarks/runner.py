@@ -437,7 +437,10 @@ class BenchmarkRunner:
                 p = ws / rel
                 p.parent.mkdir(parents=True, exist_ok=True)
                 p.write_text("def f():\n    return 1\n", encoding="utf-8")
-                snap = FileSnapshot.from_file("bench", p)
+                # The runtime persists content-backed snapshots for files
+                # the agent touched (read/write), so recovery can restore
+                # externally deleted files. Simulate that here.
+                snap = FileSnapshot.from_file("bench", p, include_content=True)
                 snap.path = rel
                 store.save_file_snapshot(snap)
 

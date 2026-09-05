@@ -6,6 +6,7 @@ Recovery is not "mechanically going back in time" — it decides, in the
 
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 
 from loguru import logger
 
@@ -62,6 +63,7 @@ class RecoveryResult:
     scenario: RecoveryScenario | None = None
     backoff_seconds: float | None = None
     compression_applied: bool = False
+    restored_files: list[str] = field(default_factory=list)
 
 
 class RecoveryManager:
@@ -98,20 +100,30 @@ class RecoveryManager:
     # ------------------------------------------------------------------
     def _detect_file_drift(
         self, snapshot: CheckpointSnapshot
-    ) -> dict[str, DriftLevel]:
+    ) -> tuple[dict[str, DriftLevel], list[str]]:
         """Compare checkpoint summaries against the live workspace.
 
         MD5 is compared directly (cheap, size/mtime independent). When the
         full FileSnapshot is still in the MemoryStore, the DriftDetector
         cascade refines CONTENT vs STRUCTURE.
+
+        Files missing from disk are *restored* when a content-backed
+        snapshot exists (the agent touched the file earlier): the content
+        is written back, making the file match again. Unrestorable files
+        stay MISSING. Returns ``(levels, restored_paths)``.
         """
         root = self.drift_detector.workspace_root
         levels: dict[str, DriftLevel] = {}
+        restored: list[str] = []
         for summary in snapshot.file_snapshots:
             path = summary["path"]
             file_path = root / path
             if not file_path.exists():
-                levels[path] = DriftLevel.MISSING
+                if self._try_restore(snapshot.task_state.task_id, path, file_path):
+                    levels[path] = DriftLevel.MATCH
+                    restored.append(path)
+                else:
+                    levels[path] = DriftLevel.MISSING
                 continue
             if compute_md5(file_path) == summary["md5"]:
                 levels[path] = DriftLevel.MATCH
@@ -124,7 +136,24 @@ class RecoveryManager:
             else:
                 # No full snapshot to refine with: assume content drift.
                 levels[path] = DriftLevel.CONTENT
-        return levels
+        return levels, restored
+
+    def _try_restore(self, task_id: str, path: str, file_path: Path) -> bool:
+        """Restore an externally deleted file from its content snapshot."""
+        full = self.memory_store.load_file_snapshot(task_id, path)
+        if full is None or full.content is None:
+            return False
+        try:
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            file_path.write_text(full.content, encoding="utf-8")
+        except OSError as exc:
+            logger.error("File restore failed | path={} error={}", path, exc)
+            return False
+        logger.info(
+            "File restored from content snapshot | path={} bytes={}",
+            path, len(full.content),
+        )
+        return True
 
     def _affected_steps(
         self, snapshot: CheckpointSnapshot, drifted_files: list[str]
@@ -158,7 +187,7 @@ class RecoveryManager:
             )
         state = snapshot.task_state
 
-        levels = self._detect_file_drift(snapshot)
+        levels, restored = self._detect_file_drift(snapshot)
         missing = [p for p, lv in levels.items() if lv == DriftLevel.MISSING]
         # Drifted files keep their DriftLevel for severity decisions;
         # names are produced only at the details boundary.
@@ -193,7 +222,6 @@ class RecoveryManager:
                 reason=reason,
                 scenario=RecoveryScenario.FILE_DELETED,
             )
-
         affected = self._affected_steps(snapshot, list(drifted.keys()))
         all_affected_steps = sorted({s for steps in affected.values() for s in steps})
         current = state.step_index
@@ -232,6 +260,7 @@ class RecoveryManager:
             "levels": {p: lv.name for p, lv in levels.items()},
             "affected_files": list(drifted.keys()),
             "file_steps": affected,
+            "restored_files": restored,
         }
 
         result = RecoveryResult(
@@ -242,10 +271,11 @@ class RecoveryManager:
             drift_detected=bool(drifted),
             drift_details=drift_details,
             scenario=scenario,
+            restored_files=restored,
         )
         logger.info(
-            "Recovery analysis | task={} scenario={} drift={} replay={} skip={}",
-            task_id, scenario.name, bool(drifted), replay, skip,
+            "Recovery analysis | task={} scenario={} drift={} restored={} replay={} skip={}",
+            task_id, scenario.name, bool(drifted), restored, replay, skip,
         )
         return result
 
