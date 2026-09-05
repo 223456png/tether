@@ -15,6 +15,7 @@ from tether.memory.episodic import EpisodicNotes
 from tether.memory.store import MemoryStore
 from tether.runtime.runtime import TetherRuntime
 from tether.runtime.state import TaskState, TaskStatus
+from tether.tools.base import Tool, ToolResult
 
 
 class ScriptedProvider:
@@ -54,6 +55,26 @@ def _final_response(text: str) -> LLMResponse:
     return LLMResponse(
         content=text, prompt_tokens=100, completion_tokens=25, provider="scripted"
     )
+
+
+class FlakyTool(Tool):
+    """Test double: raises on the first call, succeeds afterwards."""
+
+    name = "flaky"
+    description = "raises once, then succeeds"
+    side_effect_free = False
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def get_parameters_schema(self) -> dict:
+        return {"type": "object", "properties": {}}
+
+    async def execute(self) -> ToolResult:
+        self.calls += 1
+        if self.calls == 1:
+            raise ValueError("boom")
+        return ToolResult(success=True, output="recovered")
 
 
 async def test_llm_loop_executes_tool_calls_and_finishes(tmp_path: Path) -> None:
@@ -299,6 +320,78 @@ async def test_recovery_writes_lesson_note(tmp_path: Path) -> None:
     assert result.success
     notes = memory_store.load_episodic_notes(state.task_id)
     assert any(n.type == "lesson" and "TIMEOUT" in n.content for n in notes)
+
+
+# ---------------------------------------------------------------------
+# Errors as observations + consecutive-failure circuit breaker
+# ---------------------------------------------------------------------
+
+async def test_error_observation_then_recovery(tmp_path: Path) -> None:
+    """With a breaker set, a tool exception becomes an observation the
+    agent recovers from on the next turn."""
+    provider = ScriptedProvider([
+        _tool_response("flaky", {}),
+        _tool_response("flaky", {}),
+        _final_response("recovered after retry"),
+    ])
+    runtime = TetherRuntime(
+        "Use flaky tool", tmp_path, llm_provider=provider,
+        max_steps=10, max_consecutive_failures=3,
+    )
+    runtime.tool_registry.register(FlakyTool())
+    await runtime.run()
+
+    assert runtime.state.status == TaskStatus.COMPLETED
+    assert runtime.state.error_message is None
+    # The exception landed in the tool history as an observation.
+    assert any("ERROR" in out for _, _, out in runtime._tool_history)
+    assert any("recovered" in out for _, _, out in runtime._tool_history)
+
+
+async def test_circuit_breaker_trips_after_consecutive_failures(tmp_path: Path) -> None:
+    """Repeated failures trip the breaker and fail the task at the cap."""
+    provider = ScriptedProvider([
+        _tool_response("flaky", {}),
+        _tool_response("flaky", {}),
+        _tool_response("flaky", {}),  # never reached
+    ])
+    runtime = TetherRuntime(
+        "Always failing", tmp_path, llm_provider=provider,
+        max_steps=10, max_consecutive_failures=2,
+    )
+    runtime.tool_registry.register(FlakyAlwaysTool())
+    await runtime.run()
+
+    assert runtime.state.status == TaskStatus.FAILED
+    assert runtime.state.step_index == 2
+    assert runtime.state.error_message is not None
+    assert "ValueError" in runtime.state.error_message
+    events = runtime.event_recorder.query("tool_error")
+    assert len(events) == 2
+
+
+async def test_default_fail_fast_behavior_preserved(tmp_path: Path) -> None:
+    """Default (cap=0): the first tool exception fails the task (legacy)."""
+    provider = ScriptedProvider([
+        _tool_response("flaky", {}),
+        _final_response("never reached"),
+    ])
+    runtime = TetherRuntime(
+        "Fail fast", tmp_path, llm_provider=provider, max_steps=10
+    )
+    runtime.tool_registry.register(FlakyAlwaysTool())
+    await runtime.run()
+
+    assert runtime.state.status == TaskStatus.FAILED
+    assert runtime.state.step_index == 1
+
+
+class FlakyAlwaysTool(FlakyTool):
+    """Test double: raises on every call."""
+
+    async def execute(self) -> ToolResult:
+        self.calls += 1
+        raise ValueError("boom")
 
 
 # ---------------------------------------------------------------------

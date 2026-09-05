@@ -1,8 +1,9 @@
 """Builtin tools: read_file / write_file / search_code / run_test."""
 
+import asyncio
+import subprocess
+import sys
 from pathlib import Path
-
-from loguru import logger
 
 from tether.tools.base import Tool, ToolResult
 
@@ -177,16 +178,23 @@ class SearchTool(Tool):
 
 
 class RunTestTool(Tool):
-    """Runs tests (mocked for Phase 7; real runner comes later)."""
+    """Runs a pytest test file in a subprocess and summarizes the result."""
 
     name = "run_test"
-    description = "Run a test file (mocked in Phase 7)"
+    description = (
+        "Run a pytest test file (path relative to workspace) and return "
+        "the summarized pass/fail output"
+    )
     # Result depends on mutable workspace state: not safe to cache blindly.
     side_effect_free = False
 
-    def __init__(self, workspace: Path) -> None:
-        """Bind the tool to a workspace root."""
+    # Output tail kept as the summary (pytest prints its verdict last).
+    _OUTPUT_TAIL_LINES = 40
+
+    def __init__(self, workspace: Path, run_timeout: int = 60) -> None:
+        """Bind the tool to a workspace root and a subprocess timeout."""
         self.workspace = Path(workspace)
+        self.run_timeout = run_timeout
 
     def get_parameters_schema(self) -> dict:
         """Schema: one required string ``path``."""
@@ -201,16 +209,60 @@ class RunTestTool(Tool):
             "required": ["path"],
         }
 
+    @staticmethod
+    def _tail(text: str, lines: int) -> str:
+        """Return the last ``lines`` lines of ``text``."""
+        stripped = [ln for ln in text.splitlines() if ln.strip()]
+        return "\n".join(stripped[-lines:])
+
     async def execute(self, path: str) -> ToolResult:
-        """Mock execution: report success once the file exists."""
+        """Run ``python -m pytest <path>`` inside the workspace.
+
+        The subprocess runs with the workspace as cwd so test-relative
+        imports resolve; ``subprocess.run`` kills the child on timeout.
+        Success means exit code 0; on failure the output tail is returned
+        as the error so the agent can see *why* the tests failed.
+        """
         full_path, err = resolve_in_workspace(self.workspace, path)
         if err is not None:
             return ToolResult(success=False, error=err)
-        logger.debug("run_test (mock) | {}", path)
         if not full_path.exists():
             return ToolResult(success=False, error=f"Test file not found: {path}")
+
+        cmd = [
+            sys.executable, "-m", "pytest", str(full_path),
+            "-q", "--no-header", "-p", "no:cacheprovider",
+        ]
+        try:
+            completed = await asyncio.to_thread(
+                subprocess.run,
+                cmd,
+                cwd=str(self.workspace),
+                capture_output=True,
+                timeout=self.run_timeout,
+            )
+        except subprocess.TimeoutExpired:
+            return ToolResult(
+                success=False,
+                error=f"Test run timed out after {self.run_timeout}s: {path}",
+                metadata={"path": path, "timed_out": True},
+            )
+        except OSError as exc:
+            return ToolResult(success=False, error=f"Failed to spawn pytest: {exc}")
+
+        text = completed.stdout.decode("utf-8", errors="replace")
+        text += completed.stderr.decode("utf-8", errors="replace")
+        summary = self._tail(text, self._OUTPUT_TAIL_LINES)
+        exit_code = completed.returncode
+        if exit_code == 0:
+            return ToolResult(
+                success=True,
+                output=f"✅ Tests passed: {path}\n{summary}",
+                metadata={"path": path, "exit_code": 0},
+            )
         return ToolResult(
-            success=True,
-            output=f"✅ Tests passed: {path} (mock)",
-            metadata={"path": path, "mock": True},
+            success=False,
+            output=summary,
+            error=f"Tests failed (exit {exit_code}): {path}\n{summary}",
+            metadata={"path": path, "exit_code": exit_code},
         )

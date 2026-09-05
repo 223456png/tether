@@ -103,6 +103,7 @@ class TetherRuntime:
         tool_timeout: int = 5,
         llm_provider: LLMProvider | None = None,
         max_steps: int = 5,
+        max_consecutive_failures: int = 0,
     ) -> None:
         """Initialize runtime state, checkpoint manager and config.
 
@@ -110,11 +111,20 @@ class TetherRuntime:
         to real LLM-driven tool calling. ``max_steps`` is the hard cap on
         executed tool steps (the LLM path usually finishes earlier by
         replying without a tool call).
+
+        ``max_consecutive_failures`` controls error handling: 0 (default)
+        fails the task on the first tool exception/timeout — right for
+        the mock brain, which cannot adapt. With an LLM, set it to 2-3:
+        the error is fed back as an *observation* so the model can retry
+        with different arguments, and the circuit breaker stops hopeless
+        loops after N consecutive failures.
         """
         self.workspace_dir = Path(workspace_dir)
         self.tool_timeout = tool_timeout
         self.llm_provider = llm_provider
         self.max_steps = max_steps
+        self.max_consecutive_failures = max_consecutive_failures
+        self._consecutive_failures = 0
         self.state = TaskState(goal=goal)
         self.checkpoint_manager = CheckpointManager(self.workspace_dir)
         self.memory_store = MemoryStore(self.workspace_dir)
@@ -531,6 +541,46 @@ class TetherRuntime:
         self._stop_requested = True
         logger.info("Stop requested | task_id={}", self.state.task_id)
 
+    async def _handle_tool_error(self, decision: AgentDecision, error_text: str) -> bool:
+        """Process a tool exception/timeout. Returns True to fail the task.
+
+        With ``max_consecutive_failures == 0`` every error is fatal. With
+        a cap set, the error becomes an *observation*: it lands in the
+        tool history (so an LLM can read it and adapt on the next turn),
+        a mistake note is recorded, and the loop continues until N
+        consecutive failures trip the circuit breaker.
+        """
+        self._consecutive_failures += 1
+        display = decision.raw_action
+        self._tool_history.append((self.state.step_index, display, f"ERROR: {error_text}"))
+        self._update_task_summary(display, success=False, error=error_text)
+        self._record_mistake_note(display, error_text)
+        self.event_recorder.record(
+            "tool_error", step=self.state.step_index,
+            tool=decision.tool_name, consecutive=self._consecutive_failures,
+            error=error_text[:200],
+        )
+
+        if self.max_consecutive_failures <= 0:
+            should_fail = True
+        else:
+            should_fail = self._consecutive_failures >= self.max_consecutive_failures
+
+        if should_fail:
+            self.state.error_message = error_text
+            await self._transition_to(TaskStatus.FAILED)
+            logger.error("Tool failed | {}", error_text)
+            await self._save_checkpoint()
+            return True
+
+        logger.warning(
+            "Tool error kept as observation ({}/{} consecutive failures) | {}",
+            self._consecutive_failures, self.max_consecutive_failures,
+            error_text[:120],
+        )
+        await self._transition_to(TaskStatus.RUNNING)
+        return False
+
     async def run(self) -> None:
         """Main loop: think -> (tool | finish) -> checkpoint until done."""
         await self._transition_to(TaskStatus.RUNNING)
@@ -602,23 +652,24 @@ class TetherRuntime:
                 self._tool_history.append(
                     (self.state.step_index, decision.raw_action, result)
                 )
+                self._consecutive_failures = 0
                 await self._transition_to(TaskStatus.RUNNING)
                 logger.info("Step {} succeeded", self.state.step_index)
             except asyncio.TimeoutError:
-                self.state.error_message = (
+                error_text = (
                     f"Tool timeout: '{decision.raw_action}' did not finish within "
                     f"{self.tool_timeout}s at step {self.state.step_index}"
                 )
-                await self._transition_to(TaskStatus.FAILED)
-                logger.error("Timeout | {}", self.state.error_message)
-                await self._save_checkpoint()
-                break
+                should_fail = await self._handle_tool_error(decision, error_text)
+                if should_fail:
+                    break
             except Exception as exc:
-                self.state.error_message = f"{type(exc).__name__}: {exc}"
-                await self._transition_to(TaskStatus.FAILED)
-                logger.error("Tool failed | {}", self.state.error_message)
-                await self._save_checkpoint()
-                break
+                error_text = (
+                    f"{type(exc).__name__}: {exc} at step {self.state.step_index}"
+                )
+                should_fail = await self._handle_tool_error(decision, error_text)
+                if should_fail:
+                    break
 
             if self.state.step_index >= self.max_steps:
                 logger.warning(
