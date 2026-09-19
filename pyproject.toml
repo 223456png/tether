@@ -1,14 +1,38 @@
 [build-system]
-requires = ["setuptools>=68.0.0"]
+requires = ["setuptools>=77.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "tether"
-version = "0.2.0"
+dynamic = ["version"]
 description = "Tether: a runtime for long-running coding agents — LLM-driven tool loop, three-layer memory, budgeted context compression, drift-aware recovery"
+readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
-authors = [{ name = "Tether Team" }]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "223456png", email = "147728607+223456png@users.noreply.github.com" },
+]
+keywords = [
+    "ai-agent",
+    "llm-agent",
+    "context-window",
+    "context-compression",
+    "agent-memory",
+    "mcp",
+    "developer-tools",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "pydantic>=2.0.0",
     "loguru>=0.7.0",
@@ -19,11 +43,21 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
     "ruff>=0.5.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/223456png/tether"
+Repository = "https://github.com/223456png/tether"
+Issues = "https://github.com/223456png/tether/issues"
+Changelog = "https://github.com/223456png/tether/blob/main/CHANGELOG.md"
+
 [project.scripts]
 tether = "tether.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "tether.__version__" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -52,3 +86,17 @@ ignore = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["tether"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    '\.\.\.',
+]

@@ -11,15 +11,16 @@ and never depends on the event loop's subprocess support.
 
 import asyncio
 import json
+import queue
 import re
 import subprocess
 import threading
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
 from loguru import logger
 
+from tether import __version__
 from tether.tools.base import Tool, ToolResult
 
 _PROTOCOL_VERSION = "2024-11-05"
@@ -33,9 +34,15 @@ class MCPError(RuntimeError):
 class StdioTransport:
     """Line-delimited JSON-RPC 2.0 over a spawned subprocess's stdio.
 
+    A dedicated daemon reader thread drains the server's stdout into a
+    queue; each request pulls from that queue with a timeout. Decoupling
+    the read from the request means a slow or stuck server only fails the
+    *current* request — the transport stays usable for the next one.
+    (A shared worker pool would be permanently wedged by a single timeout,
+    because the blocked ``readline`` never releases its worker.)
+
     Requests are serialized under a lock (MCP servers handle one
-    in-flight request fine for our use). Reads run in a worker thread
-    with a timeout, so a hung server cannot block the loop forever.
+    in-flight request fine for our use).
     """
 
     def __init__(self, command: list[str], cwd: Path | None = None) -> None:
@@ -44,11 +51,12 @@ class StdioTransport:
         self._cwd = cwd
         self._proc: subprocess.Popen | None = None
         self._lock = threading.Lock()
-        self._reader_pool = ThreadPoolExecutor(max_workers=1)
+        self._inbox: queue.Queue[object] = queue.Queue()
+        self._reader: threading.Thread | None = None
         self._next_id = 0
 
     def start(self) -> dict:
-        """Spawn the server and run the ``initialize`` handshake."""
+        """Spawn the server, start the reader thread, run the handshake."""
         try:
             self._proc = subprocess.Popen(
                 self._command,
@@ -61,12 +69,16 @@ class StdioTransport:
             )
         except OSError as exc:
             raise MCPError(f"Failed to spawn MCP server {self._command}: {exc}") from exc
+        self._reader = threading.Thread(
+            target=self._read_loop, name="mcp-reader", daemon=True
+        )
+        self._reader.start()
         result = self.request(
             "initialize",
             {
                 "protocolVersion": _PROTOCOL_VERSION,
                 "capabilities": {},
-                "clientInfo": {"name": "tether", "version": "0.2.0"},
+                "clientInfo": {"name": "tether", "version": __version__},
             },
         )
         self.notify("notifications/initialized", {})
@@ -84,7 +96,7 @@ class StdioTransport:
             while True:
                 message = self._read_message()
                 if message.get("id") != request_id:
-                    continue  # notification or unrelated response: skip
+                    continue  # notification or late/stale response: skip
                 if "error" in message:
                     raise MCPError(
                         f"MCP {method} failed: {message['error'].get('message')}"
@@ -104,26 +116,47 @@ class StdioTransport:
         except (OSError, ValueError) as exc:
             raise MCPError(f"MCP server write failed: {exc}") from exc
 
+    def _read_loop(self) -> None:
+        """Reader thread: forward each parsed message (or error) to the queue."""
+        proc = self._proc
+        if proc is None or proc.stdout is None:
+            self._inbox.put(MCPError("Transport closed before reading"))
+            return
+        stdout = proc.stdout
+        while True:
+            try:
+                line = stdout.readline()
+            except (OSError, ValueError) as exc:
+                self._inbox.put(MCPError(f"MCP server read failed: {exc}"))
+                return
+            if not line:
+                self._inbox.put(MCPError("MCP server closed the connection"))
+                return
+            try:
+                self._inbox.put(json.loads(line))
+            except json.JSONDecodeError:
+                self._inbox.put(
+                    MCPError(f"MCP server sent invalid JSON: {line[:120]!r}")
+                )
+
     def _read_message(self) -> dict:
-        assert self._proc is not None and self._proc.stdout is not None
-        future = self._reader_pool.submit(self._proc.stdout.readline)
+        """Pop the next message; raise on timeout or a transport error."""
         try:
-            line = future.result(timeout=_REQUEST_TIMEOUT)
-        except Exception as exc:  # timeout or pool shutdown
-            raise MCPError(f"MCP server read timed out: {exc}") from exc
-        if not line:
-            raise MCPError("MCP server closed the connection")
-        try:
-            return json.loads(line)
-        except json.JSONDecodeError as exc:
-            raise MCPError(f"MCP server sent invalid JSON: {line[:120]!r}") from exc
+            item = self._inbox.get(timeout=_REQUEST_TIMEOUT)
+        except queue.Empty:
+            raise MCPError("MCP server read timed out") from None
+        if isinstance(item, BaseException):
+            raise item
+        assert isinstance(item, dict)
+        return item
 
     def close(self) -> None:
-        """Terminate the server process and release the reader thread."""
+        """Terminate the server process and stop the reader thread."""
         if self._proc is not None:
             self._proc.terminate()
             self._proc = None
-        self._reader_pool.shutdown(wait=False, cancel_futures=True)
+        # Unblock any pending/future read so shutdown is immediate.
+        self._inbox.put(MCPError("Transport closed"))
 
 
 class MCPClient:

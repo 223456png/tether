@@ -92,19 +92,24 @@ class OpenAICompatProvider:
                         )
                     response = self._parse_response(body, start)
                     break
-                except (
-                    urllib.error.URLError,
-                    urllib.error.HTTPError,
-                    TimeoutError,
-                ) as exc:
+                except urllib.error.HTTPError as exc:
+                    # 4xx other than 429 (bad key, wrong model, not found)
+                    # will not get better on retry: fail fast so the caller
+                    # sees the real cause instead of "failed after N attempts".
+                    if exc.code not in _RETRYABLE_STATUS:
+                        raise ConnectionError(
+                            f"LLM provider returned HTTP {exc.code}: {exc.reason}"
+                        ) from exc
                     last_error = exc
+                except (urllib.error.URLError, TimeoutError) as exc:
+                    last_error = exc
+                if attempt < self.max_retries:
                     wait = 2 ** attempt
                     logger.warning(
                         "LLM call failed (attempt {}/{}): {} - retrying in {}s",
-                        attempt, self.max_retries, exc, wait,
+                        attempt, self.max_retries, last_error, wait,
                     )
-                    if attempt < self.max_retries:
-                        await asyncio.sleep(wait)
+                    await asyncio.sleep(wait)
             if response is None:
                 raise ConnectionError(
                     f"LLM provider failed after {self.max_retries} "

@@ -71,6 +71,54 @@ async def test_openai_compat_retries_then_raises() -> None:
             await provider.complete([{"role": "user", "content": "x"}])
 
 
+@pytest.mark.asyncio
+async def test_openai_compat_fails_fast_on_non_retryable_http_error() -> None:
+    """4xx other than 429 must not be retried (no wasted backoff)."""
+    provider = OpenAICompatProvider(api_key="k", max_retries=3)
+    calls = {"n": 0}
+
+    def unauthorized(body: bytes) -> dict:
+        calls["n"] += 1
+        raise urllib.error.HTTPError(
+            url="https://api.deepseek.com/v1/chat/completions",
+            code=401, msg="Unauthorized", hdrs=None, fp=None,
+        )
+
+    async def instant_sleep(_seconds: float) -> None:
+        return None
+
+    with unittest_mock.patch.object(
+        provider, "_post", side_effect=unauthorized
+    ), unittest_mock.patch("asyncio.sleep", new=instant_sleep):
+        with pytest.raises(ConnectionError):
+            await provider.complete([{"role": "user", "content": "x"}])
+    assert calls["n"] == 1  # failed fast instead of retrying three times
+
+
+@pytest.mark.asyncio
+async def test_openai_compat_retries_retryable_http_error() -> None:
+    """429 is retryable and exhausts max_retries before raising."""
+    provider = OpenAICompatProvider(api_key="k", max_retries=2)
+    calls = {"n": 0}
+
+    def rate_limited(body: bytes) -> dict:
+        calls["n"] += 1
+        raise urllib.error.HTTPError(
+            url="https://api.deepseek.com/v1/chat/completions",
+            code=429, msg="Too Many Requests", hdrs=None, fp=None,
+        )
+
+    async def instant_sleep(_seconds: float) -> None:
+        return None
+
+    with unittest_mock.patch.object(
+        provider, "_post", side_effect=rate_limited
+    ), unittest_mock.patch("asyncio.sleep", new=instant_sleep):
+        with pytest.raises(ConnectionError):
+            await provider.complete([{"role": "user", "content": "x"}])
+    assert calls["n"] == 2
+
+
 def test_factory_env_resolution() -> None:
     """Factory picks DeepSeek / generic / mock based on env vars."""
     env = {k: v for k, v in os.environ.items()
