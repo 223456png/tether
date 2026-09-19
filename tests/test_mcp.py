@@ -1,6 +1,7 @@
 """Tests for the MCP client (fake transport + real stdio subprocess)."""
 
 import sys
+import time
 from pathlib import Path
 
 import pytest
@@ -136,8 +137,7 @@ async def test_runtime_connect_mcp_registers_tools(tmp_path: Path) -> None:
     assert runtime.state.status == TaskStatus.COMPLETED
     assert runtime.event_recorder.query("mcp_connected")
 
-    for client in runtime._mcp_clients:
-        client.close()
+    await runtime.aclose()
 
 
 def test_stdio_transport_rejects_bad_command() -> None:
@@ -145,3 +145,28 @@ def test_stdio_transport_rejects_bad_command() -> None:
     transport = StdioTransport(["definitely-not-a-real-binary-xyz"])
     with pytest.raises(MCPError, match="Failed to spawn"):
         transport.start()
+
+
+def test_stdio_transport_recovers_after_read_timeout(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A read timeout fails one request but leaves the transport usable.
+
+    Regression test: the previous single-worker ThreadPoolExecutor stayed
+    wedged after a timeout (the blocked ``readline`` never released its
+    worker), so every later request timed out too.
+    """
+    import tether.mcp as mcp_module
+
+    server = Path(__file__).parent / "fixtures" / "mcp_slow_server.py"
+    client = MCPClient(StdioTransport([sys.executable, str(server)], cwd=tmp_path))
+    try:
+        client.initialize()
+        monkeypatch.setattr(mcp_module, "_REQUEST_TIMEOUT", 0.5)
+        with pytest.raises(MCPError):
+            client.list_tools()  # first call is delayed past the timeout
+        time.sleep(1.2)  # let the delayed response land in the reader queue
+        tools = client.list_tools()  # same transport, recovered
+        assert {t["name"] for t in tools} == {"echo"}
+    finally:
+        client.close()

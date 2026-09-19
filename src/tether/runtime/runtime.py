@@ -220,13 +220,30 @@ class TetherRuntime:
         from tether.mcp import MCPClient, StdioTransport, register_mcp_tools
 
         client = MCPClient(StdioTransport(command, cwd=self.workspace_dir))
-        client.initialize()
-        registered = register_mcp_tools(self.tool_registry, client, server_name)
+        try:
+            client.initialize()
+            registered = register_mcp_tools(self.tool_registry, client, server_name)
+        except Exception:
+            client.close()  # never leak a spawned server process
+            raise
         self._mcp_clients.append(client)
         self.event_recorder.record(
             "mcp_connected", server=server_name or "auto", tools=registered,
         )
         return registered
+
+    async def aclose(self) -> None:
+        """Close every MCP client and release resources.
+
+        Public counterpart to :meth:`connect_mcp` so callers (the CLI,
+        tests) never reach into ``_mcp_clients``. Idempotent.
+        """
+        for client in self._mcp_clients:
+            try:
+                client.close()
+            except Exception:  # noqa: BLE001 - shutdown is best-effort
+                logger.warning("Failed to close an MCP client", exc_info=True)
+        self._mcp_clients.clear()
 
     # ------------------------------------------------------------------
     # Thinking (mock or LLM)

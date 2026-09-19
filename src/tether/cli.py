@@ -135,8 +135,7 @@ async def _run(args: argparse.Namespace) -> int:
             print(f"[tether] WARNING: MCP server {command} failed: {exc}")
 
     await runtime.run()
-    for client in runtime._mcp_clients:
-        client.close()
+    await runtime.aclose()
 
     state = runtime.state
     print("\n=== Tether run ===")

@@ -49,7 +49,7 @@ flowchart LR
 
 ## Benchmark Results
 
-All numbers below are produced by the code in this repository. Run `python scripts/run_benchmark.py --all` to reproduce the six offline experiments; see [Reproducing the e2e experiment](#reproducing-the-e2e-experiment) for the real-LLM one. Per-experiment Markdown reports are committed under `src/tether/benchmarks/results/`; raw JSON/CSV dumps regenerate deterministically (seeded) via the same command.
+All numbers below are produced by the code in this repository. Run `python scripts/run_benchmark.py --all` to reproduce the six offline experiments; see [Reproducing the e2e experiment](#reproducing-the-e2e-experiment) for the real-LLM one. Per-experiment Markdown reports are committed under `src/tether/benchmarks/results/`; raw JSON/CSV dumps regenerate deterministically (seeded) via the same command for the six offline experiments. The e2e experiment needs a paid API key, so only its Markdown report is committed (no `results.json`/`results.csv`).
 
 > **What the numbers measure.** The compression/memory/drift/recovery/intercept experiments drive the *components* directly (offline-reproducible, seeded); the **agent experiment (7)** drives the *real* `TetherRuntime` loop end-to-end with a deterministic goal-directed policy, closing that gap. Model intelligence is only measured by the e2e experiment (6).
 
@@ -139,7 +139,7 @@ ceiling (the task stops with status STOPPED and a saved checkpoint).
 Run the offline benchmarks:
 
 ```bash
-python scripts/run_benchmark.py --all            # 5 offline experiments
+python scripts/run_benchmark.py --all            # 6 offline experiments
 python scripts/run_benchmark.py --experiment compression --num-samples 5
 ```
 

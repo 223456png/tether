@@ -70,7 +70,7 @@ verify_steps:
 
 1. BudgetConfig 分段比例落地（目前仅 total_budget 生效）——按 section 预算裁剪替代全局档位。✅ 已完成：allocate() 第二遍按 ratio 上限裁剪超限 section（tool 保最新、file 逐级降级、episodic 走收缩梯子），stats["section_trimmed"] 可观测；enforce_section_caps=False 可关闭。
 2. 工具结果截断升级为头+尾保留，并把各档位阈值做成可配置。✅ 已完成：_truncate_head_tail 头尾 2:1 分配可见预算，错误堆栈的结论（尾部）不再被砍掉；tool_truncate_chars / tool_minimal_chars 可配置；benchmark 数字重跑后与原表完全一致（681/537/574）。
-3. LLM 调用流式输出（SSE），让 CLI 实时显示思考过程。（待做）
+3. LLM 调用流式输出（SSE），让 CLI 实时显示思考过程。✅ 已完成：openai_compat 增加 on_delta 流式路径（纯函数 accumulate_sse 解析 SSE），runtime 按能力探测传递 on_llm_delta，CLI `--stream` 实时打印。
 4. 检查点压实（保留最近 N 条全量快照），避免长任务 JSONL 无界增长。✅ 已完成：save_full 后自动 _compact，keep_last_checkpoints（默认 20）。
 5. 执行沙箱化（容器/受限子进程），把"不是安全边界"的 TODO 变成保证。（待做）
 
