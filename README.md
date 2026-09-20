@@ -77,8 +77,8 @@ Takeaway: at n=20 the pass@1 differences are within noise, but the compressed ar
 
 | Memory config | Avg disk reads / task | Stale reads | Task success |
 |---------------|----------------------|-------------|--------------|
-| No memory | 30 | 6 | 100% (slow) |
-| Flat cache | 2 | 5.5 | **45%** — stale-data failures |
+| No memory | 30 | 0 | 100% (slow) |
+| Flat cache | 1 | 15.95 | **45%** — stale-data failures |
 | **Three-layer (ours)** | **2** | **0** | **100%** |
 
 ### 4. File drift detection (10 change types × 10 samples)
@@ -114,7 +114,7 @@ This closes the gap the other experiments leave: it exercises the harness as one
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 133 tests, all offline
+python -m pytest tests/ -q          # 136 tests, all offline
 ```
 
 Or drive an agent task from the command line (no API key needed — it
@@ -259,7 +259,7 @@ src/tether/
 ├── reporting.py    # events.jsonl -> one-page markdown run report
 ├── cli.py          # `tether run` / `tether report` command-line entry points
 └── benchmarks/     # 7 experiments, metrics, reports, datasets (+ agent-level eval)
-tests/              # 133 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
+tests/              # 136 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
 docs/designs/       # per-phase design documents (HOTL contracts)
 ```
 
