@@ -5,13 +5,15 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**A memory-and-context management layer for long-running LLM coding agents — with real, reproducible benchmarks.**
+**A memory-and-context management layer for long-running LLM coding agents — context engineering with verifiable safety, and real, reproducible benchmarks.**
 
 Tether is an experimental agent runtime that answers a practical question: *as a coding agent works for hours, how do you keep its context small, its memory correct, and its progress recoverable — without silently losing information?*
 
 It is built as a pipeline of independently testable components (LLM-driven tool loop → three-layer memory → budget-allocated compression → drift detection → smart recovery → tool interception → MCP ecosystem access), and every claim in this README is backed by a benchmark you can run yourself.
 
 > **Positioning.** Tether is not chasing SOTA compression ratios (LLMLingua-style learned compressors reach 10–20×). It is a *deterministic, zero-model* pipeline whose value proposition is verifiable safety: every compression is validated (ROUGE-L + keyword survival) and rolled back when it would lose information. The benchmarks below measure exactly that trade-off.
+
+> **Why this matters in 2026.** The field has converged on compaction as the default answer to long-horizon context growth — and on its signature failure mode: agents that forget what "done" meant after compression, optimize to the visible test, patch in circles, and report false completion. Tether's answers are structural, not prompt-level: the task summary and the model-maintained plan (`update_plan`) live in a **never-pruned memory layer** that re-enters every turn's context, every compression is **validated and rolled back** on information loss, and **file drift is detected across restarts** (stat → MD5 → AST) so recovery knows what actually changed while the agent was away.
 
 ## Architecture
 
