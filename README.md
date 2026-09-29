@@ -5,17 +5,17 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**A memory-and-context management layer for long-running LLM coding agents — context engineering with verifiable safety, and real, reproducible benchmarks.**
+**面向长时运行 LLM 编码 Agent 的记忆与上下文管理层——做可验证安全性的 context engineering，所有数字可复现。**
 
-Tether is an experimental agent runtime that answers a practical question: *as a coding agent works for hours, how do you keep its context small, its memory correct, and its progress recoverable — without silently losing information?*
+Tether 是一个实验性的 Agent 运行时，回答一个很实际的问题：编码 Agent 一干就是几个小时，怎么让它的上下文保持精简、记忆保持正确、进度可恢复，而且不悄悄丢信息？
 
-It is built as a pipeline of independently testable components (LLM-driven tool loop → three-layer memory → budget-allocated compression → drift detection → smart recovery → tool interception → MCP ecosystem access), and every claim in this README is backed by a benchmark you can run yourself.
+实现上是一条可独立测试的组件流水线：LLM 工具循环 → 三层记忆 → 预算化压缩 → 文件漂移检测 → 智能恢复 → 重复调用拦截 → MCP 生态接入。README 里的每个结论背后都有你能自己跑的 benchmark。
 
-> **Positioning.** Tether is not chasing SOTA compression ratios (LLMLingua-style learned compressors reach 10–20×). It is a *deterministic, zero-model* pipeline whose value proposition is verifiable safety: every compression is validated (ROUGE-L + keyword survival) and rolled back when it would lose information. The benchmarks below measure exactly that trade-off.
+> **定位**：Tether 不追求 SOTA 压缩率（LLMLingua 这类学习式压缩器能到 10–20 倍）。它是确定性、零模型的流水线，价值在可验证的安全：每次压缩都过校验（ROUGE-L + 关键词存活），不达标就回滚。下面的 benchmark 量的就是这个取舍。
 
-> **Why this matters in 2026.** The field has converged on compaction as the default answer to long-horizon context growth — and on its signature failure mode: agents that forget what "done" meant after compression, optimize to the visible test, patch in circles, and report false completion. Tether's answers are structural, not prompt-level: the task summary and the model-maintained plan (`update_plan`) live in a **never-pruned memory layer** that re-enters every turn's context, every compression is **validated and rolled back** on information loss, and **file drift is detected across restarts** (stat → MD5 → AST) so recovery knows what actually changed while the agent was away.
+> **为什么这事在 2026 年重要**：业界已经把 compaction 当成长上下文增长的默认答案，也习惯了它的标志性失败模式——压缩之后 Agent 忘了"完成"的标准是什么，只对着可见的测试优化、原地打转补丁，最后报告一个假完成。Tether 的对策是结构性的，不是 prompt 层的：任务摘要和模型自维护的计划（`update_plan`）放在**永不裁剪**的记忆层，每轮回到上下文；每次压缩都有校验、丢信息就回滚；文件漂移跨重启检测（stat → MD5 → AST），恢复时知道 Agent 离开期间到底发生了什么。
 
-## Architecture
+## 架构
 
 ```mermaid
 flowchart LR
@@ -36,116 +36,112 @@ flowchart LR
     RC[RecoveryManager] --> SM
 ```
 
-| Phase | Component | What it does |
+| 阶段 | 组件 | 做什么 |
 |-------|-----------|--------------|
-| 1 | `runtime/` `checkpoint/` | Async state machine, JSONL checkpoints, tool timeout breaker |
-| 2–3 | `memory/` `context/` | Three-layer memory (TaskSummary / FileSnapshot / EpisodicNotes) + budget-allocated context assembly (5 trim levels + per-section caps + head/tail truncation) |
-| 4 | `context/validator.py` | ROUGE-L + keyword compression validation with rollback |
-| 5 | `filesystem/drift.py` | Three-level file drift detection (stat → MD5 → AST symbols+signatures) |
-| 6 | `checkpoint/recovery.py` | Drift-aware recovery planning across 10 interruption scenarios, with content-restore for deleted files |
-| 7 | `tools/` | Tool registry with duplicate-call interception (5s window, side-effect-safe) |
-| 8 | `benchmarks/` | 7 benchmark experiments with baselines and ablations (incl. agent-level integration eval) |
-| 9 | `llm/` | OpenAI-compatible provider layer (DeepSeek tested) + offline mock |
-| 10 | `runtime/runtime.py` `llm/` | LLM-driven agent loop: context assembly → OpenAI-style tool calls → done signal (mock fallback kept for offline tests) |
-| 11 | `mcp.py` `tools/builtin` | MCP client (stdio JSON-RPC, zero deps): any MCP server's tools join the registry; `update_plan` tool lets the model maintain its own plan |
+| 1 | `runtime/` `checkpoint/` | 异步状态机、JSONL checkpoint、工具超时熔断 |
+| 2–3 | `memory/` `context/` | 三层记忆（TaskSummary / FileSnapshot / EpisodicNotes）+ 预算化上下文组装（5 级裁剪 + 分节上限 + 头尾截断） |
+| 4 | `context/validator.py` | ROUGE-L + 关键词压缩校验，失败回滚 |
+| 5 | `filesystem/drift.py` | 三级文件漂移检测（stat → MD5 → AST 符号与签名） |
+| 6 | `checkpoint/recovery.py` | 10 种中断场景的漂移感知恢复规划，已删文件支持内容还原 |
+| 7 | `tools/` | 工具注册表 + 重复调用拦截（5 秒窗口，副作用安全） |
+| 8 | `benchmarks/` | 7 个 benchmark 实验，含基线与消融（含 Agent 级集成评测） |
+| 9 | `llm/` | OpenAI 兼容 provider 层（实测 DeepSeek）+ 离线 mock |
+| 10 | `runtime/runtime.py` `llm/` | LLM 驱动的 Agent 循环：上下文组装 → OpenAI 式工具调用 → done 信号（离线测试保留 mock 降级） |
+| 11 | `mcp.py` `tools/builtin` | MCP 客户端（stdio JSON-RPC，零依赖）：任意 MCP server 的工具进注册表；`update_plan` 让模型维护自己的计划 |
 
-## Benchmark Results
+## Benchmark 结果
 
-All numbers below are produced by the code in this repository. Run `python scripts/run_benchmark.py --all` to reproduce the six offline experiments; see [Reproducing the e2e experiment](#reproducing-the-e2e-experiment) for the real-LLM one. Per-experiment Markdown reports are committed under `src/tether/benchmarks/results/`; raw JSON/CSV dumps regenerate deterministically (seeded) via the same command for the six offline experiments. The e2e experiment needs a paid API key, so only its Markdown report is committed (no `results.json`/`results.csv`).
+下面所有数字都由仓库内代码产出。六个离线实验跑 `python scripts/run_benchmark.py --all` 复现；真实 LLM 的 e2e 见[复现 e2e 实验](#复现-e2e-实验)。各实验的 Markdown 报告在 `src/tether/benchmarks/results/`；六个离线实验的原始 JSON/CSV 由同一命令（固定种子）确定性再生成；e2e 需要 API key，只提交了 Markdown 报告。
 
-> **What the numbers measure.** The compression/memory/drift/recovery/intercept experiments drive the *components* directly (offline-reproducible, seeded); the **agent experiment (7)** drives the *real* `TetherRuntime` loop end-to-end with a deterministic goal-directed policy, closing that gap. Model intelligence is only measured by the e2e experiment (6).
+> **数字量的是什么**：压缩/记忆/漂移/恢复/拦截实验直接驱动*组件*（离线、固定种子、可复现）；**实验 7** 用确定性目标导向策略驱动*真实的* `TetherRuntime` 循环，补上了这个缺口。模型智能只由 e2e 实验（6）度量。
 
-### 1. Context compression (20 HumanEval tasks, offline validation)
+### 1. 上下文压缩（20 个 HumanEval 任务，离线校验）
 
-| Strategy | Prompt tokens | Information preserved |
+| 策略 | Prompt tokens | 信息保全 |
 |----------|--------------|----------------------|
-| Full context (baseline) | 681 | 100% |
-| Last-N truncation | 537 (−21%) | **65%** — drops early tool results |
-| **BudgetAllocator (ours)** | **531 (−22%)** | **100%** — ROUGE-L validated, rollback on failure |
+| 全量上下文（基线） | 681 | 100% |
+| Last-N 截断 | 537（−21%） | **65%**，早期工具结果被丢 |
+| **BudgetAllocator（本文）** | **531（−22%）** | **100%**，ROUGE-L 校验，失败回滚 |
 
-### 2. Real-LLM end-to-end, pass@1 (20 HumanEval tasks × 3 arms, DeepSeek, greedy decoding)
+### 2. 真实 LLM 端到端 pass@1（20 个 HumanEval 任务 × 3 组，DeepSeek，greedy 解码）
 
-Each arm sends a realistic agent context (task summary, file snapshots, tool history, episodic notes) + the task to `deepseek-v4-flash`; the completion is executed against the official HumanEval tests.
+每组把真实的 Agent 上下文（任务摘要、文件快照、工具历史、情节笔记）加任务发给 `deepseek-v4-flash`，产出对着官方 HumanEval 测试执行。
 
-| Arm | pass@1 | Avg prompt tokens | Avg total tokens (incl. reasoning) | Avg latency |
+| 组 | pass@1 | 平均 prompt tokens | 平均总 tokens（含推理） | 平均延迟 |
 |-----|--------|-------------------|-----------------------------------|-------------|
-| Full context | 65% (13/20) | 795 | 4548 | 77.2s |
-| Last-N | 80% (16/20) | 673 | 2760 | 49.0s |
-| **BudgetAllocator (ours)** | **80% (16/20)** | 708 (−11%) | 3609 (**−21%**) | 62.3s |
+| 全量上下文 | 65%（13/20） | 795 | 4548 | 77.2s |
+| Last-N | 80%（16/20） | 673 | 2760 | 49.0s |
+| **BudgetAllocator（本文）** | **80%（16/20）** | 708（−11%） | 3609（**−21%**） | 62.3s |
 
-Takeaway: at n=20 the pass@1 differences are within noise, but the compressed arms *never underperform* the full context while cutting total token cost by 21% — consistent with shorter contexts reducing distraction for reasoning models ("lost in the middle"). Most non-passes are reasoning-budget exhaustion (empty completions at the 8192-token cap) on the lightweight flash model, not wrong code.
+结论：n=20 时 pass@1 差异在噪声内，但压缩组**从不劣于**全量上下文，总 token 成本省 21%——与"短上下文减少推理模型分心"（lost in the middle）的方向一致。多数未通过是轻量 flash 模型在 8192 token 上限处推理预算耗尽（空输出），不是代码写错。
 
-### 3. Memory ablation (20 tasks)
+### 3. 记忆消融（20 任务）
 
-| Memory config | Avg disk reads / task | Stale reads | Task success |
+| 记忆配置 | 平均磁盘读/任务 | 过期读 | 任务成功率 |
 |---------------|----------------------|-------------|--------------|
-| No memory | 30 | 0 | 100% (slow) |
-| Flat cache | 1 | 15.95 | **45%** — stale-data failures |
-| **Three-layer (ours)** | **2** | **0** | **100%** |
+| 无记忆 | 30 | 0 | 100%（慢） |
+| 平铺缓存 | 1 | 15.95 | **45%**，过期数据导致失败 |
+| **三层（本文）** | **2** | **0** | **100%** |
 
-### 4. File drift detection (10 change types × 10 samples)
+### 4. 文件漂移检测（10 种变更类型 × 10 样本）
 
-**100/100 accuracy** (0 false positives, 0 false negatives), avg **1.3ms** per file. Covers content edits, comment/whitespace changes, appends, deletion, rename, function add/remove/rename, signature changes, and concurrent multi-file edits.
+**100/100 准确**（0 误报、0 漏报），平均 **1.3ms**/文件。覆盖内容编辑、注释/空白变更、追加、删除、重命名、函数增删改、签名变更、并发多文件编辑。
 
-### 5. Recovery (10 interruption scenarios × 5 runs)
+### 5. 恢复（10 个中断场景 × 5 轮）
 
-**100% overall** recovery success, avg 0.6 steps lost. Every scenario recovers, including `file_deleted`: files the agent touched (read or wrote) get content-backed snapshots, so an external deletion is undone by writing the content back. Files never touched by the agent have no snapshot and remain unrecoverable — the detector still flags them, and recovery fails with an explicit reason.
+**整体 100%** 恢复成功，平均丢失 0.6 步。所有场景都能恢复，包括 `file_deleted`：Agent 碰过的文件（读或写）都有内容快照，外部删除可以通过写回内容撤销；Agent 没碰过的文件没有快照、恢复不了——检测器照样会标记，恢复失败时给出明确原因。
 
-### 6. Duplicate-call interception (20 simulated tasks)
+### 6. 重复调用拦截（20 个模拟任务）
 
-**100% interception** (60/60 duplicate calls in the 5s window), saving 5100 tokens of redundant tool output.
+**100% 拦截**（5 秒窗口内 60/60 次重复调用），省下 5100 token 的冗余工具输出。
 
-### 7. Agent-level integration eval (20 scripted tasks × 5 task types, offline)
+### 7. Agent 级集成评测（20 个脚本任务 × 5 种类型，离线）
 
-A deterministic, goal-directed policy stands in for the LLM and drives the **real `TetherRuntime` loop** (context assembly → structured tool calls → memory writes → checkpoints → events) over synthetic file-manipulation tasks; success is verified against the final workspace state.
+用确定性的目标导向策略代替 LLM，驱动**真实的 `TetherRuntime` 循环**（上下文组装 → 结构化工具调用 → 记忆写入 → checkpoint → 事件流）跑合成文件操作任务，按最终工作区状态判分。
 
-| Task type | Result |
+| 任务类型 | 结果 |
 |-----------|--------|
 | create-and-verify | 4/4 |
 | edit-existing | 4/4 |
-| search-then-fix (closed-loop, reacts to observations) | 4/4 |
-| plan-execute (`update_plan` → execute) | 4/4 |
-| test-and-report (real pytest) | 4/4 |
-| **Overall** | **100% (20/20), avg 3.4 steps/task** |
+| search-then-fix（闭环，根据观察反应） | 4/4 |
+| plan-execute（`update_plan` → 执行） | 4/4 |
+| test-and-report（真实 pytest） | 4/4 |
+| **合计** | **100%（20/20），平均 3.4 步/任务** |
 
-This closes the gap the other experiments leave: it exercises the harness as one pipeline, offline and deterministically. Its first run caught a real defect (multi-line tool output truncated in the observation channel) — which is exactly what an integration eval is for.
+这个实验补上了其他实验留下的缺口：整条流水线作为一个整体、离线确定性跑通。首跑就抓到一个真 bug（多行工具输出在观察通道里被截断）——这正是集成评测存在的意义。
 
-## Quickstart
+## 快速开始
 
 ```bash
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 136 tests, all offline
+python -m pytest tests/ -q          # 136 个测试，全离线
 ```
 
-Or drive an agent task from the command line (no API key needed — it
-falls back to the offline mock brain), then turn the event stream into
-a one-page report:
+也可以从命令行驱动一个 Agent 任务（不需要 API key，会降级到离线 mock 大脑），再把事件流转成一页报告：
 
 ```bash
 tether run --goal "Create hello.txt containing 'hi' and verify it" --workspace ./ws
-tether report --events ./ws/logs/events.jsonl          # markdown summary
+tether report --events ./ws/logs/events.jsonl          # markdown 摘要
 ```
 
-Plug in any MCP server's tools with `--mcp-cmd` (repeatable):
+接任意 MCP server 的工具用 `--mcp-cmd`（可重复）：
 
 ```bash
 tether run --goal "..." --workspace ./ws --mcp-cmd "python path/to/mcp_server.py"
 ```
 
-Safety rails for real usage: `--require-approval` pauses mutating tools
-for console confirmation, and `--max-tokens N` enforces a hard cost
-ceiling (the task stops with status STOPPED and a saved checkpoint).
+真实使用的安全护栏：`--require-approval` 让写类工具在控制台确认后执行；`--max-tokens N` 给出硬成本上限（到量即停，状态 STOPPED，checkpoint 已保存）。
 
-Run the offline benchmarks:
+跑离线 benchmark：
 
 ```bash
-python scripts/run_benchmark.py --all            # 6 offline experiments
+python scripts/run_benchmark.py --all            # 6 个离线实验
 python scripts/run_benchmark.py --experiment compression --num-samples 5
 ```
 
-### Running the LLM-driven agent loop
+### 运行 LLM 驱动的 Agent 循环
 
 ```python
 import asyncio
@@ -154,8 +150,8 @@ from pathlib import Path
 from tether.llm.factory import create_provider_from_env
 from tether.runtime.runtime import TetherRuntime
 
-# DEEPSEEK_API_KEY (or TETHER_LLM_*) set -> real provider; otherwise the
-# offline MockProvider (is_mock=True), so this snippet always runs.
+# 设置了 DEEPSEEK_API_KEY（或 TETHER_LLM_*）→ 真实 provider；
+# 否则离线 MockProvider（is_mock=True），这段代码永远能跑。
 provider, is_mock = create_provider_from_env()
 
 runtime = TetherRuntime(
@@ -169,102 +165,75 @@ print(runtime.state.status, runtime.state.final_answer)
 print(runtime.state.total_tokens, "tokens")
 ```
 
-Each turn: `ContextAssembler` builds the system context from the three-layer
-memory under the token budget → the model returns an OpenAI-style tool call
-or a final answer → the tool executes through the registry (with
-duplicate-call interception and workspace-boundary checks) → state, memory
-and a JSONL event stream (`logs/events.jsonl`) are updated → checkpoint.
+每一轮：`ContextAssembler` 在 token 预算内从三层记忆组装系统上下文 → 模型返回 OpenAI 式工具调用或最终答案 → 工具经注册表执行（带重复调用拦截与工作区边界检查）→ 状态、记忆和 JSONL 事件流（`logs/events.jsonl`）更新 → checkpoint。
 
-Two loop behaviors worth knowing:
+循环里值得知道的行为：
 
-- **Errors are observations, not verdicts.** With
-  `max_consecutive_failures=N` (the CLI default is 3), a tool exception or
-  timeout is fed back into the tool history so the model can retry with
-  different arguments; a circuit breaker fails the task only after N
-  *consecutive* failures. The default `0` preserves strict fail-fast for
-  the mock brain, which cannot adapt.
-- **`run_test` is real.** It spawns `python -m pytest <file>` inside the
-  workspace and returns the pass/fail summary — on failure the traceback
-  tail comes back as the error, so the agent can see *why* and fix it.
-- **Human-in-the-loop approval.** With `--require-approval` (or an
-  `approval_gate` callable), mutating tools (`write_file`, `run_test`)
-  pause for confirmation before executing; a rejection becomes a
-  `DENIED` observation the model can adapt to.
-- **Hard cost ceiling.** `--max-tokens N` stops the loop (status
-  STOPPED, checkpoint saved) once cumulative LLM token usage reaches N.
-- **The model plans.** The `update_plan` tool writes the agent's plan
-  into the never-pruned TaskSummary layer, so it survives compression
-  and re-enters every turn's context.
-- **Streaming output.** `--stream` (or an `on_llm_delta` callback)
-  emits the model's answer live over SSE — providers without streaming
-  support are called unchanged.
+- **错误是观察，不是判决。** `max_consecutive_failures=N`（CLI 默认 3）时，工具异常或超时会回喂工具历史，让模型换参数重试；只有连续 N 次失败才熔断。默认 `0` 保持 mock 大脑的严格 fail-fast（它不会适应）。
+- **`run_test` 是真的。** 在 workspace 里起 `python -m pytest <file>` 并返回通过/失败摘要——失败时 traceback 尾部作为错误返回，Agent 能看到错在哪、去修。
+- **人审门。** `--require-approval`（或 `approval_gate` 回调）时，写类工具（`write_file`、`run_test`）执行前暂停确认；拒绝变成 `DENIED` 观察返回给模型适应。
+- **硬成本上限。** `--max-tokens N` 在累计 token 用量到 N 时停机（状态 STOPPED，checkpoint 已保存）。
+- **模型自己维护计划。** `update_plan` 工具把 Agent 的计划写进永不裁剪的 TaskSummary 层，压缩后依然在，每轮回到上下文。
+- **流式输出。** `--stream`（或 `on_llm_delta` 回调）把模型回答以 SSE 实时吐出——不支持流式的 provider 照常调用。
 
-Without an API key the loop runs on a scripted/mock brain so every code path stays testable in CI at zero cost.
+没有 API key 时循环跑在脚本/mock 大脑上，所有代码路径在 CI 里零成本可测。
 
-### Reproducing the e2e experiment
+### 复现 e2e 实验
 
 ```bash
-export DEEPSEEK_API_KEY=sk-...            # any OpenAI-compatible key works via TETHER_LLM_* vars
+export DEEPSEEK_API_KEY=sk-...            # 任意 OpenAI 兼容 key，经 TETHER_LLM_* 变量同样可用
 export TETHER_LLM_MODEL=deepseek-v4-flash
 python scripts/run_benchmark.py --experiment e2e --num-samples 20
 ```
 
-Without an API key the experiment falls back to an offline `MockProvider` and flags every result (`is_mock: true`) — the pipeline stays runnable in CI at zero cost.
+没有 API key 时降级到离线 `MockProvider`，所有结果打上 `is_mock: true`——流水线在 CI 里零成本可跑。
 
-## Limitations (read before citing numbers)
+## 局限（引用数字前先读）
 
-- **e2e sample size is small** (20 tasks × 3 arms). Differences of ≤15 percentage points are within noise; we report them as directionally consistent, not significant.
-- **Benchmark numbers drive components, not the integrated loop** (see "What the numbers measure" above).
-- **Code execution is not sandboxed.** HumanEval completions and test runs execute in plain subprocesses with timeouts (standard practice, but do not point this at untrusted models). Tools restrict file access to the workspace directory, but the loop itself is not a security boundary.
-- **`file_deleted` recovery covers only touched files.** Files the agent read or wrote get content-backed snapshots (≤64KB each) and can be restored after external deletion; files never touched by the agent cannot be recovered.
-- **The drift test set is self-constructed** (10 change types × 10 samples). 100% accuracy means the ten mutation classes are covered, not production-level generalization.
-- **HumanEval subset is bundled offline** (20 problems) because the build environment had no network access to the upstream repo.
-- **Compression ratio is ~22% vs learned compressors' 10–20×**; the trade is a hard semantic-preservation guarantee (every compression passes ROUGE-L + keyword validation or rolls back).
+- **e2e 样本量小**（20 任务 × 3 组）。≤15 个百分点的差异都在噪声内；按方向一致报告，不当作显著。
+- **benchmark 驱动的是组件，不是整合后的循环**（见上文"数字量的是什么"）。
+- **代码执行没有沙箱。** HumanEval 产出和测试跑在带超时的普通子进程里（业界常规，但别对着不可信的模型用）。工具限制文件访问在 workspace 内，但循环本身不是安全边界。
+- **`file_deleted` 恢复只覆盖碰过的文件。** 读或写过的文件有内容快照（每个 ≤64KB）可在外部删除后还原；没碰过的文件恢复不了。
+- **漂移测试集是自建的**（10 种变更 × 10 样本）。100% 准确说的是这十类变更全覆盖，不代表生产级泛化。
+- **HumanEval 子集离线内置**（20 题），因为构建环境访问不了上游仓库。
+- **压缩率约 22%，对比学习式压缩器的 10–20 倍**；换来的是硬性语义保全保证（每次压缩过 ROUGE-L + 关键词校验，否则回滚）。
 
 ## Roadmap
 
-Remaining ideas (design notes in `docs/designs/`):
+剩下的想法：
 
-1. **Sandboxed execution** — containerize test runs to make the
-   "not a security boundary" caveat an actual guarantee.
-2. **Cross-task episodic memory** — notes are task-scoped today;
-   a shared store would let lessons transfer across tasks.
-3. **Conversation compaction** — the tool history is windowed today;
-   LLM/deterministic summarization would extend long-horizon recall.
+1. **沙箱化执行**——测试跑进容器，把"不是安全边界"的声明变成真正的保证。
+2. **跨任务情节记忆**——笔记目前是任务内的，共享存储能让经验跨任务传递。
+3. **对话压缩**——工具历史现在是窗口化的，LLM/确定性摘要可以拉长回忆视野。
 
-Recently shipped (was on this list, now done):
+近期已完成：
 
-- ✅ **Per-section budget caps** + head+tail truncation (−22% compression
-  at 100% validation success).
-- ✅ **Checkpoint compaction** — bounded JSONL history.
-- ✅ **MCP client** — any MCP server's tools join the registry.
-- ✅ **`update_plan`** — the model maintains its own plan in memory.
-- ✅ **Approval gate + token budget** — human-in-the-loop and a hard
-  cost ceiling.
-- ✅ **Streaming** — SSE delta streaming end-to-end (provider → runtime
-  callback → CLI `--stream`).
-- ✅ **Agent-level integration eval** — 20 scripted tasks through the
-  real loop, 100% pass (benchmark 7 above).
+- ✅ 分节预算上限 + 头尾截断（压缩 −22%，校验 100% 通过）
+- ✅ checkpoint 压缩——JSONL 历史有界
+- ✅ MCP 客户端——任意 MCP server 的工具进注册表
+- ✅ `update_plan`——模型在记忆里维护自己的计划
+- ✅ 审批门 + token 预算——human-in-the-loop 加硬成本上限
+- ✅ SSE 流式——provider → runtime 回调 → CLI `--stream` 全链路
+- ✅ Agent 级集成评测——20 个脚本任务过真实循环，100% 通过（上文实验 7）
 
-## Project Layout
+## 项目结构
 
 ```
 src/tether/
-├── runtime/        # state machine + LLM/mock agent loop + JSONL event stream
-├── checkpoint/     # JSONL checkpoints + smart recovery
+├── runtime/        # 状态机 + LLM/mock 循环 + JSONL 事件流
+├── checkpoint/     # JSONL checkpoint + 智能恢复
 ├── memory/         # TaskSummary / FileSnapshot / EpisodicNotes
-├── context/        # BudgetAllocator (levels + per-section caps) + ROUGE-L validator
-├── filesystem/     # DriftDetector (stat → MD5 → AST)
-├── tools/          # per-runtime registry + side-effect-safe interceptor + real run_test
-├── llm/            # OpenAI-compatible provider (function calling) + offline mock
-├── mcp.py          # MCP client (stdio JSON-RPC): external tool servers -> registry
-├── reporting.py    # events.jsonl -> one-page markdown run report
-├── cli.py          # `tether run` / `tether report` command-line entry points
-└── benchmarks/     # 7 experiments, metrics, reports, datasets (+ agent-level eval)
-tests/              # 136 tests (all offline, incl. scripted-provider loop + MCP roundtrips)
-docs/designs/       # per-phase design documents (HOTL contracts)
+├── context/        # BudgetAllocator（分级 + 分节上限）+ ROUGE-L 校验器
+├── filesystem/     # DriftDetector（stat → MD5 → AST）
+├── tools/          # 运行时注册表 + 副作用安全拦截器 + 真实 run_test
+├── llm/            # OpenAI 兼容 provider（function calling）+ 离线 mock
+├── mcp.py          # MCP 客户端（stdio JSON-RPC）
+├── reporting.py    # events.jsonl → 单页 markdown 运行报告
+├── cli.py          # tether run / tether report 命令行入口
+└── benchmarks/     # 7 个实验、指标、报告、数据集（含 Agent 级评测）
+tests/              # 136 个测试（全离线，含脚本 provider 循环 + MCP 往返）
 ```
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT，见 [LICENSE](LICENSE)。
