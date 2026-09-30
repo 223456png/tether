@@ -168,7 +168,9 @@ def test_recovery_user_interrupt(tmp_path: Path) -> None:
     assert result.task_state.error_message is None
 
     # Full runtime flow: resume a clean interrupted task and finish it.
-    runtime = TetherRuntime("Interrupted task", tmp_path, tool_timeout=5)
+    # max_steps raised: the resumed task re-enters the mock demo (2 tool
+    # steps + finish) on top of the 3 restored steps.
+    runtime = TetherRuntime("Interrupted task", tmp_path, tool_timeout=5, max_steps=10)
     asyncio.run(runtime.resume(TASK_ID))
     assert runtime.state.status.value == "completed"
     assert runtime.state.step_index > 3

@@ -60,6 +60,55 @@ def test_summarize_events_empty() -> None:
     assert "no events" in summarize_events([])
 
 
+def test_summarize_reports_goal_achievement() -> None:
+    """A goal_verified event renders an explicit ✓/✗ verdict."""
+    events = [
+        {"event": "task_started", "task_id": "t1", "goal": "g", "brain": "llm"},
+        {
+            "event": "tool_executed", "tool": "write_file",
+            "success": True, "cached": False,
+        },
+        {"event": "task_completed", "steps": 2, "total_tokens": 10},
+        {"event": "goal_verified", "passed": True, "status": "completed"},
+    ]
+    report = summarize_events(events)
+    assert "Goal achievement" in report
+    assert "✓" in report
+
+
+def test_summarize_flags_failed_tools_and_incomplete_tasks() -> None:
+    """Failed tool calls and non-completed tasks get prominent warnings."""
+    events = [
+        {"event": "task_started", "task_id": "t1", "goal": "g", "brain": "llm"},
+        {
+            "event": "tool_executed", "tool": "run_test",
+            "success": False, "cached": False,
+        },
+        {
+            "event": "tool_executed", "tool": "run_test",
+            "success": False, "cached": False,
+        },
+        {
+            "event": "task_ended", "status": "stopped", "steps": 2,
+            "error": "Step cap reached: 2 steps executed >= max_steps 2",
+        },
+    ]
+    report = summarize_events(events)
+    assert "2 of 2 tool call(s) FAILED" in report
+    assert "Task ended without completing" in report
+    assert "✗ goal not achieved" in report
+
+
+def test_summarize_warns_when_completed_without_tools() -> None:
+    """'completed' with zero tool executions is flagged, not celebrated."""
+    events = [
+        {"event": "task_started", "task_id": "t1", "goal": "g", "brain": "mock"},
+        {"event": "task_completed", "steps": 1, "total_tokens": 0},
+    ]
+    report = summarize_events(events)
+    assert "completed without executing any tools" in report
+
+
 def test_cli_parses_defaults() -> None:
     """Defaults are sane so a bare `tether run --goal x` works."""
     args = build_parser().parse_args(["run", "--goal", "x"])
