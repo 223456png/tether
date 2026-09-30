@@ -31,9 +31,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   FileNotFoundError 穿透 agent 循环，按 MISSING 处理
 - 审计对象说明：本轮审计基于 3890a11（旧 main），其中"步数上限 →
   COMPLETED / Quickstart 假完成 / 报告缺达成度"三项已在 606ada6 修复
-
-### Fixed
-
 - **Fake completion in the offline mock brain.** The mock thinker used to pick
   random, goal-blind action strings and let the loop report success without
   ever pursuing the goal (the documented Quickstart created no file yet ended
