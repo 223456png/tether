@@ -116,7 +116,7 @@ flowchart LR
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 149 个测试，全离线
+python -m pytest tests/ -q          # 150 个测试，全离线
 ```
 
 也可以从命令行驱动一个 Agent 任务（不需要 API key，会降级到离线 mock 大脑），再把事件流转成一页报告：
@@ -241,7 +241,7 @@ src/tether/
 ├── reporting.py    # events.jsonl → 单页 markdown 运行报告
 ├── cli.py          # tether run / tether report 命令行入口
 └── benchmarks/     # 7 个实验、指标、报告、数据集（含 Agent 级评测）
-tests/              # 149 个测试（全离线，含脚本 provider 循环 + MCP 往返）
+tests/              # 150 个测试（全离线，含脚本 provider 循环 + MCP 往返）
 ```
 
 ## License
