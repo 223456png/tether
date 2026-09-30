@@ -77,6 +77,35 @@ def test_result_save_load(tmp_path: Path) -> None:
     assert payload["variants"]["interceptor"]["metrics"]["n_samples"] == 3
 
 
+def test_save_results_strips_latency_from_committed_output(tmp_path: Path) -> None:
+    """墙钟 latency 不进版控 results.json/csv，单独落到 gitignore 的 latency.json。"""
+    configs = default_configs(num_samples=3)
+    config = configs["intercept"]
+    config.output_dir = tmp_path
+
+    runner = BenchmarkRunner(config)
+    asyncio.run(runner.run_experiment())
+    json_path = runner.save_results()
+
+    committed = json.loads(json_path.read_text(encoding="utf-8"))
+    # 单条结果不含 latency 字段，聚合指标不含 avg/p95 latency
+    for data in committed["variants"].values():
+        for r in data["results"]:
+            assert "latency_ms" not in r
+            assert "recovery_latency_ms" not in r
+        for key in ("avg_latency_ms", "p95_latency_ms", "avg_recovery_ms"):
+            assert key not in data["metrics"], key
+
+    # 完整观测（含 latency）在 latency.json（gitignore）
+    full = json.loads((json_path.parent / "latency.json").read_text(encoding="utf-8"))
+    assert any("latency_ms" in r for d in full["variants"].values() for r in d["results"])
+
+    # CSV 不含 latency 列
+    header = (json_path.parent / "results.csv").read_text(encoding="utf-8").splitlines()[0]
+    assert "latency_ms" not in header
+    assert "recovery_latency_ms" not in header
+
+
 def test_dataset_loader() -> None:
     """HumanEval loads non-empty tasks with the expected fields."""
     tasks = load_humaneval(num_samples=5)

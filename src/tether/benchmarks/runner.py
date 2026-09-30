@@ -19,7 +19,13 @@ from tether.benchmarks.datasets import (
     load_humaneval,
     run_humaneval_check,
 )
-from tether.benchmarks.metrics import TaskResult, compute_metrics
+from tether.benchmarks.metrics import (
+    LATENCY_RESULT_FIELDS,
+    TaskResult,
+    compute_metrics,
+    strip_latency_metrics,
+    strip_latency_result,
+)
 from tether.checkpoint import CheckpointManager, RecoveryManager
 from tether.context import (
     BudgetAllocator,
@@ -70,8 +76,13 @@ class BenchmarkRunner:
         return self.results
 
     def save_results(self) -> Path:
-        """Persist per-variant results + metrics as JSON and CSV."""
-        payload = {
+        """Persist per-variant results + metrics as JSON and CSV.
+
+        墙钟 latency 是观测噪声（重跑必变），不进版控的 results.json/csv，
+        单独落到 ``latency.json``（.gitignore）供本地性能回归观察——
+        保证「固定种子确定性再生成」对**字节**也成立。
+        """
+        full_payload = {
             "experiment": self.config.name,
             "description": self.config.description,
             "variants": {
@@ -82,21 +93,44 @@ class BenchmarkRunner:
                 for variant, results in self._group_by_variant().items()
             },
         }
+        deterministic = {
+            "experiment": full_payload["experiment"],
+            "description": full_payload["description"],
+            "variants": {
+                variant: {
+                    "results": [
+                        strip_latency_result(r) for r in data["results"]
+                    ],
+                    "metrics": strip_latency_metrics(data["metrics"]),
+                }
+                for variant, data in full_payload["variants"].items()
+            },
+        }
         json_path = self.output_dir / "results.json"
         json_path.write_text(
-            json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8"
+            json.dumps(deterministic, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        # 完整观测（含 latency）落到 gitignore 的 latency.json
+        (self.output_dir / "latency.json").write_text(
+            json.dumps(full_payload, indent=2, ensure_ascii=False), encoding="utf-8"
         )
 
         csv_path = self.output_dir / "results.csv"
+        csv_fields = [
+            f for f in TaskResult.__dataclass_fields__
+            if f not in LATENCY_RESULT_FIELDS
+        ]
         with csv_path.open("w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=list(TaskResult.__dataclass_fields__))
+            writer = csv.DictWriter(f, fieldnames=csv_fields)
             writer.writeheader()
             for r in self.results:
-                row = r.to_dict()
+                row = strip_latency_result(r.to_dict())
                 row["extra"] = json.dumps(row.get("extra") or {}, ensure_ascii=False)
                 writer.writerow(row)
 
-        logger.info("Results saved | {} -> {}", self.config.name, json_path)
+        logger.info(
+            "Results saved | {} -> {} (+ latency.json)", self.config.name, json_path
+        )
         return json_path
 
     def _group_by_variant(self) -> dict[str, list[TaskResult]]:

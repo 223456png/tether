@@ -1,8 +1,14 @@
 """Markdown report generation from saved benchmark results."""
 
 import json
-from datetime import datetime, timezone
 from pathlib import Path
+
+
+def _fmt_ms(value) -> str:
+    """Format a latency value as ``--`` when absent (latency 不入版控)."""
+    if value is None:
+        return "—"
+    return f"{value:.0f}"
 
 
 class ReportGenerator:
@@ -28,7 +34,6 @@ class ReportGenerator:
             "",
             "### 配置",
             f"- 实验描述: {payload['description']}",
-            f"- 运行日期: {datetime.now(timezone.utc).isoformat(timespec='seconds')}",
             f"- 变体数量: {len(variants)}",
             "",
             "### 关键指标",
@@ -45,7 +50,7 @@ class ReportGenerator:
                 f"| {m.get('avg_steps', 0):.2f} "
                 f"| {tokens.get('prompt', 0):.0f} "
                 f"| {tokens.get('total', 0):.0f} "
-                f"| {m.get('avg_latency_ms', 0):.0f} |"
+                f"| {_fmt_ms(m.get('avg_latency_ms'))} |"
             )
 
         # Experiment-specific metric blocks, aggregated across variants.
@@ -85,7 +90,7 @@ class ReportGenerator:
             fp = sum(1 for d in drift if d.get("fp"))
             fn = sum(1 for d in drift if d.get("fn"))
             avg_ms = (
-                sum(d["detect_ms"] for d in drift) / total if total else 0.0
+                sum(d.get("detect_ms") or 0 for d in drift) / total if total else None
             )
             rows.append(f"| 检测准确率 | {(tp + tn) / total:.2%} |" if total else "| 检测准确率 | n/a |")
             rows.append(
@@ -96,7 +101,7 @@ class ReportGenerator:
                 f"| 漏报率 (FN) | {fn / (fn + tp):.2%} |" if (fn + tp)
                 else "| 漏报率 (FN) | 0.00% |"
             )
-            rows.append(f"| 平均检测耗时 | {avg_ms:.2f}ms |")
+            rows.append(f"| 平均检测耗时 | {_fmt_ms(avg_ms)}ms |")
         elif experiment_name == "recovery":
             total = len(results)
             success = sum(1 for r in results if r["success"])
@@ -104,12 +109,12 @@ class ReportGenerator:
                 sum(r["steps_lost"] for r in results) / total if total else 0.0
             )
             avg_ms = (
-                sum(r["recovery_latency_ms"] for r in results) / total
-                if total else 0.0
+                sum(r.get("recovery_latency_ms") or 0 for r in results) / total
+                if total else None
             )
             rows.append(f"| 恢复成功率 | {success / total:.2%} |" if total else "| 恢复成功率 | n/a |")
             rows.append(f"| 平均丢失步骤 | {avg_lost:.2f} |")
-            rows.append(f"| 平均恢复耗时 | {avg_ms:.2f}ms |")
+            rows.append(f"| 平均恢复耗时 | {_fmt_ms(avg_ms)}ms |")
         elif experiment_name == "intercept":
             intercepted = sum(r["intercepted"] for r in results)
             duplicates = sum(r["duplicates"] for r in results)
@@ -224,12 +229,13 @@ class ReportGenerator:
             accuracy = (tp + tn) / total if total else 0
             fn_rate = fn / (fn + tp) if (fn + tp) else 0
             fp_rate = fp / total if total else 0
+            detect_total = sum(d.get("detect_ms") or 0 for d in drift)
+            detect_avg = detect_total / total if total else None
             return (
                 f"10 类文件变更共 {total} 个样本，三级级联检测（stat -> MD5 -> "
                 f"符号结构）准确率 {accuracy:.1%}，误报率 {fp_rate:.1%}，"
                 f"漏报率 {fn_rate:.1%}，"
-                f"平均单文件检测耗时 "
-                f"{sum(d['detect_ms'] for d in drift) / total:.2f}ms。"
+                f"平均单文件检测耗时 {_fmt_ms(detect_avg)}ms。"
             )
         if experiment_name == "recovery":
             total = len(results)
@@ -319,7 +325,7 @@ class ReportGenerator:
                 lines.append(
                     f"| {name} | {variant} | {m.get('n_samples', 0)} "
                     f"| {m.get('success_rate', 0):.2%} "
-                    f"| {m.get('avg_latency_ms', 0):.0f} |"
+                    f"| {_fmt_ms(m.get('avg_latency_ms'))} |"
                 )
         lines.append("")
         return "\n".join(lines)
