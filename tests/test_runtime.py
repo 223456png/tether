@@ -41,6 +41,8 @@ async def test_timeout_failure(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) 
 
 async def test_resume_recovery(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """A task that times out on the 3rd call can resume from checkpoint and complete."""
+    from tether.runtime.runtime import AgentDecision
+
     runtime = TetherRuntime("Recovery test", tmp_path, tool_timeout=1)
     call_count = {"n": 0}
 
@@ -53,6 +55,22 @@ async def test_resume_recovery(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) 
         return f"✅ Tool '{action}' executed successfully."
 
     monkeypatch.setattr(runtime, "_execute_tool", flaky_tool)
+
+    # Deterministic thinking: two writes, then a read whose execution
+    # (the 3rd call) times out -> FAILED at step 3.
+    first_run_actions = iter([
+        "write_file(path='a.txt', content='x')",
+        "write_file(path='b.txt', content='y')",
+        "read_file(path='a.txt')",
+    ])
+
+    async def scripted_think() -> AgentDecision:
+        action = next(first_run_actions, None)
+        if action is None:
+            return AgentDecision(finished=True, final_answer="done")
+        return runtime._decision_from_action(action)
+
+    monkeypatch.setattr(runtime, "_think", scripted_think)
     await runtime.run()
 
     assert runtime.state.status == TaskStatus.FAILED
@@ -60,6 +78,12 @@ async def test_resume_recovery(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) 
     task_id = runtime.state.task_id
 
     recovered = TetherRuntime("Recovery test", tmp_path, tool_timeout=5)
+
+    # After recovery, the brain finishes the task instead of redoing work.
+    async def recovered_think() -> AgentDecision:
+        return AgentDecision(finished=True, final_answer="recovered and done")
+
+    monkeypatch.setattr(recovered, "_think", recovered_think)
     await recovered.resume(task_id)
 
     assert recovered.state.task_id == task_id

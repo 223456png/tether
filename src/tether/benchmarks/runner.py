@@ -1,6 +1,7 @@
 """BenchmarkRunner: executes the five Tether experiments."""
 
 import csv
+import functools
 import json
 import random
 import tempfile
@@ -545,11 +546,20 @@ class BenchmarkRunner:
                     spec.goal, ws, llm_provider=provider,
                     max_steps=max_steps, tool_timeout=30,
                 )
+                # Record each task's verify_* result as a goal_verified
+                # event, so the report pipeline can render ✓/✗ verdicts.
+                runtime.goal_verifier = functools.partial(
+                    spec.verify, ws, runtime, run_idx,
+                )
                 start = time.perf_counter()
                 await runtime.run()
                 duration_ms = (time.perf_counter() - start) * 1000
 
                 success = spec.verify(ws, runtime, run_idx)
+                goal_verified = any(
+                    e["event"] == "goal_verified" and e.get("passed")
+                    for e in runtime.event_recorder.query()
+                )
                 results.append(TaskResult(
                     task_id=f"agent-{spec.name}-{run_idx}",
                     variant=spec.name,
@@ -562,6 +572,7 @@ class BenchmarkRunner:
                         "agent": True,
                         "task": spec.name,
                         "status": runtime.state.status.value,
+                        "goal_verified": goal_verified,
                     },
                 ))
         return results

@@ -144,7 +144,9 @@ def test_runtime_integration(tmp_path: Path) -> None:
     runtime._think = fake_think  # type: ignore[assignment]
     asyncio.run(runtime.run())
 
-    assert runtime.state.status.value == "completed"
+    # The think function never finishes, so the loop runs to the step cap
+    # — a resource-exhaustion STOPPED, matching token-budget semantics.
+    assert runtime.state.status.value == "stopped"
     # Steps 2..5 repeat the step-1 call and must be intercepted.
     assert runtime.tool_interceptor._intercept_count >= 1
     assert any(

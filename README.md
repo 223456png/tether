@@ -116,7 +116,7 @@ flowchart LR
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 136 个测试，全离线
+python -m pytest tests/ -q          # 142 个测试，全离线
 ```
 
 也可以从命令行驱动一个 Agent 任务（不需要 API key，会降级到离线 mock 大脑），再把事件流转成一页报告：
@@ -125,6 +125,16 @@ python -m pytest tests/ -q          # 136 个测试，全离线
 tether run --goal "Create hello.txt containing 'hi' and verify it" --workspace ./ws
 tether report --events ./ws/logs/events.jsonl          # markdown 摘要
 ```
+
+离线 mock 大脑会**真的执行这个目标**：写入 hello.txt → 读回验证 → 完成，报告末尾给出明确结论：
+
+```
+## Goal achievement
+
+- ✓ **goal achieved** (verified against the final workspace state)
+```
+
+对 mock 无法执行的目标，它只跑一段简短 demo 并在最终答案里明说"没有追求该目标"——离线大脑绝不假装完成任务。
 
 接任意 MCP server 的工具用 `--mcp-cmd`（可重复）：
 
@@ -172,7 +182,7 @@ print(runtime.state.total_tokens, "tokens")
 - **错误是观察，不是判决。** `max_consecutive_failures=N`（CLI 默认 3）时，工具异常或超时会回喂工具历史，让模型换参数重试；只有连续 N 次失败才熔断。默认 `0` 保持 mock 大脑的严格 fail-fast（它不会适应）。
 - **`run_test` 是真的。** 在 workspace 里起 `python -m pytest <file>` 并返回通过/失败摘要——失败时 traceback 尾部作为错误返回，Agent 能看到错在哪、去修。
 - **人审门。** `--require-approval`（或 `approval_gate` 回调）时，写类工具（`write_file`、`run_test`）执行前暂停确认；拒绝变成 `DENIED` 观察返回给模型适应。
-- **硬成本上限。** `--max-tokens N` 在累计 token 用量到 N 时停机（状态 STOPPED，checkpoint 已保存）。
+- **硬成本上限。** `--max-tokens N` 在累计 token 用量到 N 时停机（状态 STOPPED，checkpoint 已保存）。`--max-steps N` 撞上限同样停机为 STOPPED——步数和 token 是同一种"资源耗尽"语义，绝不会伪装成 completed。
 - **模型自己维护计划。** `update_plan` 工具把 Agent 的计划写进永不裁剪的 TaskSummary 层，压缩后依然在，每轮回到上下文。
 - **流式输出。** `--stream`（或 `on_llm_delta` 回调）把模型回答以 SSE 实时吐出——不支持流式的 provider 照常调用。
 

@@ -8,6 +8,21 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Fake completion in the offline mock brain.** The mock thinker used to pick
+  random, goal-blind action strings and let the loop report success without
+  ever pursuing the goal (the documented Quickstart created no file yet ended
+  "completed"). It now executes a scripted plan for goals shaped
+  "Create <file> containing '<text>'" — actually writing, reading back, and
+  verifying against the workspace — and for any other goal runs a short demo
+  whose final answer states plainly that the goal was not pursued.
+- **Step-cap semantics now match token-budget semantics.** Hitting
+  `--max-steps` transitions the task to STOPPED (reason in `error_message`,
+  checkpoint saved) instead of COMPLETED — resource exhaustion is never
+  reported as success.
+- **Run reports state whether the goal was achieved.** `summarize_events`
+  renders a "Goal achievement" ✓/✗ verdict (from the new `goal_verified`
+  event), warns when a run completes without executing any tools, and adds
+  prominent warnings for failed tool calls and non-completed tasks.
 - **LLM retry semantics.** 4xx responses other than 429 (bad key, wrong model,
   not found) now fail fast instead of burning the retry budget and masking the
   real cause. The `_RETRYABLE_STATUS` allow-list is finally enforced.

@@ -35,6 +35,12 @@ def summarize_events(events: list[dict[str, Any]]) -> str:
             lines.append(f"- total tokens: {finished.get('total_tokens', '?')}")
         elif finished.get("error"):
             lines.append(f"- error: {finished['error']}")
+        if finished["event"] != "task_completed":
+            lines.append("")
+            lines.append(
+                f"> ⚠️ **Task ended without completing** (status: {status}) — "
+                "the goal was not achieved."
+            )
     lines.append("")
 
     turns = [e for e in events if e["event"] == "llm_turn"]
@@ -63,6 +69,12 @@ def summarize_events(events: list[dict[str, Any]]) -> str:
         lines.append(
             "- by tool: " + ", ".join(f"{k} x{v}" for k, v in per_tool.most_common())
         )
+        if failed:
+            lines.append("")
+            lines.append(
+                f"> ⚠️ {failed} of {len(tools)} tool call(s) FAILED — see "
+                "'Tool errors' below before trusting this run."
+            )
         lines.append("")
 
     errors = [e for e in events if e["event"] == "tool_error"]
@@ -91,6 +103,40 @@ def summarize_events(events: list[dict[str, Any]]) -> str:
         for e in mcp:
             lines.append(f"- {e.get('server')}: {', '.join(e.get('tools') or [])}")
         lines.append("")
+
+    lines.append("## Goal achievement")
+    lines.append("")
+    verified = next(
+        (e for e in reversed(events) if e["event"] == "goal_verified"), None
+    )
+    if finished is not None:
+        status = (
+            "completed"
+            if finished["event"] == "task_completed"
+            else finished.get("status", "?")
+        )
+    else:
+        status = None
+    if verified is not None:
+        mark = "✓" if verified.get("passed") else "✗"
+        verdict = "goal achieved" if verified.get("passed") else "goal NOT achieved"
+        lines.append(f"- {mark} **{verdict}** (verified against the final workspace state)")
+    elif status == "completed":
+        if not tools:
+            lines.append(
+                "- ⚠ completed without executing any tools — the goal was "
+                "NOT demonstrated (offline mock brain finishing immediately?)"
+            )
+        else:
+            lines.append(
+                "- ⚠ goal achievement not verified (no workspace verifier "
+                "was attached to this run)"
+            )
+    elif status is not None:
+        lines.append(f"- ✗ goal not achieved (task status: {status})")
+    else:
+        lines.append("- ? run did not finish; goal achievement unknown")
+    lines.append("")
 
     return "\n".join(lines) + "\n"
 

@@ -135,7 +135,11 @@ async def test_llm_loop_accumulates_token_usage(tmp_path: Path) -> None:
 
 
 async def test_llm_loop_max_steps_cap(tmp_path: Path) -> None:
-    """A model that never stops calling tools is capped at max_steps."""
+    """A model that never stops calling tools is capped at max_steps.
+
+    Hitting the cap is a resource-exhaustion stop (STOPPED), matching the
+    token-budget semantics — never a fake COMPLETED.
+    """
     provider = ScriptedProvider([
         # More responses than the cap; leftovers must never be consumed.
         _tool_response("search_code", {"pattern": "a"}),
@@ -147,9 +151,59 @@ async def test_llm_loop_max_steps_cap(tmp_path: Path) -> None:
     )
     await runtime.run()
 
-    assert runtime.state.status == TaskStatus.COMPLETED
+    assert runtime.state.status == TaskStatus.STOPPED
+    assert runtime.state.error_message is not None
+    assert "Step cap reached" in runtime.state.error_message
     assert runtime.state.step_index == 2
     assert len(provider.calls) == 2
+
+
+async def test_mock_brain_completes_goal_shaped_task(tmp_path: Path) -> None:
+    """The offline mock brain actually achieves the quickstart goal.
+
+    "Create <file> containing '<text>'" is executed for real (write ->
+    read back) and verified against the workspace, so the report can say
+    ✓ — no fake completions.
+    """
+    runtime = TetherRuntime(
+        "Create hello.txt containing 'hi' and verify it", tmp_path,
+    )
+    await runtime.run()
+
+    assert runtime.state.status == TaskStatus.COMPLETED
+    assert (tmp_path / "hello.txt").read_text(encoding="utf-8") == "hi"
+    assert "Created hello.txt" in (runtime.state.final_answer or "")
+
+    verified = runtime.event_recorder.query("goal_verified")
+    assert len(verified) == 1
+    assert verified[0]["passed"] is True
+
+
+async def test_mock_brain_is_honest_about_unmatched_goals(tmp_path: Path) -> None:
+    """Goals the mock cannot pursue get an honest answer, not a fake win."""
+    runtime = TetherRuntime("Refactor the auth module", tmp_path)
+    await runtime.run()
+
+    # The loop still runs a scripted demo (write + read back) ...
+    tools = runtime.event_recorder.query("tool_executed")
+    assert [t["tool"] for t in tools] == ["write_file", "read_file"]
+    # ... but the final answer plainly says the goal was NOT pursued.
+    assert runtime.state.status == TaskStatus.COMPLETED
+    assert "did NOT pursue" in (runtime.state.final_answer or "")
+
+
+async def test_goal_verifier_is_recorded_in_events(tmp_path: Path) -> None:
+    """A caller-supplied goal_verifier lands as a goal_verified event."""
+    provider = ScriptedProvider([_final_response("done")])
+    runtime = TetherRuntime(
+        "Anything", tmp_path, llm_provider=provider,
+        goal_verifier=lambda: False,
+    )
+    await runtime.run()
+
+    verified = runtime.event_recorder.query("goal_verified")
+    assert len(verified) == 1
+    assert verified[0]["passed"] is False
 
 
 async def test_llm_loop_provider_failure_fails_task(tmp_path: Path) -> None:

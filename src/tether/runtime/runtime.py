@@ -2,8 +2,12 @@
 
 Two "brain" modes share the same loop:
 
-- ``llm_provider=None`` (default): the legacy deterministic mock thinks in
-  random action strings — used by offline tests and demos.
+- ``llm_provider=None`` (default): a deterministic, goal-directed mock
+  runs a short scripted plan — goals shaped like "Create <file>
+  containing '<text>'" are actually completed and self-verified against
+  the workspace; any other goal gets an honest demo whose final answer
+  states plainly that the offline brain did not pursue it. Used by
+  offline tests and demos.
 - With an ``LLMProvider``: each turn assembles the context from the
   three-layer memory via ``ContextAssembler``, asks the model for an
   OpenAI-style tool call, executes it, and finishes when the model stops
@@ -12,7 +16,6 @@ Two "brain" modes share the same loop:
 
 import asyncio
 import inspect
-import random
 import re
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
@@ -41,6 +44,15 @@ _FILE_ARG_RE = re.compile(r"'([^']+\.[A-Za-z0-9_]+)'")
 
 # Parses "tool_name(args...)" action strings.
 _ACTION_RE = re.compile(r"^(\w+)\((.*)\)$", re.DOTALL)
+
+# Matches the documented quickstart goal shape:
+# "Create <file> containing '<text>'" — the offline mock brain can
+# actually execute (and verify) goals of this shape.
+_MOCK_GOAL_RE = re.compile(
+    r"\bcreate\s+(?P<path>\w[\w.\-/]*)\s+containing\s+"
+    r"(?P<q>['\"])(?P<content>[^'\"]{1,80})(?P=q)",
+    re.IGNORECASE,
+)
 
 # Key used for positional arguments before schema mapping.
 _POSITIONAL_KEY = "__positional__"
@@ -110,6 +122,7 @@ class TetherRuntime:
         approval_tools: set[str] | None = None,
         max_total_tokens: int | None = None,
         on_llm_delta: Callable[[str], None] | None = None,
+        goal_verifier: Callable[[], bool] | None = None,
     ) -> None:
         """Initialize runtime state, checkpoint manager and config.
 
@@ -138,10 +151,21 @@ class TetherRuntime:
         ``on_llm_delta`` (a sync callable receiving each content chunk)
         enables streaming output for providers that support it — used by
         the CLI's ``--stream`` to show the model's answer live.
+
+        ``goal_verifier`` (a sync callable returning bool) is invoked once
+        at the end of ``run()``; the result is recorded as a
+        ``goal_verified`` event so the run report can state whether the
+        goal was actually achieved (not just that the loop ended). The
+        offline mock brain supplies its own workspace check for
+        goal-shaped tasks.
         """
         self.workspace_dir = Path(workspace_dir)
         self.tool_timeout = tool_timeout
         self.llm_provider = llm_provider
+        self.goal_verifier = goal_verifier
+        self._mock_actions: list[str] | None = None
+        self._mock_answer = ""
+        self._mock_goal_check: Callable[[], bool] | None = None
         self.max_steps = max_steps
         self.max_consecutive_failures = max_consecutive_failures
         self._consecutive_failures = 0
@@ -255,17 +279,71 @@ class TetherRuntime:
         return await self._llm_think()
 
     async def _mock_think(self) -> AgentDecision:
-        """Mock agent thinking: random delay, then a random action string."""
-        await asyncio.sleep(random.uniform(0.1, 0.5))
+        """Deterministic, goal-directed stand-in for the LLM.
+
+        Goal-shaped goals (see :meth:`_build_mock_script`) execute real
+        tool calls and finish with an earned completion; anything else
+        runs a two-step demo and states plainly that the goal was not
+        pursued. The mock never claims a completion it did not earn.
+        """
+        if self._mock_actions is None:
+            (
+                self._mock_actions,
+                self._mock_answer,
+                self._mock_goal_check,
+            ) = self._build_mock_script(self.state.goal)
+        if self._mock_actions:
+            action = self._mock_actions.pop(0)
+            logger.info("Think | step={} action={}", self.state.step_index, action)
+            return self._decision_from_action(action)
+        return AgentDecision(finished=True, final_answer=self._mock_answer)
+
+    def _build_mock_script(
+        self, goal: str
+    ) -> tuple[list[str], str, Callable[[], bool] | None]:
+        """Script (actions, final answer, goal check) for the offline brain.
+
+        Recognizes the documented quickstart shape "Create <file>
+        containing '<text>'": the script writes the file, reads it back,
+        and reports completion — verified against the actual workspace
+        (the check becomes the report's goal-achievement line). Any other
+        goal gets a short honest demo: write a scratch note, read it
+        back, then state that the offline mock did not pursue the goal.
+        """
+        match = _MOCK_GOAL_RE.search(goal)
+        if match and ".." not in match.group("path"):
+            path, content = match.group("path"), match.group("content")
+            actions = [
+                f"write_file(path='{path}', content='{content}')",
+                f"read_file(path='{path}')",
+            ]
+            answer = (
+                f"Created {path} containing {content!r} and verified it "
+                "reads back. (offline mock brain)"
+            )
+
+            def goal_check() -> bool:
+                target = self.workspace_dir / path
+                try:
+                    return target.is_file() and content in target.read_text(
+                        encoding="utf-8"
+                    )
+                except OSError:
+                    return False
+
+            return actions, answer, goal_check
+
+        demo_path = "mock-demo-note.md"
         actions = [
-            "read_file(path='src/main.py')",
-            "search_code(pattern='def auth')",
-            "write_file(path='src/notes.md', content='progress note')",
-            "run_test(path='tests/test_auth.py')",
+            f"write_file(path='{demo_path}', content='offline mock brain demo')",
+            f"read_file(path='{demo_path}')",
         ]
-        action = random.choice(actions)
-        logger.info("Think | step={} action={}", self.state.step_index, action)
-        return self._decision_from_action(action)
+        answer = (
+            "Offline mock brain: I ran a scripted write/read demo but did "
+            f"NOT pursue the goal '{goal[:120]}'. Set DEEPSEEK_API_KEY or "
+            "TETHER_LLM_API_KEY to run it with a real model."
+        )
+        return actions, answer, None
 
     async def _llm_think(self) -> AgentDecision:
         """Assemble context from memory, then ask the LLM for the next move.
@@ -808,11 +886,12 @@ class TetherRuntime:
                     break
 
             if self.state.step_index >= self.max_steps:
-                logger.warning(
-                    "Step cap {} reached; ending task | task_id={}",
-                    self.max_steps, self.state.task_id,
+                self.state.error_message = (
+                    f"Step cap reached: {self.state.step_index} steps executed "
+                    f">= max_steps {self.max_steps}"
                 )
-                await self._transition_to(TaskStatus.COMPLETED)
+                await self._transition_to(TaskStatus.STOPPED)
+                logger.warning("Step cap reached | {}", self.state.error_message)
                 break
 
         await self._save_checkpoint()
@@ -836,6 +915,28 @@ class TetherRuntime:
                 "task_ended", status=self.state.status.value,
                 steps=self.state.step_index,
                 error=self.state.error_message,
+            )
+
+        # Goal achievement is verified against the workspace, not inferred
+        # from the loop ending: callers pass a verifier (the offline mock
+        # brain supplies one for goal-shaped tasks), and the result lands
+        # in the event stream where the run report renders it as ✓/✗.
+        verifier = self.goal_verifier
+        if verifier is None and self.llm_provider is None:
+            verifier = self._mock_goal_check
+        if verifier is not None:
+            try:
+                passed = bool(verifier())
+            except Exception as exc:  # noqa: BLE001 - a broken verifier must not fail the run
+                passed = False
+                logger.warning("goal_verifier raised | {}: {}", type(exc).__name__, exc)
+            self.event_recorder.record(
+                "goal_verified",
+                passed=passed,
+                status=self.state.status.value,
+                verified_after_completion=(
+                    self.state.status == TaskStatus.COMPLETED and passed
+                ),
             )
 
     # ------------------------------------------------------------------
