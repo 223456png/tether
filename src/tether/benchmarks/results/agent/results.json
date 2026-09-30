@@ -16,7 +16,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 80.30600007623434,
+          "latency_ms": 16.873360000317916,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -25,7 +25,8 @@
           "extra": {
             "agent": true,
             "task": "create_verify",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -40,7 +41,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 69.12500003818423,
+          "latency_ms": 16.808415000014065,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -49,7 +50,8 @@
           "extra": {
             "agent": true,
             "task": "create_verify",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -64,7 +66,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 73.47050006501377,
+          "latency_ms": 16.79882399912458,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -73,7 +75,8 @@
           "extra": {
             "agent": true,
             "task": "create_verify",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -88,7 +91,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 66.87260000035167,
+          "latency_ms": 17.266339999878255,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -97,7 +100,8 @@
           "extra": {
             "agent": true,
             "task": "create_verify",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         }
       ],
@@ -116,8 +120,8 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 72.443525044946,
-        "p95_latency_ms": 80.30600007623434
+        "avg_latency_ms": 16.936734749833704,
+        "p95_latency_ms": 17.266339999878255
       }
     },
     "edit_existing": {
@@ -134,7 +138,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 91.96859993971884,
+          "latency_ms": 24.429132000477694,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -143,7 +147,8 @@
           "extra": {
             "agent": true,
             "task": "edit_existing",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -158,7 +163,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 96.56390000600368,
+          "latency_ms": 24.299456999870017,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -167,7 +172,8 @@
           "extra": {
             "agent": true,
             "task": "edit_existing",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -182,7 +188,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 91.65499999653548,
+          "latency_ms": 24.47494399984862,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -191,7 +197,8 @@
           "extra": {
             "agent": true,
             "task": "edit_existing",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -206,7 +213,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 97.21319994423538,
+          "latency_ms": 24.566333999246126,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -215,7 +222,8 @@
           "extra": {
             "agent": true,
             "task": "edit_existing",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         }
       ],
@@ -234,8 +242,8 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 94.35017497162335,
-        "p95_latency_ms": 97.21319994423538
+        "avg_latency_ms": 24.442466749860614,
+        "p95_latency_ms": 24.566333999246126
       }
     },
     "search_fix": {
@@ -252,7 +260,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 93.3641999727115,
+          "latency_ms": 23.80471500055137,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -261,7 +269,8 @@
           "extra": {
             "agent": true,
             "task": "search_fix",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -276,7 +285,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 95.90820001903921,
+          "latency_ms": 23.816163000446977,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -285,7 +294,8 @@
           "extra": {
             "agent": true,
             "task": "search_fix",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -300,7 +310,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 93.6339000472799,
+          "latency_ms": 24.054502000581124,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -309,7 +319,8 @@
           "extra": {
             "agent": true,
             "task": "search_fix",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -324,7 +335,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 92.42819994688034,
+          "latency_ms": 23.986523000530724,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -333,7 +344,8 @@
           "extra": {
             "agent": true,
             "task": "search_fix",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         }
       ],
@@ -352,8 +364,8 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 93.83362499647774,
-        "p95_latency_ms": 95.90820001903921
+        "avg_latency_ms": 23.91547575052755,
+        "p95_latency_ms": 24.054502000581124
       }
     },
     "plan_execute": {
@@ -370,7 +382,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 98.91920001246035,
+          "latency_ms": 23.918331999993825,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -379,7 +391,8 @@
           "extra": {
             "agent": true,
             "task": "plan_execute",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -394,7 +407,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 99.40679999999702,
+          "latency_ms": 23.911256000246794,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -403,7 +416,8 @@
           "extra": {
             "agent": true,
             "task": "plan_execute",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -418,7 +432,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 102.5861999951303,
+          "latency_ms": 24.123503999362583,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -427,7 +441,8 @@
           "extra": {
             "agent": true,
             "task": "plan_execute",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -442,7 +457,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 99.40140007529408,
+          "latency_ms": 24.074257999927795,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -451,7 +466,8 @@
           "extra": {
             "agent": true,
             "task": "plan_execute",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         }
       ],
@@ -470,8 +486,8 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 100.07840002072044,
-        "p95_latency_ms": 102.5861999951303
+        "avg_latency_ms": 24.00683749988275,
+        "p95_latency_ms": 24.123503999362583
       }
     },
     "test_report": {
@@ -488,7 +504,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 449.60639998316765,
+          "latency_ms": 208.3414630005791,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -497,7 +513,8 @@
           "extra": {
             "agent": true,
             "task": "test_report",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -512,7 +529,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 424.90959994029254,
+          "latency_ms": 204.313338999782,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -521,7 +538,8 @@
           "extra": {
             "agent": true,
             "task": "test_report",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -536,7 +554,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 411.97479993570596,
+          "latency_ms": 206.90675500009093,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -545,7 +563,8 @@
           "extra": {
             "agent": true,
             "task": "test_report",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         },
         {
@@ -560,7 +579,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 410.8989000087604,
+          "latency_ms": 203.04039399979956,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -569,7 +588,8 @@
           "extra": {
             "agent": true,
             "task": "test_report",
-            "status": "completed"
+            "status": "completed",
+            "goal_verified": true
           }
         }
       ],
@@ -588,8 +608,8 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 424.34742496698163,
-        "p95_latency_ms": 449.60639998316765
+        "avg_latency_ms": 205.6504877500629,
+        "p95_latency_ms": 208.3414630005791
       }
     }
   }

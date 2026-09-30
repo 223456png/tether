@@ -133,28 +133,43 @@ def test_memory_store_invalidate(tmp_path: Path) -> None:
 
 
 def test_runtime_read_with_drift(tmp_path: Path) -> None:
-    """Read -> cache -> edit file -> read again detects drift and refreshes."""
+    """Read -> cache -> edit file -> read again detects drift and refreshes.
+
+    Goes through the real tool-execution path: read_file success now
+    triggers the read-side drift bookkeeping (previously dead code).
+    """
     runtime = TetherRuntime("Drift runtime", tmp_path)
     _write(tmp_path, "src/app.py", PY_CODE)
 
-    content1, snap1 = asyncio.run(
-        runtime._read_file_with_drift_check("src/app.py")
+    content1 = asyncio.run(
+        runtime._execute_tool("read_file(path='src/app.py')")
     )
     assert "def alpha" in content1
+    snap1 = runtime.memory_store.load_file_snapshot(
+        runtime.state.task_id, "src/app.py"
+    )
+    assert snap1 is not None
     assert snap1.md5 == FileSnapshot.from_file(
         runtime.state.task_id, tmp_path / "src/app.py"
     ).md5
 
-    # Structural edit: remove beta, add gamma.
+    # Structural edit: remove beta, add gamma. The edit is external (no
+    # tool write), so expire the duplicate-call cache window first — the
+    # way it would have expired in a real session.
     _write(
         tmp_path, "src/app.py",
         "def alpha():\n    return 1\n\n\ndef gamma():\n    return 2\n",
     )
+    runtime.tool_interceptor.invalidate_all()
 
-    content2, snap2 = asyncio.run(
-        runtime._read_file_with_drift_check("src/app.py")
+    content2 = asyncio.run(
+        runtime._execute_tool("read_file(path='src/app.py')")
     )
     assert "def gamma" in content2
+    snap2 = runtime.memory_store.load_file_snapshot(
+        runtime.state.task_id, "src/app.py"
+    )
+    assert snap2 is not None
     assert snap2.md5 != snap1.md5
     assert snap2.entry_id != snap1.entry_id
 
@@ -171,8 +186,16 @@ def test_runtime_read_without_drift(tmp_path: Path) -> None:
     runtime = TetherRuntime("No-drift runtime", tmp_path)
     _write(tmp_path, "src/app.py", PY_CODE)
 
-    _, snap1 = asyncio.run(runtime._read_file_with_drift_check("src/app.py"))
-    _, snap2 = asyncio.run(runtime._read_file_with_drift_check("src/app.py"))
+    asyncio.run(runtime._execute_tool("read_file(path='src/app.py')"))
+    snap1 = runtime.memory_store.load_file_snapshot(
+        runtime.state.task_id, "src/app.py"
+    )
+    assert snap1 is not None
+    asyncio.run(runtime._execute_tool("read_file(path='src/app.py')"))
+    snap2 = runtime.memory_store.load_file_snapshot(
+        runtime.state.task_id, "src/app.py"
+    )
+    assert snap2 is not None
 
     # Same snapshot object reused: no invalidation, no rebuild.
     assert snap1.entry_id == snap2.entry_id

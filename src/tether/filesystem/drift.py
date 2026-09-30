@@ -85,8 +85,15 @@ class DriftDetector:
             self._store(snapshot.path, file_path, result)
             return result
 
-        # Level 1: stat check
-        stat = file_path.stat()
+        # Level 1: stat check. The file can vanish between exists() and
+        # stat() (TOCTOU) — treat that as MISSING instead of raising
+        # FileNotFoundError through the agent loop.
+        try:
+            stat = file_path.stat()
+        except OSError:
+            result = DriftResult(level=DriftLevel.MISSING, detected=True)
+            self._store(snapshot.path, file_path, result)
+            return result
         size_match = stat.st_size == snapshot.size
         mtime_match = stat.st_mtime == snapshot.mtime
         if size_match and mtime_match:

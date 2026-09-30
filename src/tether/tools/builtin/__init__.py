@@ -58,7 +58,10 @@ class ReadFileTool(Tool):
         if err is not None:
             return ToolResult(success=False, error=err)
         try:
-            content = full_path.read_text(encoding="utf-8")
+            # errors="replace": binary-ish files must not crash the agent
+            # loop with UnicodeDecodeError — garbled output is a usable
+            # observation, an exception is not.
+            content = full_path.read_text(encoding="utf-8", errors="replace")
             return ToolResult(
                 success=True,
                 output=content,

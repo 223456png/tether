@@ -16,7 +16,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.136199994012713,
+          "latency_ms": 0.15676899965910707,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -28,7 +28,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.136199994012713,
+              "detect_ms": 0.15676899965910707,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -46,7 +46,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9612999856472015,
+          "latency_ms": 0.14440999984799419,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -58,7 +58,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9612999856472015,
+              "detect_ms": 0.14440999984799419,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -76,7 +76,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.8811999578028917,
+          "latency_ms": 0.13100600062898593,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -88,7 +88,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.8811999578028917,
+              "detect_ms": 0.13100600062898593,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -106,7 +106,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.8857001084834337,
+          "latency_ms": 0.11579900001379428,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -118,7 +118,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.8857001084834337,
+              "detect_ms": 0.11579900001379428,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -136,7 +136,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.02530000731349,
+          "latency_ms": 0.1374869998471695,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -148,7 +148,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.02530000731349,
+              "detect_ms": 0.1374869998471695,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -166,7 +166,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9137000888586044,
+          "latency_ms": 0.11047699990740512,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -178,7 +178,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9137000888586044,
+              "detect_ms": 0.11047699990740512,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -196,7 +196,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9840000420808792,
+          "latency_ms": 0.11409099988668459,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -208,7 +208,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9840000420808792,
+              "detect_ms": 0.11409099988668459,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -226,7 +226,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9095000568777323,
+          "latency_ms": 0.11213699963263934,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -238,7 +238,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9095000568777323,
+              "detect_ms": 0.11213699963263934,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -256,7 +256,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.8885000133886933,
+          "latency_ms": 0.1146929998867563,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -268,7 +268,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.8885000133886933,
+              "detect_ms": 0.1146929998867563,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -286,7 +286,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1003999970853329,
+          "latency_ms": 0.11791799988714047,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -298,7 +298,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1003999970853329,
+              "detect_ms": 0.11791799988714047,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -320,12 +320,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.3685800251550972,
-        "p95_latency_ms": 5.136199994012713,
+        "avg_latency_ms": 0.12547869991976768,
+        "p95_latency_ms": 0.15676899965910707,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.3685800251550972
+        "avg_drift_detect_ms": 0.12547869991976768
       }
     },
     "comment_whitespace": {
@@ -342,7 +342,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 6.46440009586513,
+          "latency_ms": 0.1083209999706014,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -354,7 +354,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 6.46440009586513,
+              "detect_ms": 0.1083209999706014,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -372,7 +372,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9456999832764268,
+          "latency_ms": 0.11850799910462229,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -384,7 +384,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9456999832764268,
+              "detect_ms": 0.11850799910462229,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -402,7 +402,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9106999495998025,
+          "latency_ms": 0.10388099963165587,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -414,7 +414,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9106999495998025,
+              "detect_ms": 0.10388099963165587,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -432,7 +432,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0273000225424767,
+          "latency_ms": 0.11116699988633627,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -444,7 +444,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0273000225424767,
+              "detect_ms": 0.11116699988633627,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -462,7 +462,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1692000553011894,
+          "latency_ms": 0.1119759999710368,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -474,7 +474,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1692000553011894,
+              "detect_ms": 0.1119759999710368,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -492,7 +492,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9799000108614564,
+          "latency_ms": 0.1285579992327257,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -504,7 +504,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9799000108614564,
+              "detect_ms": 0.1285579992327257,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -522,7 +522,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9852999355643988,
+          "latency_ms": 0.11698100024659652,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -534,7 +534,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9852999355643988,
+              "detect_ms": 0.11698100024659652,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -552,7 +552,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0958999628201127,
+          "latency_ms": 0.09870600024441956,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -564,7 +564,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0958999628201127,
+              "detect_ms": 0.09870600024441956,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -582,7 +582,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0226999875158072,
+          "latency_ms": 0.113531999886618,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -594,7 +594,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0226999875158072,
+              "detect_ms": 0.113531999886618,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -612,7 +612,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.246499945409596,
+          "latency_ms": 0.11276899931544904,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -624,7 +624,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.246499945409596,
+              "detect_ms": 0.11276899931544904,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -646,12 +646,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.5847599948756397,
-        "p95_latency_ms": 6.46440009586513,
+        "avg_latency_ms": 0.11243989974900614,
+        "p95_latency_ms": 0.1285579992327257,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.5847599948756397
+        "avg_drift_detect_ms": 0.11243989974900614
       }
     },
     "append_content": {
@@ -668,7 +668,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.2810999331995845,
+          "latency_ms": 0.09969599977921462,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -680,7 +680,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.2810999331995845,
+              "detect_ms": 0.09969599977921462,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -698,7 +698,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0996999917551875,
+          "latency_ms": 0.09641999986342853,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -710,7 +710,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0996999917551875,
+              "detect_ms": 0.09641999986342853,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -728,7 +728,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9681000374257565,
+          "latency_ms": 0.10616800045681885,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -740,7 +740,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9681000374257565,
+              "detect_ms": 0.10616800045681885,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -758,7 +758,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0816999711096287,
+          "latency_ms": 0.09871600013866555,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -770,7 +770,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0816999711096287,
+              "detect_ms": 0.09871600013866555,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -788,7 +788,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9304999839514494,
+          "latency_ms": 0.09433099967282033,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -800,7 +800,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9304999839514494,
+              "detect_ms": 0.09433099967282033,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -818,7 +818,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9836000390350819,
+          "latency_ms": 0.09568299992679385,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -830,7 +830,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9836000390350819,
+              "detect_ms": 0.09568299992679385,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -848,7 +848,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0601000394672155,
+          "latency_ms": 0.10589599969534902,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -860,7 +860,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0601000394672155,
+              "detect_ms": 0.10589599969534902,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -878,7 +878,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9685000404715538,
+          "latency_ms": 0.09486399994784733,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -890,7 +890,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9685000404715538,
+              "detect_ms": 0.09486399994784733,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -908,7 +908,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0646999580785632,
+          "latency_ms": 0.09974400018109009,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -920,7 +920,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0646999580785632,
+              "detect_ms": 0.09974400018109009,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -938,7 +938,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.942499958910048,
+          "latency_ms": 0.09129499994742218,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -950,7 +950,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.942499958910048,
+              "detect_ms": 0.09129499994742218,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -972,12 +972,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.438049995340407,
-        "p95_latency_ms": 5.2810999331995845,
+        "avg_latency_ms": 0.09828129996094503,
+        "p95_latency_ms": 0.10616800045681885,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.438049995340407
+        "avg_drift_detect_ms": 0.09828129996094503
       }
     },
     "file_deleted": {
@@ -994,7 +994,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.12370001059025526,
+          "latency_ms": 0.036810999517911114,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1006,7 +1006,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.12370001059025526,
+              "detect_ms": 0.036810999517911114,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1024,7 +1024,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11679995805025101,
+          "latency_ms": 0.021582000044872984,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1036,7 +1036,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11679995805025101,
+              "detect_ms": 0.021582000044872984,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1054,7 +1054,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.1175999641418457,
+          "latency_ms": 0.02112499987561023,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1066,7 +1066,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.1175999641418457,
+              "detect_ms": 0.02112499987561023,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1084,7 +1084,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.13880000915378332,
+          "latency_ms": 0.01807899934647139,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1096,7 +1096,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.13880000915378332,
+              "detect_ms": 0.01807899934647139,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1114,7 +1114,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11769996490329504,
+          "latency_ms": 0.019455999790807255,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1126,7 +1126,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11769996490329504,
+              "detect_ms": 0.019455999790807255,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1144,7 +1144,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.12770004104822874,
+          "latency_ms": 0.018295000700163655,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1156,7 +1156,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.12770004104822874,
+              "detect_ms": 0.018295000700163655,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1174,7 +1174,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.1238000113517046,
+          "latency_ms": 0.01741500000207452,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1186,7 +1186,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.1238000113517046,
+              "detect_ms": 0.01741500000207452,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1204,7 +1204,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11469994205981493,
+          "latency_ms": 0.017294999452133197,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1216,7 +1216,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11469994205981493,
+              "detect_ms": 0.017294999452133197,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1234,7 +1234,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.1094999024644494,
+          "latency_ms": 0.01743299981171731,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1246,7 +1246,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.1094999024644494,
+              "detect_ms": 0.01743299981171731,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1264,7 +1264,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11030002497136593,
+          "latency_ms": 0.03213600029994268,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1276,7 +1276,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11030002497136593,
+              "detect_ms": 0.03213600029994268,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1298,12 +1298,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 0.1200599828734994,
-        "p95_latency_ms": 0.13880000915378332,
+        "avg_latency_ms": 0.021962699884170434,
+        "p95_latency_ms": 0.036810999517911114,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 0.1200599828734994
+        "avg_drift_detect_ms": 0.021962699884170434
       }
     },
     "file_renamed": {
@@ -1320,7 +1320,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11090002954006195,
+          "latency_ms": 0.022143000023788773,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1332,7 +1332,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11090002954006195,
+              "detect_ms": 0.022143000023788773,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1350,7 +1350,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.12410001363605261,
+          "latency_ms": 0.01828400036174571,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1362,7 +1362,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.12410001363605261,
+              "detect_ms": 0.01828400036174571,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1380,7 +1380,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11459994129836559,
+          "latency_ms": 0.01915600023494335,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1392,7 +1392,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11459994129836559,
+              "detect_ms": 0.01915600023494335,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1410,7 +1410,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.13760000001639128,
+          "latency_ms": 0.019537000298441853,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1422,7 +1422,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.13760000001639128,
+              "detect_ms": 0.019537000298441853,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1440,7 +1440,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11460005771368742,
+          "latency_ms": 0.02592900000308873,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1452,7 +1452,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11460005771368742,
+              "detect_ms": 0.02592900000308873,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1470,7 +1470,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.11479994282126427,
+          "latency_ms": 0.01887500002339948,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1482,7 +1482,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.11479994282126427,
+              "detect_ms": 0.01887500002339948,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1500,7 +1500,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.13209995813667774,
+          "latency_ms": 0.018830999579222407,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1512,7 +1512,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.13209995813667774,
+              "detect_ms": 0.018830999579222407,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1530,7 +1530,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.13370008673518896,
+          "latency_ms": 0.01949600027728593,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1542,7 +1542,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.13370008673518896,
+              "detect_ms": 0.01949600027728593,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1560,7 +1560,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.13230007607489824,
+          "latency_ms": 0.017594000382814556,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1572,7 +1572,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.13230007607489824,
+              "detect_ms": 0.017594000382814556,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1590,7 +1590,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.1276999246329069,
+          "latency_ms": 0.017544000002089888,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1602,7 +1602,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.1276999246329069,
+              "detect_ms": 0.017544000002089888,
               "expected": "MISSING",
               "got": "MISSING"
             }
@@ -1624,12 +1624,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 0.1242400030605495,
-        "p95_latency_ms": 0.13760000001639128,
+        "avg_latency_ms": 0.019738900118682068,
+        "p95_latency_ms": 0.02592900000308873,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 0.1242400030605495
+        "avg_drift_detect_ms": 0.019738900118682068
       }
     },
     "function_renamed": {
@@ -1646,7 +1646,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.499799968674779,
+          "latency_ms": 0.18388700027571758,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1658,7 +1658,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.499799968674779,
+              "detect_ms": 0.18388700027571758,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1676,7 +1676,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.2642000801861286,
+          "latency_ms": 0.1322090001849574,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1688,7 +1688,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.2642000801861286,
+              "detect_ms": 0.1322090001849574,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1706,7 +1706,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0766999330371618,
+          "latency_ms": 0.11418800022511277,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1718,7 +1718,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0766999330371618,
+              "detect_ms": 0.11418800022511277,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1736,7 +1736,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1941000120714307,
+          "latency_ms": 0.14316100077849114,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1748,7 +1748,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1941000120714307,
+              "detect_ms": 0.14316100077849114,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1766,7 +1766,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1250999523326755,
+          "latency_ms": 0.10757200016087154,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1778,7 +1778,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1250999523326755,
+              "detect_ms": 0.10757200016087154,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1796,7 +1796,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0714000090956688,
+          "latency_ms": 0.10217299950454617,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1808,7 +1808,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0714000090956688,
+              "detect_ms": 0.10217299950454617,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1826,7 +1826,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1403000680729747,
+          "latency_ms": 0.10039500011771452,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1838,7 +1838,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1403000680729747,
+              "detect_ms": 0.10039500011771452,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1856,7 +1856,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.366000040434301,
+          "latency_ms": 0.1297409999096999,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1868,7 +1868,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.366000040434301,
+              "detect_ms": 0.1297409999096999,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1886,7 +1886,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1615999974310398,
+          "latency_ms": 0.11109300066891592,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1898,7 +1898,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1615999974310398,
+              "detect_ms": 0.11109300066891592,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1916,7 +1916,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0920000495389104,
+          "latency_ms": 0.10030600060417783,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1928,7 +1928,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0920000495389104,
+              "detect_ms": 0.10030600060417783,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -1950,12 +1950,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.599120011087507,
-        "p95_latency_ms": 5.499799968674779,
+        "avg_latency_ms": 0.12247250024302048,
+        "p95_latency_ms": 0.18388700027571758,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.599120011087507
+        "avg_drift_detect_ms": 0.12247250024302048
       }
     },
     "function_added": {
@@ -1972,7 +1972,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 6.433999980799854,
+          "latency_ms": 0.12449699988792418,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -1984,7 +1984,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 6.433999980799854,
+              "detect_ms": 0.12449699988792418,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2002,7 +2002,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.2752999318763614,
+          "latency_ms": 0.11294700016151182,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2014,7 +2014,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.2752999318763614,
+              "detect_ms": 0.11294700016151182,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2032,7 +2032,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0562000097706914,
+          "latency_ms": 0.10365299931436311,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2044,7 +2044,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0562000097706914,
+              "detect_ms": 0.10365299931436311,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2062,7 +2062,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.3348000356927514,
+          "latency_ms": 0.10260399994876934,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2074,7 +2074,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.3348000356927514,
+              "detect_ms": 0.10260399994876934,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2092,7 +2092,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0683999862521887,
+          "latency_ms": 0.13550099993153708,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2104,7 +2104,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0683999862521887,
+              "detect_ms": 0.13550099993153708,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2122,7 +2122,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1584999738261104,
+          "latency_ms": 0.12669300031120656,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2134,7 +2134,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1584999738261104,
+              "detect_ms": 0.12669300031120656,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2152,7 +2152,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.031199935823679,
+          "latency_ms": 0.10414400003355695,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2164,7 +2164,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.031199935823679,
+              "detect_ms": 0.10414400003355695,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2182,7 +2182,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0422999039292336,
+          "latency_ms": 0.11133799944218481,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2194,7 +2194,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0422999039292336,
+              "detect_ms": 0.11133799944218481,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2212,7 +2212,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1059000389650464,
+          "latency_ms": 0.114075000055891,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2224,7 +2224,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1059000389650464,
+              "detect_ms": 0.114075000055891,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2242,7 +2242,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0511999716982245,
+          "latency_ms": 0.1057760000549024,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2254,7 +2254,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0511999716982245,
+              "detect_ms": 0.1057760000549024,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2276,12 +2276,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.655779976863414,
-        "p95_latency_ms": 6.433999980799854,
+        "avg_latency_ms": 0.11412279991418472,
+        "p95_latency_ms": 0.13550099993153708,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.655779976863414
+        "avg_drift_detect_ms": 0.11412279991418472
       }
     },
     "function_removed": {
@@ -2298,7 +2298,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 5.971699953079224,
+          "latency_ms": 0.09814400073082652,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2310,7 +2310,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 5.971699953079224,
+              "detect_ms": 0.09814400073082652,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2328,7 +2328,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1551999486982822,
+          "latency_ms": 0.13755500003753696,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2340,7 +2340,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1551999486982822,
+              "detect_ms": 0.13755500003753696,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2358,7 +2358,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9473999962210655,
+          "latency_ms": 0.11693700071191415,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2370,7 +2370,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9473999962210655,
+              "detect_ms": 0.11693700071191415,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2388,7 +2388,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0481999488547444,
+          "latency_ms": 0.0980240001808852,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2400,7 +2400,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0481999488547444,
+              "detect_ms": 0.0980240001808852,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2418,7 +2418,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9370000334456563,
+          "latency_ms": 0.1142999999501626,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2430,7 +2430,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9370000334456563,
+              "detect_ms": 0.1142999999501626,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2448,7 +2448,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9991000406444073,
+          "latency_ms": 0.1258430002053501,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2460,7 +2460,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9991000406444073,
+              "detect_ms": 0.1258430002053501,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2478,7 +2478,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1605999898165464,
+          "latency_ms": 0.09881400001177099,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2490,7 +2490,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1605999898165464,
+              "detect_ms": 0.09881400001177099,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2508,7 +2508,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9747999720275402,
+          "latency_ms": 0.10748099975899095,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2520,7 +2520,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9747999720275402,
+              "detect_ms": 0.10748099975899095,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2538,7 +2538,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1513999197632074,
+          "latency_ms": 0.11917199935851386,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2550,7 +2550,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1513999197632074,
+              "detect_ms": 0.11917199935851386,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2568,7 +2568,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0139000369235873,
+          "latency_ms": 0.12596699980349513,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2580,7 +2580,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0139000369235873,
+              "detect_ms": 0.12596699980349513,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2602,12 +2602,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.535929983947426,
-        "p95_latency_ms": 5.971699953079224,
+        "avg_latency_ms": 0.11422370007494465,
+        "p95_latency_ms": 0.13755500003753696,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.535929983947426
+        "avg_drift_detect_ms": 0.11422370007494465
       }
     },
     "signature_changed": {
@@ -2624,7 +2624,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 6.604700000025332,
+          "latency_ms": 0.1052999996318249,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2636,7 +2636,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 6.604700000025332,
+              "detect_ms": 0.1052999996318249,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2654,7 +2654,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.2974001001566648,
+          "latency_ms": 0.10976300018228358,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2666,7 +2666,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.2974001001566648,
+              "detect_ms": 0.10976300018228358,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2684,7 +2684,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0255000088363886,
+          "latency_ms": 0.12212000001454726,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2696,7 +2696,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0255000088363886,
+              "detect_ms": 0.12212000001454726,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2714,7 +2714,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0264000156894326,
+          "latency_ms": 0.11350000022503082,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2726,7 +2726,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0264000156894326,
+              "detect_ms": 0.11350000022503082,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2744,7 +2744,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.1233999393880367,
+          "latency_ms": 0.10072999975818675,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2756,7 +2756,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.1233999393880367,
+              "detect_ms": 0.10072999975818675,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2774,7 +2774,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.048400066792965,
+          "latency_ms": 0.1278509998883237,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2786,7 +2786,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.048400066792965,
+              "detect_ms": 0.1278509998883237,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2804,7 +2804,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0430000256747007,
+          "latency_ms": 0.10799099982250482,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2816,7 +2816,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0430000256747007,
+              "detect_ms": 0.10799099982250482,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2834,7 +2834,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9407999459654093,
+          "latency_ms": 0.10969799950544257,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2846,7 +2846,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9407999459654093,
+              "detect_ms": 0.10969799950544257,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2864,7 +2864,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9134000865742564,
+          "latency_ms": 0.10566799937805627,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2876,7 +2876,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9134000865742564,
+              "detect_ms": 0.10566799937805627,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2894,7 +2894,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.258899923413992,
+          "latency_ms": 0.11695200009853579,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2906,7 +2906,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.258899923413992,
+              "detect_ms": 0.11695200009853579,
               "expected": "STRUCTURE",
               "got": "STRUCTURE"
             }
@@ -2928,12 +2928,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 1.6281900112517178,
-        "p95_latency_ms": 6.604700000025332,
+        "avg_latency_ms": 0.11195729985047365,
+        "p95_latency_ms": 0.1278509998883237,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 1.6281900112517178
+        "avg_drift_detect_ms": 0.11195729985047365
       }
     },
     "multi_file": {
@@ -2950,7 +2950,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9860999416559935,
+          "latency_ms": 0.1150779999079532,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2962,7 +2962,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9860999416559935,
+              "detect_ms": 0.1150779999079532,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -2980,7 +2980,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0673999786376953,
+          "latency_ms": 0.10431200007587904,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -2992,7 +2992,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0673999786376953,
+              "detect_ms": 0.10431200007587904,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3010,7 +3010,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9645000100135803,
+          "latency_ms": 0.10875499992835103,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3022,7 +3022,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9645000100135803,
+              "detect_ms": 0.10875499992835103,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3040,7 +3040,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9127000812441111,
+          "latency_ms": 0.10184599977947073,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3052,7 +3052,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9127000812441111,
+              "detect_ms": 0.10184599977947073,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3070,7 +3070,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0467999381944537,
+          "latency_ms": 0.0977869995040237,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3082,7 +3082,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0467999381944537,
+              "detect_ms": 0.0977869995040237,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3100,7 +3100,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9598999749869108,
+          "latency_ms": 0.13325999952940037,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3112,7 +3112,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9598999749869108,
+              "detect_ms": 0.13325999952940037,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3130,7 +3130,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9886999614536762,
+          "latency_ms": 0.11989999984507449,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3142,7 +3142,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9886999614536762,
+              "detect_ms": 0.11989999984507449,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3160,7 +3160,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9581999620422721,
+          "latency_ms": 0.09749799937708303,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3172,7 +3172,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9581999620422721,
+              "detect_ms": 0.09749799937708303,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3190,7 +3190,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 0.9413999505341053,
+          "latency_ms": 0.1281609993384336,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3202,7 +3202,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 0.9413999505341053,
+              "detect_ms": 0.1281609993384336,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3220,7 +3220,7 @@
           "disk_read_count": 0,
           "stale_read_count": 0,
           "cost": 0.0,
-          "latency_ms": 1.0073999874293804,
+          "latency_ms": 0.10611800007609418,
           "steps_lost": 0,
           "recovery_latency_ms": 0.0,
           "saved_tokens": 0,
@@ -3232,7 +3232,7 @@
               "tn": false,
               "fp": false,
               "fn": false,
-              "detect_ms": 1.0073999874293804,
+              "detect_ms": 0.10611800007609418,
               "expected": "CONTENT",
               "got": "CONTENT"
             }
@@ -3254,12 +3254,12 @@
         "avg_stale_reads": 0.0,
         "total_cost": 0.0,
         "avg_cost_per_task": 0.0,
-        "avg_latency_ms": 0.9833099786192179,
-        "p95_latency_ms": 1.0673999786376953,
+        "avg_latency_ms": 0.11127149973617634,
+        "p95_latency_ms": 0.13325999952940037,
         "drift_accuracy": 1.0,
         "drift_false_positive": 0.0,
         "drift_false_negative": 0.0,
-        "avg_drift_detect_ms": 0.9833099786192179
+        "avg_drift_detect_ms": 0.11127149973617634
       }
     }
   }

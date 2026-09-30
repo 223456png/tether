@@ -246,13 +246,19 @@ class MCPTool(Tool):
 def register_mcp_tools(
     registry, client: MCPClient, server_name: str | None = None
 ) -> list[str]:
-    """Wrap the server's tools and register them; returns qualified names."""
+    """Wrap the server's tools and register them; returns qualified names.
+
+    Only tools that were actually registered are listed — a name collision
+    with an existing builtin keeps the existing tool, and claiming the MCP
+    name anyway would mislead callers (and the model's tool list).
+    """
     info = client.server_info.get("serverInfo", {}) if client.server_info else {}
     base = sanitize_server_name(server_name or info.get("name", "mcp"))
     registered: list[str] = []
+    skipped: list[str] = []
     for descriptor in client.list_tools():
         qualified = f"mcp_{base}_{descriptor['name']}"
-        registry.register(
+        was_registered = registry.register(
             MCPTool(
                 client=client,
                 remote_name=descriptor["name"],
@@ -262,6 +268,11 @@ def register_mcp_tools(
             ),
             overwrite=False,
         )
-        registered.append(qualified)
+        if was_registered:
+            registered.append(qualified)
+        else:
+            skipped.append(qualified)
+    if skipped:
+        logger.warning("MCP tools skipped (name collision) | server={} tools={}", base, skipped)
     logger.info("MCP tools registered | server={} tools={}", base, registered)
     return registered
