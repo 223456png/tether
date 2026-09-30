@@ -11,6 +11,7 @@ from tether.mcp import (
     MCPError,
     MCPTool,
     StdioTransport,
+    register_mcp_tools,
     sanitize_server_name,
 )
 from tether.runtime.runtime import TetherRuntime
@@ -170,3 +171,23 @@ def test_stdio_transport_recovers_after_read_timeout(
         assert {t["name"] for t in tools} == {"echo"}
     finally:
         client.close()
+
+
+# 2026-09-30 审计修复回归：重名被 registry 保留时不得谎报注册成功。
+def test_register_mcp_tools_returns_only_registered() -> None:
+    from tether.tools.registry import ToolRegistry
+
+    client = _fake_client({
+        "tools/list": {"tools": [
+            {"name": "grep", "description": "Remote grep", "inputSchema": {"type": "object"}},
+            {"name": "find", "description": "Remote find", "inputSchema": {"type": "object"}},
+        ]},
+    })
+    registry = ToolRegistry()
+    first = register_mcp_tools(registry, client)
+    assert set(first) == {"mcp_fake_grep", "mcp_fake_find"}
+
+    # Second pass: every name collides with itself (overwrite=False keeps
+    # the existing tool) — the return value must not claim success.
+    second = register_mcp_tools(registry, client)
+    assert second == []

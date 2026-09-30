@@ -8,6 +8,8 @@ Two allocation passes:
    huge tool dump) can never starve the others (e.g. file context).
 """
 
+import re
+
 from loguru import logger
 
 from tether.context.policy import BudgetConfig, CompressionLevel
@@ -23,10 +25,25 @@ _EPISODIC_MAX_NOTES = {CompressionLevel.NONE: None, 1: None, 2: 5, 3: 5, 4: 3}
 # Episodic cap fitting ladder: note counts tried until the section fits.
 _EPISODIC_FIT_LADDER = (8, 4, 2, 1)
 
+# CJK unified ideographs + extensions, kana, fullwidth forms — characters
+# that modern LLM tokenizers encode at ~1 token per character. Shared by
+# estimate_tokens (budget gating) and the validator (CJK-aware scoring).
+_CJK_CHAR_RE = re.compile("[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff00-\uffef]")
+
 
 def estimate_tokens(text: str) -> int:
-    """Rough token estimate: chars / 3 (mixed CJK/English, conservative)."""
-    return len(text) // 3
+    """Segmented token estimate, conservative in both directions.
+
+    CJK characters count ~1 token each (modern LLM tokenizers); other
+    characters ~1 token per 4. The old ``len(text) // 3`` rule
+    underestimated CJK-heavy text by 2-3x (budget gateways passed while
+    real token usage overran the cap) and overestimated English by 33%.
+    """
+    if not text:
+        return 0
+    cjk = len(_CJK_CHAR_RE.findall(text))
+    other = len(text) - cjk
+    return max(1, cjk + other // 4)
 
 
 class BudgetAllocator:

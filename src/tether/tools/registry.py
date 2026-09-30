@@ -20,8 +20,11 @@ class ToolRegistry:
         self._tools: dict[str, Tool] = {}
         self._history: list[str] = []
 
-    def register(self, tool: type[Tool] | Tool, overwrite: bool = True) -> None:
+    def register(self, tool: type[Tool] | Tool, overwrite: bool = True) -> bool:
         """Register a Tool subclass (instantiated here) or a ready instance.
+
+        Returns True when the tool was registered, False when an existing
+        registration was kept (``overwrite=False`` with a name collision).
 
         ``overwrite=False`` keeps the existing entry on name collisions —
         used when merging decorator-registered tools into a runtime that
@@ -32,10 +35,11 @@ class ToolRegistry:
         if not tool.name:
             raise ValueError("Tool must define a non-empty 'name'")
         if not overwrite and tool.name in self._tools:
-            return
+            return False
         self._tools[tool.name] = tool
         self._history.append(tool.name)
         self._history = self._history[-100:]
+        return True
 
     def get(self, name: str) -> Tool | None:
         """Return the tool registered under ``name`` (None if absent)."""

@@ -108,15 +108,31 @@ class CheckpointManager:
         """Load the latest plain TaskState line for ``task_id``.
 
         Full (v2) checkpoint lines are skipped so this keeps returning the
-        Phase-1 style state. Returns ``None`` if no usable line exists.
+        Phase-1 style state. Schema-invalid lines (schema drift, manual
+        edits) are skipped with a warning instead of crashing the caller —
+        recovery prefers an older valid state over a hard failure.
+        Returns ``None`` if no usable line exists.
         """
         records = self._read_lines(task_id)
         for rec in reversed(records):
             if "checkpoint_version" not in rec:
-                return TaskState.model_validate(rec)
+                try:
+                    return TaskState.model_validate(rec)
+                except Exception as exc:  # noqa: BLE001 - skip drifted line
+                    logger.warning(
+                        "Schema-invalid checkpoint line skipped | task_id={} error={}",
+                        task_id, exc,
+                    )
+                    continue
         if records:
             # Only v2 lines exist: extract the embedded state.
-            return TaskState.model_validate(records[-1]["task_state"])
+            try:
+                return TaskState.model_validate(records[-1]["task_state"])
+            except Exception as exc:  # noqa: BLE001 - skip drifted line
+                logger.warning(
+                    "Schema-invalid v2 checkpoint skipped | task_id={} error={}",
+                    task_id, exc,
+                )
         logger.warning("Checkpoint file empty or missing for task {}", task_id)
         return None
 

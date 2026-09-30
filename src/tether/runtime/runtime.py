@@ -100,8 +100,8 @@ class AgentDecision:
 class TetherRuntime:
     """Async state machine + JSONL checkpoints + tool timeout breaker.
 
-    Phase 5: files are read through ``_read_file_with_drift_check`` so the
-    agent never reasons from stale file state.
+    Phase 5: files are read through the ReadFileTool and tracked via
+    ``_track_read_file``, so the agent never reasons from stale file state.
     Phase 6: checkpoints carry a workspace fingerprint and ``resume()``
     recovers smartly via RecoveryManager (drift-aware replay planning).
     Phase 7: actions run through the ToolRegistry with duplicate-call
@@ -574,6 +574,8 @@ class TetherRuntime:
         if result.success:
             if tool_name == "write_file":
                 self._snapshot_written_file(params)
+            elif tool_name == "read_file":
+                self._track_read_file(params)
             self._update_task_summary(display, success=True)
             return result.output
         error = result.error or "unknown error"
@@ -685,25 +687,37 @@ class TetherRuntime:
             self.state, self.memory_store, self._step_log
         )
 
-    async def _read_file_with_drift_check(self, file_path: str) -> tuple[str, FileSnapshot]:
-        """Read a file through the drift-detection flow.
+    def _track_read_file(self, params: dict[str, object]) -> None:
+        """Maintain the snapshot ledger for a file the agent just read.
 
-        1. Load the cached snapshot (if any) and detect drift.
-        2. MATCH / METADATA -> reuse the cached snapshot.
-        3. Drifted or absent -> invalidate the old snapshot, re-read the
-           file, build and store a fresh snapshot.
+        Symmetric to :meth:`_snapshot_written_file`: the ReadFileTool has
+        already returned fresh content; this only updates the drift book-
+        keeping. MATCH/METADATA snapshots stay valid; a drifted snapshot
+        is invalidated and replaced with a fresh content-backed one, so
+        later reads/writes can detect external edits (and checkpoint
+        recovery can restore the file).
+
+        Previously this logic lived in a never-called
+        ``_read_file_with_drift_check`` — drift detection was documented
+        but never triggered on the read path.
         """
-        rel = Path(file_path).as_posix()
+        rel_path = params.get("path")
+        if not isinstance(rel_path, str) or not rel_path.strip():
+            return
+        rel = Path(rel_path).as_posix()
         full_path = self.workspace_dir / rel
+        if not full_path.exists():
+            return  # race: file vanished right after the read — nothing to track
 
-        snap, drift = self.memory_store.load_snapshot_with_drift(
-            self.state.task_id, rel, self.drift_detector
-        )
-        if snap is not None and drift.level in (DriftLevel.MATCH, DriftLevel.METADATA):
-            logger.debug(
-                "File read (cache hit) | path={} drift={}", rel, drift.level.name,
+        try:
+            snap, drift = self.memory_store.load_snapshot_with_drift(
+                self.state.task_id, rel, self.drift_detector
             )
-            return full_path.read_text(encoding="utf-8", errors="replace"), snap
+        except OSError as exc:
+            logger.debug("Read drift check skipped | path={} error={}", rel, exc)
+            return
+        if snap is not None and drift.level in (DriftLevel.MATCH, DriftLevel.METADATA):
+            return  # cached snapshot still accurate — nothing to refresh
 
         if snap is not None:
             logger.info(
@@ -712,15 +726,15 @@ class TetherRuntime:
             )
             self.memory_store.invalidate_file_snapshot(self.state.task_id, rel)
 
-        if not full_path.exists():
-            raise FileNotFoundError(f"File missing while reading: {rel}")
-
-        new_snap = FileSnapshot.from_file(
-            self.state.task_id, full_path, include_content=True
-        )
+        try:
+            new_snap = FileSnapshot.from_file(
+                self.state.task_id, full_path, include_content=True
+            )
+        except OSError as exc:
+            logger.debug("Read snapshot skipped | path={} error={}", rel, exc)
+            return
         new_snap.path = rel  # store paths relative to the workspace
         self.memory_store.save_file_snapshot(new_snap)
-        return full_path.read_text(encoding="utf-8", errors="replace"), new_snap
 
     async def _transition_to(self, new_status: TaskStatus) -> None:
         """Transition to a new status and log the change."""

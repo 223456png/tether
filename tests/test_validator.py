@@ -143,3 +143,51 @@ def test_cache_hit() -> None:
     assert validator.cache_hits == 1
     assert validator.cache_misses == 1
     assert second.rouge_l_score == first.rouge_l_score  # cached value reused
+
+
+# 2026-09-30 CJK 审计修复回归：rouge_score 的 tokenizer 把一切非 ASCII
+# 字符当分隔符——纯中文恒 0（永远回滚），混合文本中文丢光也能通过。
+# CJK-aware 组合相似度后，两个方向都必须正确。
+ZH_THREE_STEPS = "第一步：读取数据源。第二步：计算比率。第三步：生成评估报告。"
+
+
+def test_rouge_validator_pure_chinese_passes() -> None:
+    """纯中文 3 步保 2 步 → 高相似度，不再被恒 0 分数误杀。"""
+    validator = RougeValidator()
+    compressed = "第一步：读取数据源。第二步：计算比率。"
+    result = validator.validate(ZH_THREE_STEPS, compressed)
+    assert result.passed is True
+    assert result.rouge_l_score > 0.7
+
+
+def test_rouge_validator_pure_chinese_over_compression_fails() -> None:
+    """纯中文删掉 3/4 步骤 → 必须回滚（此前恒 0 也回滚，但属误杀路径）。"""
+    validator = RougeValidator()
+    result = validator.validate(ZH_THREE_STEPS, "第一步：读取数据源。")
+    assert result.passed is False
+    assert result.rouge_l_score < 0.7
+
+
+def test_rouge_validator_mixed_dropped_chinese_fails() -> None:
+    """混合文本丢光中文 → 必须回滚（此前 rouge=1.000 静默放行）。"""
+    validator = RougeValidator()
+    original = "Read the config file and compute the ratio. " + ZH_THREE_STEPS
+    compressed = "Read the config file and compute the ratio."
+    result = validator.validate(original, compressed)
+    assert result.passed is False
+
+
+def test_rouge_validator_chinese_keyword_guard_still_works() -> None:
+    """纯中文相似度修复后，中文关键词守卫依然按位生效。"""
+    validator = RougeValidator()
+    result = validator.validate(ZH_THREE_STEPS, ZH_THREE_STEPS)
+    assert result.passed is True
+    ok = validator.validate(
+        ZH_THREE_STEPS, ZH_THREE_STEPS + " 关键结论：评估报告已通过。",
+        required_keywords=["评估报告"],
+    )
+    assert ok.passed is True
+    missing = validator.validate(
+        ZH_THREE_STEPS, ZH_THREE_STEPS, required_keywords=["不存在的关键词"]
+    )
+    assert missing.passed is False

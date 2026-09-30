@@ -60,3 +60,25 @@ def test_compaction_disabled_with_large_bound(tmp_path: Path) -> None:
         manager.save_full(state, store, {})
 
     assert len(_task_lines(tmp_path, state.task_id)) == 25
+
+
+# 2026-09-30 审计修复回归：schema 漂移的 checkpoint 行跳过而非崩掉恢复。
+def test_load_skips_schema_invalid_lines(tmp_path: Path) -> None:
+    """A hand-edited / schema-drifted line is skipped; older state loads."""
+    import json as _json
+
+    manager = CheckpointManager(tmp_path, keep_last_checkpoints=20)
+    state = _state(1)
+    manager.save(state)
+    newer = _state(2)
+    newer.task_id = state.task_id
+    manager.save(newer)
+
+    path = tmp_path / "checkpoints" / f"{state.task_id}.jsonl"
+    with path.open("a", encoding="utf-8") as f:
+        f.write(_json.dumps({"goal_is_missing_here": True}) + "\n")
+
+    loaded = manager.load(state.task_id)
+    assert loaded is not None
+    assert loaded.task_id == state.task_id
+    assert loaded.step_index == 2

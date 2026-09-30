@@ -310,3 +310,17 @@ def test_section_caps_disabled_reports_nothing() -> None:
         episodic_notes=[], tool_results=_big_tools(10), current_files=[],
     )
     assert result["stats"]["section_trimmed"] == []
+
+
+# 2026-09-30 CJK 审计修复回归：len//3 对中文低估 2-3 倍（预算门形同虚设）。
+def test_estimate_tokens_cjk_not_underestimated() -> None:
+    from tether.context.budget import estimate_tokens
+
+    zh = "第一步读取数据源第二步计算比率第三步生成评估报告"  # 24 个 CJK 字符
+    assert estimate_tokens(zh) >= 24  # ≈1 token/字；旧口径 len//3 = 8
+
+    en = "hello world this is a plain english sentence"  # 45 ASCII chars
+    assert estimate_tokens(en) == 11  # 45 // 4，旧口径 15（高估 33%）
+
+    mixed = zh + en[:8]  # 24 CJK + 8 other
+    assert estimate_tokens(mixed) == 26  # 24 + 8//4
