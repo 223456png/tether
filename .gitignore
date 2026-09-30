@@ -24,6 +24,12 @@ logs/
 checkpoints/
 *.log
 
+# 墙钟 latency 观测（重跑必变，不入版控；确定性指标在 results.json/csv）
+latency.json
+
+# 本地 pip 构建临时目录
+.tmp/
+
 # OS
 .DS_Store
 Thumbs.db

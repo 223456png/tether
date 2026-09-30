@@ -50,6 +50,35 @@ def _percentile(values: list[float], pct: float) -> float:
     return ordered[rank - 1]
 
 
+# ---- 墙钟观测字段（非种子确定性，重跑必变，不入版控结果）----
+LATENCY_RESULT_FIELDS = ("latency_ms", "recovery_latency_ms")
+LATENCY_METRIC_KEYS = (
+    "avg_latency_ms", "p95_latency_ms", "avg_drift_detect_ms", "avg_recovery_ms",
+)
+
+
+def _strip_nested_latency(extra: dict) -> dict:
+    """深拷贝 extra，剥掉嵌套的墙钟字段（如 drift.detect_ms）。"""
+    cleaned = dict(extra)
+    drift = cleaned.get("drift")
+    if isinstance(drift, dict):
+        cleaned["drift"] = {k: v for k, v in drift.items() if k != "detect_ms"}
+    return cleaned
+
+
+def strip_latency_result(result: dict) -> dict:
+    """从单条 TaskResult 序列化中剥掉墙钟字段（含 extra 嵌套）。"""
+    cleaned = {k: v for k, v in result.items() if k not in LATENCY_RESULT_FIELDS}
+    if isinstance(cleaned.get("extra"), dict):
+        cleaned["extra"] = _strip_nested_latency(cleaned["extra"])
+    return cleaned
+
+
+def strip_latency_metrics(metrics: dict) -> dict:
+    """从聚合指标中剥掉墙钟字段。"""
+    return {k: v for k, v in metrics.items() if k not in LATENCY_METRIC_KEYS}
+
+
 def compute_metrics(results: list[TaskResult]) -> dict:
     """Aggregate a list of TaskResults into summary metrics.
 
