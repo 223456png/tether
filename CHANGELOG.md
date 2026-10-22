@@ -8,6 +8,28 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **CLI 默认输出 DEBUG 日志（2026-10-22 审查 P2-1）**：loguru 的默认 handler
+  级别就是 DEBUG，`tether run` 一次普通运行会吐几十行 checkpoint / 上下文
+  组装 / 拦截器日志，把末端运行摘要埋掉，配 `--stream` 时更难看。新增
+  `-v/--verbose`（DEBUG）与 `-q/--quiet`（仅 WARNING），默认 INFO；
+  `_configure_logging` 在 `run` 入口先 `logger.remove()` 再重建 sink，不受
+  同一进程内上次调用的 handler 残留影响。三条 CLI 测试锁定三档行为
+- **benchmark token 数随机器漂移，且「当前文件」匹配恒失败（P1-1）**：压缩
+  实验用 `FileSnapshot.from_file()` 存**绝对临时路径**，路径长度被算进 prompt
+  token——同机重跑一致，换台机器 +4 token（503 → 507），README 宣称的
+  「逐字节再生成」不成立。同一根因还掩盖了一个更实际的问题：
+  `BudgetAllocator._fit_file_section` 拿 `s.path`（绝对）与 `current_files`
+  （相对）比对永不命中，`file_context` 的第一档降级分支实际是空的。
+  `from_file` 新增 `root` 参数存工作区相对路径，benchmark 传 `ws`；
+  `current_files` 匹配恢复生效，token 数换机器一致
+- **MCP 客户端协议版本硬编码 2024-11-05（P2-2）**：新 server 按旧语义回包会
+  丢掉 `structuredContent`，老 server 又不认新版本，单版本硬编码两头不讨好。
+  改为按 `2025-11-25` → `2025-06-18` → `2025-03-26` → `2024-11-05` 逐级协商，
+  以 server 回的版本为准；`structuredContent` 存在时优先取结构化结果（文本
+  片段可能只是给人看的摘要）。`2026-07-28` 的无状态内核（取消 `initialize`
+  与 session、能力走每请求 `_meta`、服务端→客户端请求改 Multi Round-Trip
+  Requests）不是换版本号能兼容的，协商上限停在 `2025-11-25`，重写路径记入
+  Roadmap
 - **压缩保真校验对中文双向失效（第二轮审计 P0-1）**：`rouge_score` 的
   tokenizer 把一切非 ASCII 字符当分隔符，纯中文上下文相似度恒 0（永远
   回滚，可验证压缩静默失效）；混合内容丢光中文却得 1.000（信息静默丢失）。
@@ -96,6 +118,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- **压缩率口径变更：22.5% → 21.4%（503→390 改为 499→392）**：旧数字把绝对
+  临时路径的长度算进了 prompt，路径一变数字就变，且无法跨机器复现；
+  `FileSnapshot` 改存工作区相对路径后量到的是内容本身。README 表 1 原先混用
+  了三个阶段（`CHANGELOG` 早期的 `681 → 531`、committed report 的
+  `503 → 390`、表里被当成预算值的 `503` 实为中期 full 基线）的数字，同表标注
+  −22.5% 却写成 681→503（−26.1%），自相矛盾；现统一为同一批 20 样本的
+  499 / 391 / 392
 - The LLM-driven agent loop replaces the random mock as the primary path; the
   offline mock brain is retained for tests and zero-cost demos.
 

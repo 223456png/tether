@@ -117,3 +117,48 @@ def test_cli_parses_defaults() -> None:
     assert args.mock is False
     assert args.workspace == "."
     assert args.mcp_cmd is None
+
+
+def test_cli_log_level_is_quiet_by_default(tmp_path: Path, capsys) -> None:
+    """默认 INFO：DEBUG 噪声（checkpoint/context/interceptor）不能刷屏。
+
+    回归背景：loguru 默认 handler 是 DEBUG，CLI 一次普通运行会吐几十行
+    DEBUG，把真正的运行摘要埋掉——对着终端做 demo 时尤其难看。
+    """
+    exit_code = main([
+        "run",
+        "--goal", "demo task",
+        "--workspace", str(tmp_path),
+        "--mock",
+        "--max-steps", "10",
+    ])
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert "DEBUG" not in captured.err
+    assert "status:" in captured.out
+
+
+def test_cli_verbose_flag_enables_debug(tmp_path: Path, capsys) -> None:
+    """-v 才打开 DEBUG 日志（排查工具调用时需要）。"""
+    main([
+        "run",
+        "--goal", "demo task",
+        "--workspace", str(tmp_path),
+        "--mock",
+        "--max-steps", "10",
+        "-v",
+    ])
+    assert "DEBUG" in capsys.readouterr().err
+
+
+def test_cli_quiet_flag_suppresses_info(tmp_path: Path, capsys) -> None:
+    """-q 只留 WARNING 及以上，跑批时日志可完全静音。"""
+    main([
+        "run",
+        "--goal", "demo task",
+        "--workspace", str(tmp_path),
+        "--mock",
+        "--max-steps", "10",
+        "-q",
+    ])
+    assert "INFO" not in capsys.readouterr().err

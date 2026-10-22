@@ -167,7 +167,11 @@ class FileSnapshot(MemoryEntry, BaseModel):
 
     @classmethod
     def from_file(
-        cls, task_id: str, file_path: Path, include_content: bool = False
+        cls,
+        task_id: str,
+        file_path: Path,
+        include_content: bool = False,
+        root: Path | None = None,
     ) -> "FileSnapshot":
         """Build a snapshot from a real file on disk.
 
@@ -176,6 +180,10 @@ class FileSnapshot(MemoryEntry, BaseModel):
         placeholder of "filename: top symbols" (LLM summaries come later).
         With ``include_content=True`` the file text is stored (small files
         only), making the snapshot restorable after deletion.
+        ``root`` stores the path relative to that root (workspace-relative),
+        which is what the context assembler compares against
+        ``current_files``; without it the absolute path leaks the machine's
+        directory layout into the prompt (and into token counts).
         """
         file_path = Path(file_path)
         stat = file_path.stat()
@@ -192,9 +200,15 @@ class FileSnapshot(MemoryEntry, BaseModel):
         store_content = (
             include_content and stat.st_size <= _MAX_CONTENT_BYTES
         )
+        stored_path = file_path.as_posix()
+        if root is not None:
+            try:
+                stored_path = file_path.relative_to(Path(root)).as_posix()
+            except ValueError:
+                stored_path = file_path.as_posix()
         return cls(
             task_id=task_id,
-            path=file_path.as_posix(),
+            path=stored_path,
             md5=compute_md5(file_path),
             size=stat.st_size,
             mtime=stat.st_mtime,

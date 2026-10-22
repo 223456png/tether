@@ -16,9 +16,23 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 
+from loguru import logger
+
 from tether.llm.factory import create_provider_from_env
 from tether.runtime.runtime import TetherRuntime
 from tether.runtime.state import TaskStatus
+
+
+def _configure_logging(verbose: bool, quiet: bool) -> None:
+    """Route loguru to stderr at a level that suits a CLI, not a library.
+
+    loguru's default handler prints DEBUG to stderr, which buries the run
+    summary under checkpoint/tool noise. A CLI should be quiet by default
+    and let ``-v`` opt into the debug stream.
+    """
+    level = "DEBUG" if verbose else ("WARNING" if quiet else "INFO")
+    logger.remove()
+    logger.add(sys.stderr, level=level, format="{level: <8} | {name} | {message}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -70,6 +84,15 @@ def build_parser() -> argparse.ArgumentParser:
         help="Stream the model's output live as it is generated "
              "(requires a real LLM provider; ignored in mock mode)",
     )
+    # 日志级别：CLI 默认 INFO（一次运行约 20 行），-v 看 DEBUG，-q 只看告警
+    run.add_argument(
+        "-v", "--verbose", action="store_true",
+        help="Print DEBUG logs (checkpoints, context assembly, interceptors)",
+    )
+    run.add_argument(
+        "-q", "--quiet", action="store_true",
+        help="Only print warnings and errors",
+    )
 
     report = sub.add_parser(
         "report", help="Summarize a task's events.jsonl into a markdown report"
@@ -103,6 +126,7 @@ def _stream_printer() -> "Callable[[str], None]":
 
 async def _run(args: argparse.Namespace) -> int:
     """Execute the ``run`` subcommand; returns the process exit code."""
+    _configure_logging(verbose=bool(args.verbose), quiet=bool(args.quiet))
     provider, is_mock = create_provider_from_env()
     if args.mock or is_mock:
         # No key / --mock: drop the provider entirely so the loop runs on

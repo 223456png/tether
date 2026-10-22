@@ -191,3 +191,54 @@ def test_register_mcp_tools_returns_only_registered() -> None:
     # the existing tool) — the return value must not claim success.
     second = register_mcp_tools(registry, client)
     assert second == []
+
+
+def test_handshake_falls_back_to_older_protocol(monkeypatch) -> None:
+    """旧 server 拒绝新版本时逐级回退，而不是直接握手失败。
+
+    回归背景：协议版本曾硬编码 2024-11-05，2025-06-18 之后的
+    structuredContent / outputSchema 语义完全用不上；改成"先报最新、被拒
+    再回退"后，新旧 server 都能连。
+    """
+    transport = StdioTransport(["unused"])
+    seen: list[str] = []
+
+    def fake_request(method: str, params: dict):
+        seen.append(params["protocolVersion"])
+        if params["protocolVersion"] != "2024-11-05":
+            raise MCPError("unsupported protocol version")
+        return {"protocolVersion": "2024-11-05"}
+
+    monkeypatch.setattr(transport, "request", fake_request)
+    result = transport._handshake()
+
+    assert result["protocolVersion"] == "2024-11-05"
+    assert transport.protocol_version == "2024-11-05"
+    assert seen == ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"]
+
+
+def test_handshake_uses_server_negotiated_version(monkeypatch) -> None:
+    """server 回自己的版本时以 server 为准（spec: 客户端须接受协商结果）。"""
+    transport = StdioTransport(["unused"])
+    monkeypatch.setattr(
+        transport, "request",
+        lambda method, params: {"protocolVersion": "2025-03-26"},
+    )
+    transport._handshake()
+    assert transport.protocol_version == "2025-03-26"
+
+
+def test_mcp_tool_prefers_structured_content() -> None:
+    """有 structuredContent 时优先用它（文本片段可能只是给人看的摘要）。"""
+    import asyncio
+
+    client = _fake_client({
+        "tools/call": {
+            "content": [{"type": "text", "text": "3 results"}],
+            "structuredContent": {"count": 3, "items": ["a", "b", "c"]},
+        }
+    })
+    tool = MCPTool(client, "search", "Searches", {"type": "object"}, "mcp_fake_search")
+    result = asyncio.run(tool.execute(q="x"))
+    assert result.success
+    assert '"count": 3' in result.output
