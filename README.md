@@ -1,7 +1,7 @@
 # Tether
 
 [![CI](https://github.com/223456png/tether/actions/workflows/ci.yml/badge.svg)](https://github.com/223456png/tether/actions/workflows/ci.yml)
-[![tests](https://img.shields.io/badge/tests-150%20passed-brightgreen)](tests/)
+[![tests](https://img.shields.io/badge/tests-158%20passed-brightgreen)](tests/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -10,7 +10,7 @@
 
 Tether 是围绕这个问题做的长时 Agent 运行时。它管三件事：上下文压得下来、记忆不串味、中断能接着跑。实现上是一条能单独测试的组件流水线，工具循环、三层记忆、预算化压缩、文件漂移检测、恢复、重复调用拦截、MCP 接入。
 
-先把定位说清楚：Tether 不比压缩率。学习式压缩器（LLMLingua 这类）能压到 10–20 倍，Tether 只有 22.5%。它卖的是可验证：每次压缩都要过语义相似度和关键信息两道校验，不达标就整条回滚。要么保真，要么不压。下面所有 benchmark 量的都是这个取舍。
+先把定位说清楚：Tether 不比压缩率。学习式压缩器（LLMLingua 这类）能压到 10–20 倍，Tether 只有 21.4%。它卖的是可验证：每次压缩都要过语义相似度和关键信息两道校验，不达标就整条回滚。要么保真，要么不压。下面所有 benchmark 量的都是这个取舍。
 
 还有一点很重要，压缩造成假完成，靠改 prompt 是治不好的。Tether 的做法是结构性的：任务摘要和模型自己维护的计划（`update_plan`）放在永不裁剪的记忆层，每轮都回到上下文；压缩有校验；文件漂移跨重启检测（stat → MD5 → AST），恢复时知道 Agent 离开期间发生了什么。
 
@@ -56,7 +56,7 @@ flowchart LR
 git clone https://github.com/223456png/tether.git
 cd tether
 pip install -e ".[dev]"
-python -m pytest tests/ -q          # 150 个测试，全离线
+python -m pytest tests/ -q          # 158 个测试，全离线
 ```
 
 不用 API key 也能跑一个任务（会降级到离线 mock 大脑），然后把事件流转成一页报告：
@@ -73,6 +73,8 @@ mock 大脑会真的去执行：写入、读回验证、结束，报告末尾给
 ```bash
 tether run --goal "..." --workspace ./ws --mcp-cmd "python path/to/mcp_server.py"
 ```
+
+握手按 `2025-06-18` → `2025-03-26` → `2024-11-05` 顺序协商：先报最新版本，server 拒绝就回退，老 server 也连得上；server 返回 `structuredContent` 时优先用结构化结果，而不是给人看的文本摘要。
 
 真实使用的安全护栏：`--require-approval` 让写类工具先人工确认；`--max-tokens N` 设硬成本上限，到量即停，状态是 STOPPED，检查点已经存好。
 
@@ -117,6 +119,7 @@ print(runtime.state.total_tokens, "tokens")
 - **硬成本上限。** `--max-tokens N` 到量停机，状态 STOPPED，检查点已保存。`--max-steps N` 撞上限同理，步数和 token 是同一种“资源耗尽”，绝不伪装成 completed。
 - **模型自己维护计划。** `update_plan` 把计划写进永不裁剪的任务摘要层，压缩后还在，每轮都回到上下文。
 - **流式输出。** `--stream` 把模型回答以 SSE 实时吐出来，不支持流式的 provider 照常调用。
+- **日志按需开。** 默认 INFO（一次运行二十来行，能看清每步工具），`-v` 才放 DEBUG（checkpoint / 上下文组装 / 拦截器），`-q` 只留告警。
 
 ### 复现 e2e 实验
 
@@ -130,7 +133,7 @@ python scripts/run_benchmark.py --experiment e2e --num-samples 20
 
 ## Benchmark 结果
 
-下面所有数字都是仓库里代码跑出来的。六个离线实验用 `python scripts/run_benchmark.py --all` 复现，固定种子、可逐字节再生成；真实 LLM 的 e2e 要 API key，只提交了 Markdown 报告。各实验报告在 `src/tether/benchmarks/results/`。
+下面所有数字都是仓库里代码跑出来的。六个离线实验用 `python scripts/run_benchmark.py --all` 复现，固定种子，结构类数字（通过率、token、步数）换机器也逐字节一致；耗时字段是真实墙钟，随机器浮动。真实 LLM 的 e2e 要 API key，只提交了 Markdown 报告。各实验报告在 `src/tether/benchmarks/results/`。
 
 先说明这些数字量的是什么：压缩、记忆、漂移、恢复、拦截几个实验直接驱动**组件**，离线、固定种子、可复现；实验 7 用确定性策略驱动**真实的运行时循环**，补上了“组件各自通过、合起来翻车”这个缺口；模型智能只由 e2e 实验量。
 
@@ -138,9 +141,9 @@ python scripts/run_benchmark.py --experiment e2e --num-samples 20
 
 | 策略 | Prompt tokens | 信息保全 |
 |---|---|---|
-| 全量上下文（基线） | 681 | 100% |
-| Last-N 截断 | 537（−21%） | 65%，早期工具结果被丢 |
-| 预算分配（本方案） | 503（−22.5%） | 100%，过校验，失败回滚 |
+| 全量上下文（基线） | 499 | 100% |
+| Last-N 截断 | 391（−21.6%） | 65%，早期工具结果被丢 |
+| 预算分配（本方案） | 392（−21.4%） | 100%，过校验，失败回滚 |
 
 ### 2. 真实 LLM 端到端 pass@1（20 任务 × 3 组，DeepSeek，greedy）
 
@@ -197,7 +200,7 @@ n=20 时 pass@1 的差异在噪声内，但压缩组从不比全量差，总 tok
 - `file_deleted` 恢复只覆盖碰过的文件，没碰过的恢复不了。
 - 漂移测试集是自建的（10 类变更 × 10 样本），100% 说的是这十类全覆盖，不代表生产泛化。
 - HumanEval 子集是本仓库内置的 20 题，因为构建环境访问不了上游仓库。
-- 压缩率 22.5%，比不上学习式压缩器的 10–20 倍；换来的是每次压缩都有硬校验。校验是 CJK-aware 的：`rouge_score` 把中文全当分隔符（纯中文恒 0 分、混合文本丢中文不扣分），所以中文走字符级 LCS 组合评分，中文上下文同样可验证。
+- 压缩率 21.4%，比不上学习式压缩器的 10–20 倍；换来的是每次压缩都有硬校验。校验是 CJK-aware 的：`rouge_score` 把中文全当分隔符（纯中文恒 0 分、混合文本丢中文不扣分），所以中文走字符级 LCS 组合评分，中文上下文同样可验证。
 
 ## Roadmap
 
@@ -207,7 +210,7 @@ n=20 时 pass@1 的差异在噪声内，但压缩组从不比全量差，总 tok
 
 已经做完的：
 
-- 分节预算上限 + 头尾截断（压缩 −22.5%，校验 100% 通过）
+- 分节预算上限 + 头尾截断（压缩 −21.4%，校验 100% 通过）
 - checkpoint 压缩，JSONL 历史有界
 - MCP 客户端，任意 server 的工具进注册表
 - `update_plan`，模型在记忆里维护计划
@@ -230,7 +233,7 @@ src/tether/
 ├── reporting.py    # 事件流 → 单页报告
 ├── cli.py          # tether run / tether report
 └── benchmarks/     # 7 个实验、指标、报告
-tests/              # 150 个测试，全离线
+tests/              # 158 个测试，全离线
 ```
 
 ## License

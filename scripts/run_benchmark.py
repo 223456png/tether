@@ -69,7 +69,8 @@ async def main() -> None:
         md = report.generate_markdown(name)
         md_path = results_root / name / "report.md"
         md_path.parent.mkdir(parents=True, exist_ok=True)
-        md_path.write_text(md, encoding="utf-8")
+        # 统一 EOF 只留一个换行：否则每次重跑都会因为末尾空行产生无意义 diff
+        md_path.write_text(md.rstrip("\n") + "\n", encoding="utf-8")
         logger.info("✅ Experiment {} complete -> {}", name, md_path)
 
     # Summary covers every experiment with results on disk (e.g. a real-LLM
@@ -80,7 +81,7 @@ async def main() -> None:
     ]
     summary = report.generate_table(available)
     summary_path = results_root / "summary.md"
-    summary_path.write_text(summary, encoding="utf-8")
+    summary_path.write_text(summary.rstrip("\n") + "\n", encoding="utf-8")
     logger.info("Summary report -> {}", summary_path)
 
 

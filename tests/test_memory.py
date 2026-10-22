@@ -147,3 +147,34 @@ def test_memory_store_episodic(tmp_path: Path) -> None:
     remaining = store.load_episodic_notes("task-4")
     assert len(remaining) == 1
     assert remaining[0].entry_id == notes[1].entry_id
+
+
+def test_file_snapshot_path_can_be_workspace_relative(tmp_path: Path) -> None:
+    """``root`` 让快照存工作区相对路径：绝对路径会把机器的临时目录
+    长度带进 prompt，既让 token 统计不可复现，也让上下文组装里的
+    "当前文件"匹配永远对不上（current_files 是相对路径）。"""
+    src = tmp_path / "src" / "solution.py"
+    src.parent.mkdir(parents=True)
+    src.write_text("def f():\n    return 1\n", encoding="utf-8")
+
+    snap = FileSnapshot.from_file("t", src, root=tmp_path)
+
+    assert snap.path == "src/solution.py"
+    assert not Path(snap.path).is_absolute()
+
+
+def test_relative_snapshot_matches_current_files(tmp_path: Path) -> None:
+    """相对路径快照才能被 BudgetAllocator 识别为"当前文件"。"""
+    from tether.context.budget import BudgetAllocator, BudgetConfig
+
+    src = tmp_path / "src" / "solution.py"
+    src.parent.mkdir(parents=True)
+    src.write_text("def f():\n    return 1\n", encoding="utf-8")
+    snap = FileSnapshot.from_file("t", src, root=tmp_path)
+
+    allocator = BudgetAllocator(BudgetConfig())
+    rendered = allocator._fit_file_section([snap], ["src/solution.py"], cap=10_000)
+
+    # 当前文件会渲染成带符号摘要，而不是只剩指纹行
+    assert "solution.py" in rendered
+    assert "md5" not in rendered

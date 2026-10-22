@@ -9,9 +9,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 504,
+          "prompt_tokens": 500,
           "completion_tokens": 0,
-          "total_tokens": 504,
+          "total_tokens": 500,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -30,9 +30,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 505,
+          "prompt_tokens": 501,
           "completion_tokens": 0,
-          "total_tokens": 505,
+          "total_tokens": 501,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -51,9 +51,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 502,
+          "prompt_tokens": 498,
           "completion_tokens": 0,
-          "total_tokens": 502,
+          "total_tokens": 498,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -72,9 +72,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 500,
+          "prompt_tokens": 496,
           "completion_tokens": 0,
-          "total_tokens": 500,
+          "total_tokens": 496,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -93,9 +93,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 506,
+          "prompt_tokens": 502,
           "completion_tokens": 0,
-          "total_tokens": 506,
+          "total_tokens": 502,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -114,9 +114,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 500,
+          "prompt_tokens": 496,
           "completion_tokens": 0,
-          "total_tokens": 500,
+          "total_tokens": 496,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -135,9 +135,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 504,
+          "prompt_tokens": 500,
           "completion_tokens": 0,
-          "total_tokens": 504,
+          "total_tokens": 500,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -156,9 +156,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 504,
+          "prompt_tokens": 500,
           "completion_tokens": 0,
-          "total_tokens": 504,
+          "total_tokens": 500,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -177,9 +177,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 501,
+          "prompt_tokens": 496,
           "completion_tokens": 0,
-          "total_tokens": 501,
+          "total_tokens": 496,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -198,9 +198,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 500,
+          "prompt_tokens": 496,
           "completion_tokens": 0,
-          "total_tokens": 500,
+          "total_tokens": 496,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -216,69 +216,6 @@
         },
         {
           "task_id": "HumanEval/10",
-          "variant": "full",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 510,
-          "completion_tokens": 0,
-          "total_tokens": 510,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.0,
-            "level": 0
-          }
-        },
-        {
-          "task_id": "HumanEval/11",
-          "variant": "full",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 500,
-          "completion_tokens": 0,
-          "total_tokens": 500,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.0,
-            "level": 0
-          }
-        },
-        {
-          "task_id": "HumanEval/12",
-          "variant": "full",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 499,
-          "completion_tokens": 0,
-          "total_tokens": 499,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.0,
-            "level": 0
-          }
-        },
-        {
-          "task_id": "HumanEval/13",
           "variant": "full",
           "success": true,
           "steps": 0,
@@ -299,13 +236,76 @@
           }
         },
         {
+          "task_id": "HumanEval/11",
+          "variant": "full",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 496,
+          "completion_tokens": 0,
+          "total_tokens": 496,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.0,
+            "level": 0
+          }
+        },
+        {
+          "task_id": "HumanEval/12",
+          "variant": "full",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 495,
+          "completion_tokens": 0,
+          "total_tokens": 495,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.0,
+            "level": 0
+          }
+        },
+        {
+          "task_id": "HumanEval/13",
+          "variant": "full",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 502,
+          "completion_tokens": 0,
+          "total_tokens": 502,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.0,
+            "level": 0
+          }
+        },
+        {
           "task_id": "HumanEval/14",
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 501,
+          "prompt_tokens": 497,
           "completion_tokens": 0,
-          "total_tokens": 501,
+          "total_tokens": 497,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -324,9 +324,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 502,
+          "prompt_tokens": 497,
           "completion_tokens": 0,
-          "total_tokens": 502,
+          "total_tokens": 497,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -345,9 +345,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 507,
+          "prompt_tokens": 503,
           "completion_tokens": 0,
-          "total_tokens": 507,
+          "total_tokens": 503,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -366,9 +366,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 500,
+          "prompt_tokens": 496,
           "completion_tokens": 0,
-          "total_tokens": 500,
+          "total_tokens": 496,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -387,9 +387,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 502,
+          "prompt_tokens": 498,
           "completion_tokens": 0,
-          "total_tokens": 502,
+          "total_tokens": 498,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -408,9 +408,9 @@
           "variant": "full",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 501,
+          "prompt_tokens": 497,
           "completion_tokens": 0,
-          "total_tokens": 501,
+          "total_tokens": 497,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -430,9 +430,9 @@
         "success_rate": 1.0,
         "avg_steps": 0.0,
         "avg_tokens": {
-          "prompt": 502.7,
+          "prompt": 498.6,
           "completion": 0.0,
-          "total": 502.7
+          "total": 498.6
         },
         "avg_file_reads": 0.0,
         "avg_file_reads_per_step": 0.0,
@@ -449,9 +449,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 396,
+          "prompt_tokens": 392,
           "completion_tokens": 0,
-          "total_tokens": 396,
+          "total_tokens": 392,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -461,7 +461,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.2142857142857143,
+            "reduction_ratio": 0.21599999999999997,
             "level": 0
           }
         },
@@ -470,9 +470,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 397,
+          "prompt_tokens": 393,
           "completion_tokens": 0,
-          "total_tokens": 397,
+          "total_tokens": 393,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -482,7 +482,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21386138613861383,
+            "reduction_ratio": 0.21556886227544914,
             "level": 0
           }
         },
@@ -491,9 +491,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 394,
+          "prompt_tokens": 390,
           "completion_tokens": 0,
-          "total_tokens": 394,
+          "total_tokens": 390,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -503,7 +503,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21513944223107573,
+            "reduction_ratio": 0.2168674698795181,
             "level": 0
           }
         },
@@ -512,9 +512,9 @@
           "variant": "last_n",
           "success": false,
           "steps": 0,
-          "prompt_tokens": 392,
+          "prompt_tokens": 388,
           "completion_tokens": 0,
-          "total_tokens": 392,
+          "total_tokens": 388,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -524,7 +524,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21599999999999997,
+            "reduction_ratio": 0.217741935483871,
             "level": 0
           }
         },
@@ -533,9 +533,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 398,
+          "prompt_tokens": 394,
           "completion_tokens": 0,
-          "total_tokens": 398,
+          "total_tokens": 394,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -545,7 +545,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.2134387351778656,
+            "reduction_ratio": 0.21513944223107573,
             "level": 0
           }
         },
@@ -554,9 +554,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 392,
+          "prompt_tokens": 388,
           "completion_tokens": 0,
-          "total_tokens": 392,
+          "total_tokens": 388,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -566,7 +566,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21599999999999997,
+            "reduction_ratio": 0.217741935483871,
             "level": 0
           }
         },
@@ -575,9 +575,9 @@
           "variant": "last_n",
           "success": false,
           "steps": 0,
-          "prompt_tokens": 396,
+          "prompt_tokens": 392,
           "completion_tokens": 0,
-          "total_tokens": 396,
+          "total_tokens": 392,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -587,7 +587,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.2142857142857143,
+            "reduction_ratio": 0.21599999999999997,
             "level": 0
           }
         },
@@ -596,9 +596,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 396,
+          "prompt_tokens": 392,
           "completion_tokens": 0,
-          "total_tokens": 396,
+          "total_tokens": 392,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -608,7 +608,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.2142857142857143,
+            "reduction_ratio": 0.21599999999999997,
             "level": 0
           }
         },
@@ -617,9 +617,9 @@
           "variant": "last_n",
           "success": false,
           "steps": 0,
-          "prompt_tokens": 393,
+          "prompt_tokens": 388,
           "completion_tokens": 0,
-          "total_tokens": 393,
+          "total_tokens": 388,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -629,7 +629,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21556886227544914,
+            "reduction_ratio": 0.217741935483871,
             "level": 0
           }
         },
@@ -638,9 +638,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 392,
+          "prompt_tokens": 388,
           "completion_tokens": 0,
-          "total_tokens": 392,
+          "total_tokens": 388,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -650,75 +650,12 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21599999999999997,
+            "reduction_ratio": 0.217741935483871,
             "level": 0
           }
         },
         {
           "task_id": "HumanEval/10",
-          "variant": "last_n",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 402,
-          "completion_tokens": 0,
-          "total_tokens": 402,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.21176470588235297,
-            "level": 0
-          }
-        },
-        {
-          "task_id": "HumanEval/11",
-          "variant": "last_n",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 392,
-          "completion_tokens": 0,
-          "total_tokens": 392,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.21599999999999997,
-            "level": 0
-          }
-        },
-        {
-          "task_id": "HumanEval/12",
-          "variant": "last_n",
-          "success": false,
-          "steps": 0,
-          "prompt_tokens": 391,
-          "completion_tokens": 0,
-          "total_tokens": 391,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.21643286573146292,
-            "level": 0
-          }
-        },
-        {
-          "task_id": "HumanEval/13",
           "variant": "last_n",
           "success": true,
           "steps": 0,
@@ -739,13 +676,13 @@
           }
         },
         {
-          "task_id": "HumanEval/14",
+          "task_id": "HumanEval/11",
           "variant": "last_n",
-          "success": false,
+          "success": true,
           "steps": 0,
-          "prompt_tokens": 393,
+          "prompt_tokens": 388,
           "completion_tokens": 0,
-          "total_tokens": 393,
+          "total_tokens": 388,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -755,7 +692,70 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21556886227544914,
+            "reduction_ratio": 0.217741935483871,
+            "level": 0
+          }
+        },
+        {
+          "task_id": "HumanEval/12",
+          "variant": "last_n",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 387,
+          "completion_tokens": 0,
+          "total_tokens": 387,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.21818181818181814,
+            "level": 0
+          }
+        },
+        {
+          "task_id": "HumanEval/13",
+          "variant": "last_n",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 394,
+          "completion_tokens": 0,
+          "total_tokens": 394,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.21513944223107573,
+            "level": 0
+          }
+        },
+        {
+          "task_id": "HumanEval/14",
+          "variant": "last_n",
+          "success": false,
+          "steps": 0,
+          "prompt_tokens": 389,
+          "completion_tokens": 0,
+          "total_tokens": 389,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.21730382293762573,
             "level": 0
           }
         },
@@ -764,9 +764,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 394,
+          "prompt_tokens": 389,
           "completion_tokens": 0,
-          "total_tokens": 394,
+          "total_tokens": 389,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -776,7 +776,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21513944223107573,
+            "reduction_ratio": 0.21730382293762573,
             "level": 0
           }
         },
@@ -785,9 +785,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 399,
+          "prompt_tokens": 395,
           "completion_tokens": 0,
-          "total_tokens": 399,
+          "total_tokens": 395,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -797,7 +797,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21301775147928992,
+            "reduction_ratio": 0.21471172962226637,
             "level": 0
           }
         },
@@ -806,9 +806,9 @@
           "variant": "last_n",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 392,
+          "prompt_tokens": 388,
           "completion_tokens": 0,
-          "total_tokens": 392,
+          "total_tokens": 388,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -818,7 +818,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21599999999999997,
+            "reduction_ratio": 0.217741935483871,
             "level": 0
           }
         },
@@ -827,9 +827,9 @@
           "variant": "last_n",
           "success": false,
           "steps": 0,
-          "prompt_tokens": 394,
+          "prompt_tokens": 390,
           "completion_tokens": 0,
-          "total_tokens": 394,
+          "total_tokens": 390,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -839,7 +839,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21513944223107573,
+            "reduction_ratio": 0.2168674698795181,
             "level": 0
           }
         },
@@ -848,9 +848,9 @@
           "variant": "last_n",
           "success": false,
           "steps": 0,
-          "prompt_tokens": 393,
+          "prompt_tokens": 389,
           "completion_tokens": 0,
-          "total_tokens": 393,
+          "total_tokens": 389,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -860,7 +860,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21556886227544914,
+            "reduction_ratio": 0.21730382293762573,
             "level": 0
           }
         }
@@ -870,9 +870,9 @@
         "success_rate": 0.65,
         "avg_steps": 0.0,
         "avg_tokens": {
-          "prompt": 394.7,
+          "prompt": 390.6,
           "completion": 0.0,
-          "total": 394.7
+          "total": 390.6
         },
         "avg_file_reads": 0.0,
         "avg_file_reads_per_step": 0.0,
@@ -889,9 +889,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 418,
+          "prompt_tokens": 424,
           "completion_tokens": 0,
-          "total_tokens": 418,
+          "total_tokens": 424,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -901,7 +901,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.17063492063492058,
+            "reduction_ratio": 0.15200000000000002,
             "level": 3
           }
         },
@@ -910,9 +910,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 417,
+          "prompt_tokens": 424,
           "completion_tokens": 0,
-          "total_tokens": 417,
+          "total_tokens": 424,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -922,7 +922,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.1742574257425743,
+            "reduction_ratio": 0.15369261477045904,
             "level": 3
           }
         },
@@ -931,9 +931,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 442,
+          "prompt_tokens": 446,
           "completion_tokens": 0,
-          "total_tokens": 442,
+          "total_tokens": 446,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -943,7 +943,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.11952191235059761,
+            "reduction_ratio": 0.10441767068273089,
             "level": 3
           }
         },
@@ -952,9 +952,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 391,
+          "prompt_tokens": 392,
           "completion_tokens": 0,
-          "total_tokens": 391,
+          "total_tokens": 392,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -964,7 +964,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21799999999999997,
+            "reduction_ratio": 0.20967741935483875,
             "level": 3
           }
         },
@@ -973,9 +973,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 308,
+          "prompt_tokens": 304,
           "completion_tokens": 0,
-          "total_tokens": 308,
+          "total_tokens": 304,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -985,96 +985,12 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.3913043478260869,
+            "reduction_ratio": 0.3944223107569721,
             "level": 1
           }
         },
         {
           "task_id": "HumanEval/5",
-          "variant": "budget",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 442,
-          "completion_tokens": 0,
-          "total_tokens": 442,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.11599999999999999,
-            "level": 3
-          }
-        },
-        {
-          "task_id": "HumanEval/6",
-          "variant": "budget",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 420,
-          "completion_tokens": 0,
-          "total_tokens": 420,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.16666666666666663,
-            "level": 3
-          }
-        },
-        {
-          "task_id": "HumanEval/7",
-          "variant": "budget",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 302,
-          "completion_tokens": 0,
-          "total_tokens": 302,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.4007936507936508,
-            "level": 2
-          }
-        },
-        {
-          "task_id": "HumanEval/8",
-          "variant": "budget",
-          "success": true,
-          "steps": 0,
-          "prompt_tokens": 395,
-          "completion_tokens": 0,
-          "total_tokens": 395,
-          "file_read_count": 0,
-          "disk_read_count": 0,
-          "stale_read_count": 0,
-          "cost": 0.0,
-          "steps_lost": 0,
-          "saved_tokens": 0,
-          "intercepted": 0,
-          "duplicates": 0,
-          "extra": {
-            "reduction_ratio": 0.21157684630738527,
-            "level": 3
-          }
-        },
-        {
-          "task_id": "HumanEval/9",
           "variant": "budget",
           "success": true,
           "steps": 0,
@@ -1090,7 +1006,91 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.11199999999999999,
+            "reduction_ratio": 0.10483870967741937,
+            "level": 3
+          }
+        },
+        {
+          "task_id": "HumanEval/6",
+          "variant": "budget",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 426,
+          "completion_tokens": 0,
+          "total_tokens": 426,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.14800000000000002,
+            "level": 3
+          }
+        },
+        {
+          "task_id": "HumanEval/7",
+          "variant": "budget",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 298,
+          "completion_tokens": 0,
+          "total_tokens": 298,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.404,
+            "level": 3
+          }
+        },
+        {
+          "task_id": "HumanEval/8",
+          "variant": "budget",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 397,
+          "completion_tokens": 0,
+          "total_tokens": 397,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.19959677419354838,
+            "level": 3
+          }
+        },
+        {
+          "task_id": "HumanEval/9",
+          "variant": "budget",
+          "success": true,
+          "steps": 0,
+          "prompt_tokens": 446,
+          "completion_tokens": 0,
+          "total_tokens": 446,
+          "file_read_count": 0,
+          "disk_read_count": 0,
+          "stale_read_count": 0,
+          "cost": 0.0,
+          "steps_lost": 0,
+          "saved_tokens": 0,
+          "intercepted": 0,
+          "duplicates": 0,
+          "extra": {
+            "reduction_ratio": 0.10080645161290325,
             "level": 3
           }
         },
@@ -1099,9 +1099,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 470,
+          "prompt_tokens": 482,
           "completion_tokens": 0,
-          "total_tokens": 470,
+          "total_tokens": 482,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1111,7 +1111,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.07843137254901966,
+            "reduction_ratio": 0.04743083003952564,
             "level": 3
           }
         },
@@ -1120,9 +1120,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 302,
+          "prompt_tokens": 298,
           "completion_tokens": 0,
-          "total_tokens": 302,
+          "total_tokens": 298,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1132,7 +1132,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.396,
+            "reduction_ratio": 0.39919354838709675,
             "level": 1
           }
         },
@@ -1153,7 +1153,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21442885771543085,
+            "reduction_ratio": 0.2080808080808081,
             "level": 3
           }
         },
@@ -1162,9 +1162,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 367,
+          "prompt_tokens": 375,
           "completion_tokens": 0,
-          "total_tokens": 367,
+          "total_tokens": 375,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1174,7 +1174,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.27470355731225293,
+            "reduction_ratio": 0.25298804780876494,
             "level": 3
           }
         },
@@ -1183,9 +1183,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 418,
+          "prompt_tokens": 421,
           "completion_tokens": 0,
-          "total_tokens": 418,
+          "total_tokens": 421,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1195,7 +1195,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.16566866267465075,
+            "reduction_ratio": 0.1529175050301811,
             "level": 3
           }
         },
@@ -1204,9 +1204,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 326,
+          "prompt_tokens": 322,
           "completion_tokens": 0,
-          "total_tokens": 326,
+          "total_tokens": 322,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1216,7 +1216,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.350597609561753,
+            "reduction_ratio": 0.352112676056338,
             "level": 1
           }
         },
@@ -1225,9 +1225,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 309,
+          "prompt_tokens": 305,
           "completion_tokens": 0,
-          "total_tokens": 309,
+          "total_tokens": 305,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1237,7 +1237,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.3905325443786982,
+            "reduction_ratio": 0.3936381709741551,
             "level": 1
           }
         },
@@ -1246,9 +1246,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 369,
+          "prompt_tokens": 371,
           "completion_tokens": 0,
-          "total_tokens": 369,
+          "total_tokens": 371,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1258,7 +1258,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.262,
+            "reduction_ratio": 0.2520161290322581,
             "level": 3
           }
         },
@@ -1267,9 +1267,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 468,
+          "prompt_tokens": 472,
           "completion_tokens": 0,
-          "total_tokens": 468,
+          "total_tokens": 472,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1279,7 +1279,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.0677290836653387,
+            "reduction_ratio": 0.052208835341365445,
             "level": 3
           }
         },
@@ -1288,9 +1288,9 @@
           "variant": "budget",
           "success": true,
           "steps": 0,
-          "prompt_tokens": 395,
+          "prompt_tokens": 397,
           "completion_tokens": 0,
-          "total_tokens": 395,
+          "total_tokens": 397,
           "file_read_count": 0,
           "disk_read_count": 0,
           "stale_read_count": 0,
@@ -1300,7 +1300,7 @@
           "intercepted": 0,
           "duplicates": 0,
           "extra": {
-            "reduction_ratio": 0.21157684630738527,
+            "reduction_ratio": 0.20120724346076457,
             "level": 3
           }
         }
@@ -1310,9 +1310,9 @@
         "success_rate": 1.0,
         "avg_steps": 0.0,
         "avg_tokens": {
-          "prompt": 389.75,
+          "prompt": 391.8,
           "completion": 0.0,
-          "total": 389.75
+          "total": 391.8
         },
         "avg_file_reads": 0.0,
         "avg_file_reads_per_step": 0.0,

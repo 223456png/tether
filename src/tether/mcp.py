@@ -23,8 +23,14 @@ from loguru import logger
 from tether import __version__
 from tether.tools.base import Tool, ToolResult
 
-_PROTOCOL_VERSION = "2024-11-05"
 _REQUEST_TIMEOUT = 30.0
+
+# 协议版本协商：先报最新，被旧 server 拒绝再逐级回退。
+# 2024-11-05 是很多客户端还在硬编码的版本；2025-06-18 引入了
+# structuredContent / outputSchema / resource links / elicitation。
+# 硬编码单版本的问题：新 server 会按旧语义回包（丢掉结构化输出），
+# 老 server 直接拒握手。
+_PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
 
 
 class MCPError(RuntimeError):
@@ -54,9 +60,10 @@ class StdioTransport:
         self._inbox: queue.Queue[object] = queue.Queue()
         self._reader: threading.Thread | None = None
         self._next_id = 0
+        self.protocol_version: str | None = None
 
     def start(self) -> dict:
-        """Spawn the server, start the reader thread, run the handshake."""
+        """Spawn the server, run the handshake, negotiate a protocol version."""
         try:
             self._proc = subprocess.Popen(
                 self._command,
@@ -73,16 +80,40 @@ class StdioTransport:
             target=self._read_loop, name="mcp-reader", daemon=True
         )
         self._reader.start()
-        result = self.request(
-            "initialize",
-            {
-                "protocolVersion": _PROTOCOL_VERSION,
-                "capabilities": {},
-                "clientInfo": {"name": "tether", "version": __version__},
-            },
-        )
+        result = self._handshake()
         self.notify("notifications/initialized", {})
-        return result or {}
+        return result
+
+    def _handshake(self) -> dict:
+        """Try the newest protocol version first, falling back on rejection.
+
+        Servers answer ``initialize`` with the version they will speak; a
+        server that does not know our version may either reply with its own
+        (spec-compliant) or answer with an error (common in the wild).
+        """
+        last_error: MCPError | None = None
+        for version in _PROTOCOL_VERSIONS:
+            try:
+                result = self.request(
+                    "initialize",
+                    {
+                        "protocolVersion": version,
+                        "capabilities": {},
+                        "clientInfo": {"name": "tether", "version": __version__},
+                    },
+                )
+                self.protocol_version = str(
+                    (result or {}).get("protocolVersion") or version
+                )
+                logger.debug(
+                    "MCP initialized | requested={} negotiated={}",
+                    version, self.protocol_version,
+                )
+                return result or {}
+            except MCPError as exc:
+                last_error = exc
+                logger.debug("MCP initialize rejected | version={} err={}", version, exc)
+        raise last_error or MCPError("MCP initialize failed for every known version")
 
     def request(self, method: str, params: dict[str, Any]) -> Any:
         """Send one JSON-RPC request and return its result."""
@@ -234,6 +265,11 @@ class MCPTool(Tool):
             for part in parts
             if isinstance(part, dict) and part.get("type") == "text"
         )
+        # 2025-06-18 起 server 可以返回 structuredContent（配合 outputSchema）。
+        # 有结构化结果时优先用它——文本片段可能只是给人看的摘要。
+        structured = result.get("structuredContent")
+        if isinstance(structured, dict) and structured:
+            text = json.dumps(structured, ensure_ascii=False)
         if result.get("isError"):
             return ToolResult(
                 success=False, error=text or f"MCP tool {self._remote_name} failed"

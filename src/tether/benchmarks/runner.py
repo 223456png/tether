@@ -210,7 +210,9 @@ class BenchmarkRunner:
             ws = Path(tmp)
             (ws / "src").mkdir()
             (ws / "src" / "solution.py").write_text(task["prompt"], encoding="utf-8")
-            snap = FileSnapshot.from_file("bench", ws / "src" / "solution.py")
+            snap = FileSnapshot.from_file(
+                "bench", ws / "src" / "solution.py", root=ws
+            )
 
             tool_results = list(self._TOOL_TEMPLATES)
             notes = [
