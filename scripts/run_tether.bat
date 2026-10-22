@@ -2,7 +2,7 @@
 rem Tether launcher: tests / benchmarks / reports in one menu.
 chcp 65001 >nul
 title Tether Agent Workbench
-cd /d "%~dp0"
+cd /d "%~dp0.."
 
 :menu
 cls
