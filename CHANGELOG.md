@@ -9,10 +9,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - **压缩保真校验对中文双向失效（第二轮审计 P0-1）**：`rouge_score` 的
-  tokenizer 把一切非 ASCII 字符当分隔符——纯中文上下文相似度恒 0（永远
+  tokenizer 把一切非 ASCII 字符当分隔符，纯中文上下文相似度恒 0（永远
   回滚，可验证压缩静默失效）；混合内容丢光中文却得 1.000（信息静默丢失）。
   校验器改为 CJK-aware 组合相似度：ASCII 词走 rouge_score 的 ROUGE-L，
-  CJK 字符走字符级 LCS F1（difflib），按原文构成加权——两个方向都被
+  CJK 字符走字符级 LCS F1（difflib），按原文构成加权，两个方向都被
   正确拦截，英文行为不变。中文回归测试锁定三种场景
 - **token 估算对中文低估 2-3 倍（P0-2）**：`len(text) // 3` 让 CJK 重
   上下文在预算门放行后真实 token 超限。改为分段估算（CJK ≈1 token/字，
