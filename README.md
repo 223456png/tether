@@ -1,5 +1,11 @@
 # Tether
 
+[![CI](https://github.com/223456png/tether/actions/workflows/ci.yml/badge.svg)](https://github.com/223456png/tether/actions/workflows/ci.yml)
+[![tests](https://img.shields.io/badge/tests-150%20passed-brightgreen)](tests/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 编码 Agent 一跑就是几个小时，上下文越滚越大。业界现在的标准做法是压缩（compaction），但压缩有个很常见的翻车方式：压完之后 Agent 忘了“做到什么算完成”，只对着眼前看得见的测试反复打补丁，最后报告一个假完成。
 
 Tether 是围绕这个问题做的长时 Agent 运行时。它管三件事：上下文压得下来、记忆不串味、中断能接着跑。实现上是一条能单独测试的组件流水线，工具循环、三层记忆、预算化压缩、文件漂移检测、恢复、重复调用拦截、MCP 接入。
