@@ -26,11 +26,14 @@ from tether.tools.base import Tool, ToolResult
 _REQUEST_TIMEOUT = 30.0
 
 # 协议版本协商：先报最新，被旧 server 拒绝再逐级回退。
-# 2024-11-05 是很多客户端还在硬编码的版本；2025-06-18 引入了
-# structuredContent / outputSchema / resource links / elicitation。
-# 硬编码单版本的问题：新 server 会按旧语义回包（丢掉结构化输出），
-# 老 server 直接拒握手。
-_PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
+#
+# 注意 2026-07-28：该版本把协议内核改成无状态（取消 initialize /
+# notifications/initialized 握手与 Mcp-Session-Id，能力声明改走每个请求的
+# _meta，服务端→客户端请求改走 Multi Round-Trip Requests）。它不是"换个版本
+# 字符串"就能兼容的，需要重写这一层的握手与调用路径，因此这里的协商上限
+# 停在 2025-11-25（最后一个仍用 initialize 的正式版本）。JSON-RPC/stdio 帧
+# 格式不变，所以下面四行以内的版本都能正常连。
+_PROTOCOL_VERSIONS = ("2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05")
 
 
 class MCPError(RuntimeError):

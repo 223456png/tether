@@ -214,7 +214,7 @@ def test_handshake_falls_back_to_older_protocol(monkeypatch) -> None:
 
     assert result["protocolVersion"] == "2024-11-05"
     assert transport.protocol_version == "2024-11-05"
-    assert seen == ["2025-06-18", "2025-03-26", "2024-11-05"]
+    assert seen == ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"]
 
 
 def test_handshake_uses_server_negotiated_version(monkeypatch) -> None:
