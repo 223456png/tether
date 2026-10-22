@@ -1,30 +1,19 @@
-# Security Policy
+# 安全说明
 
-## Reporting a vulnerability
+## 报告安全问题
 
-Please report security issues privately — open a draft advisory at
-<https://github.com/223456png/tether/security/advisories/new> or contact the
-maintainer directly. Do not open a public issue for a security problem.
+发现安全问题时请私下告诉我，不要开公开 issue。可以在这里提交草稿安全公告：
+<https://github.com/223456png/tether/security/advisories/new>，或者直接联系维护者。
 
-## Threat model and known boundaries
+## 威胁模型与已知边界
 
-Tether is an **experimental research runtime**, not a hardened sandbox.
+Tether 是一个实验性的研究型运行时，不是加固过的沙箱。
 
-- **Code execution is not sandboxed.** `run_test` spawns `python -m pytest`
-  inside the workspace, and the HumanEval benchmark executes model-generated
-  completions in plain subprocesses. Do not point Tether at untrusted models
-  or untrusted workspaces. Containerized execution is on the roadmap.
-- **Tool file access is workspace-bounded.** `read_file`, `write_file`,
-  `search_code` and `run_test` resolve paths under the workspace and refuse
-  escapes (absolute paths, `..`, symlinks pointing outside the root). This is
-  a correctness guardrail, not a security boundary against a hostile model.
-- **`--mcp-cmd` executes a local command.** Each `--mcp-cmd` value is spawned
-  as a subprocess with the workspace as its working directory. Only connect
-  MCP servers you trust; the command runs with your user's privileges.
-- **API keys.** Provide `DEEPSEEK_API_KEY` / `TETHER_LLM_*` through environment
-  variables (see `.env.example`) and never commit them. Tether sends them only
-  to the configured LLM endpoint.
+- **代码执行没有沙箱。** `run_test` 会在工作区内起 `python -m pytest`，HumanEval 评测也会在普通子进程里执行模型生成的代码。别把 Tether 接到不可信的模型或工作区上。容器化执行在 roadmap 里。
+- **工具的文件访问被限制在工作区内。** `read_file`、`write_file`、`search_code`、`run_test` 都会把路径解析到工作区下面，拒绝绝对路径、`..` 和指向根目录外的软链。这是一道防误操作的护栏，不是用来对抗恶意模型的安全边界。
+- **`--mcp-cmd` 会执行本地命令。** 每个 `--mcp-cmd` 都会以工作区为当前目录起一个子进程，权限和你本人一样。只接你信得过的 MCP server。
+- **API key。** `DEEPSEEK_API_KEY` / `TETHER_LLM_*` 请通过环境变量传（见 `.env.example`），不要提交到仓库。Tether 只会把它们发给配置好的 LLM 端点。
 
-## Supported versions
+## 支持的版本
 
-Tether is pre-1.0; only the latest `main` is supported.
+Tether 还在 1.0 之前，只维护最新的 `main`。
