@@ -147,6 +147,8 @@ python scripts/run_benchmark.py --experiment e2e --num-samples 20
 | Last-N 截断 | 391（−21.6%） | 65%，早期工具结果被丢 |
 | 预算分配（本方案） | 392（−21.4%） | 100%，过校验，失败回滚 |
 
+> 预算分配比 Last-N 多 1 个 token（392 vs 391），在 20 个样本的平均上属噪声；两者的真实差别在信息保全：Last-N 丢掉最早的工具结果后成功率只有 65%，预算分配过全量校验后是 100%。
+
 ### 2. 真实 LLM 端到端 pass@1（20 任务 × 3 组，DeepSeek，greedy）
 
 | 组 | pass@1 | 平均 prompt tokens | 平均总 tokens | 平均延迟 |
