@@ -79,7 +79,7 @@ class BenchmarkRunner:
         """Persist per-variant results + metrics as JSON and CSV.
 
         墙钟 latency 是观测噪声（重跑必变），不进版控的 results.json/csv，
-        单独落到 ``latency.json``（.gitignore）供本地性能回归观察——
+        单独落到 ``latency.json``（.gitignore）供本地性能回归观察，
         保证「固定种子确定性再生成」对**字节**也成立。
         """
         full_payload = {

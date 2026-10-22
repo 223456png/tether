@@ -244,7 +244,7 @@ class ReportGenerator:
             note = (
                 f"；不可恢复场景：{', '.join(failed)}"
                 f"（FileSnapshot 仅缓存元数据不缓存内容，删除后无法还原，"
-                f"属已知设计限制——DriftDetector 仍能检出 MISSING 并明确报错）"
+                f"属已知设计限制，DriftDetector 仍能检出 MISSING 并明确报错）"
                 if failed else ""
             )
             return (
